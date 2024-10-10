@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Admin_sidebar from "./admin-sidebar";
 import "./admin-css/admin-genel.css";
+import { getAllUsers, toggleUserActivity as toggleUserActivityAPI } from "./api/userapi";
 
 const Admin_users = () => {
   const [usersData, setUsersData] = useState([]);
@@ -10,17 +11,12 @@ const Admin_users = () => {
   const usersPerPage = 10;
 
   useEffect(() => {
-    fetch(
-      `http://213.142.159.49:8083/api/admin/user/all?page=${
-        currentPage - 1
-      }&size=${usersPerPage}`
-    )
-      .then((response) => response.json())
+    getAllUsers(currentPage, usersPerPage)
       .then((data) => {
         setUsersData(data.content);
         setTotalPages(data.totalPages);
       })
-      .catch((error) => console.error("Error fetching user data:", error));
+      .catch((error) => console.error(error));
   }, [currentPage]);
 
   const filteredUsers = usersData.filter(
@@ -37,15 +33,7 @@ const Admin_users = () => {
   };
 
   const toggleUserActivity = (userId) => {
-    console.log(userId);
-
-    fetch(
-      `http://213.142.159.49:8083/api/admin/user/inactive?userId=${userId}`,
-      {
-        method: "PUT",
-      }
-    )
-      .then((response) => response)
+    toggleUserActivityAPI(userId)
       .then((data) => {
         if (data.ok) {
           setUsersData((prevData) =>
@@ -57,7 +45,7 @@ const Admin_users = () => {
           console.error("Failed to change user activity");
         }
       })
-      .catch((error) => console.error("Error toggling user activity:", error));
+      .catch((error) => console.error(error));
   };
 
   return (

@@ -1,15 +1,15 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import Admin_anasayfa from './pages/admin/admin-anasayfa'
-import Admin_product from './pages/admin/admin-product';
-import Admin_product_detail from './pages/admin/admin-product-detail';
-import Admin_users from './pages/admin/admin-users';
-import Admin_raporlar from './pages/admin/admin-raporlar';
-import Admin_sayfalar from './pages/admin/admin-sayfalar';
-import Admin_kategoriler from './pages/admin/admin-kategoriler';
-import Admin_aktif_siparis from './pages/admin/admin-aktif-siparis';
-import Admin_mesajlar from './pages/admin/admin-mesajlar';
-import Admin_kampanyalar from './pages/admin/admin-kampanyalar';
-import Admin_login from './pages/admin/admin-login';
+import Admin_anasayfa from './pages/admin-anasayfa'
+import Admin_product from './pages/admin-product';
+import Admin_product_detail from './pages/admin-product-detail';
+import Admin_users from './pages/admin-users';
+import Admin_raporlar from './pages/admin-raporlar';
+import Admin_sayfalar from './pages/admin-sayfalar';
+import Admin_kategoriler from './pages/admin-kategoriler';
+import Admin_aktif_siparis from './pages/admin-aktif-siparis';
+import Admin_mesajlar from './pages/admin-mesajlar';
+import Admin_kampanyalar from './pages/admin-kampanyalar';
+import Admin_login from './pages/admin-login';
 
 
 function App() {

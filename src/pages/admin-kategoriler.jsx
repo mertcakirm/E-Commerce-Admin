@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Admin_sidebar from './admin-sidebar';
-
+import { fetchCategories, addCategory, deleteCategory } from './api/kategoriapi';
 // Function to convert an image file to base64 string
 const convertImageToBase64 = (file) => {
   return new Promise((resolve, reject) => {
@@ -12,7 +12,6 @@ const convertImageToBase64 = (file) => {
 };
 
 const Admin_kategoriler = () => {
-  // State for categories data and pagination
   const [categoriesData, setCategoriesData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -29,22 +28,16 @@ const Admin_kategoriler = () => {
   
 
   useEffect(() => {
-    const fetchCategories = async () => {
+    const getCategories = async () => {
       try {
-        const response = await fetch('http://213.142.159.49:8083/api/category/admin/get/all');
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
+        const data = await fetchCategories();
         setCategoriesData(data);
         setTotalPages(Math.ceil(data.length / categoriesPerPage));
       } catch (error) {
         console.error('Error fetching categories data:', error);
       }
-      
     };
-
-    fetchCategories();
+    getCategories();
   }, []);
 
   useEffect(() => {
@@ -74,20 +67,15 @@ const Admin_kategoriler = () => {
 
   const handleDelete = async (categoryId) => {
     try {
-      const response = await fetch(`http://213.142.159.49:8083/api/admin/category/delete?categoryId=${Number(categoryId)}`, {
-        method: 'DELETE',
-      });
-  
-      if (!response.ok) {
-        throw new Error('Failed to delete category');
-      }
-  
+      await deleteCategory(categoryId);
       console.log('Category deleted:', categoryId);
+
+      // Refresh categories after delete
+      const refreshedData = await fetchCategories();
+      setCategoriesData(refreshedData);
     } catch (error) {
       console.error('Error deleting category:', error);
     }
-    window.setTimeout(() => window.location.reload(), 1000);
-
   };
   
 
@@ -108,43 +96,25 @@ const Admin_kategoriler = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     
-
     const base64Image = await convertImageToBase64(newCategoryImage);
-    const base64new=base64Image.split(",")[1]
+    const base64new = base64Image.split(",")[1];
+
     const categoryDTO = {
-      image:{"bytes":base64new},
-      typeName:newCategoryType,
-      categoryName:newCategoryName,
+      image: { "bytes": base64new },
+      typeName: newCategoryType,
+      categoryName: newCategoryName,
+    };
 
-    }
-    console.log(categoryDTO);
-    
     try {
-      const response = await fetch('http://213.142.159.49:8083/api/category/add', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(categoryDTO),
-      });
-      
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
+      await addCategory(categoryDTO);
 
-      const result = response;
-      console.log('Category added:', result);
-
-      // Fetch updated categories
-      const refreshedResponse = await fetch('http://213.142.159.49:8083/api/category/admin/get/all');
-      const refreshedData = await refreshedResponse.json();
+      // Refresh categories after adding
+      const refreshedData = await fetchCategories();
       setCategoriesData(refreshedData);
       togglePopup();
     } catch (error) {
       console.error('Error adding category:', error);
     }
-    window.setTimeout(() => window.location.reload(), 1000);
-
   };
   
 

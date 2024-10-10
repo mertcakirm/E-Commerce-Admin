@@ -7,16 +7,16 @@ const Admin_anasayfa=()=> {
   const productsData = [
     { id: 1, name: "Mob Wear Şort", Kategori: "Üst Giyim", stok: 19  , harcama:"30000" ,fiyat:699,img:"https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg" , stoklar:{medium:2,small:3,large:5,xlarge:1,xsmall:2}},
     { id: 1, name: "Mob Wear Şort", Kategori: "Üst Giyim", stok: 19  , harcama:"30000" ,fiyat:699,img:"https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg" , stoklar:{medium:5,small:3,large:5,xlarge:1,xsmall:2}},
-    { id: 3, name: "Mob Wear Şort", Kategori: "Üst Giyim", stok: 19  , harcama:"30000" ,fiyat:699,img:"https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg" , stoklar:{medium:9,small:20,large:5,xlarge:10,xsmall:20}},
-    { id: 4, name: "Mob Wear Şort", Kategori: "Üst Giyim", stok: 19  , harcama:"30000" ,fiyat:699,img:"https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg" , stoklar:{medium:9,small:20,large:5,xlarge:10,xsmall:20}},
-    { id: 5, name: "Mob Wear Şort", Kategori: "Üst Giyim", stok: 19  , harcama:"30000" ,fiyat:699,img:"https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg" , stoklar:{medium:9,small:20,large:5,xlarge:10,xsmall:20}},
-    { id: 6, name: "Mob Wear Şort", Kategori: "Üst Giyim", stok: 19  , harcama:"30000" ,fiyat:699,img:"https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg" , stoklar:{medium:9,small:20,large:5,xlarge:10,xsmall:20}},
-    { id: 7, name: "search", Kategori: "Üst Giyim", stok: 64  , harcama:"30000" ,fiyat:699,img:"https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg" ,        stoklar:{medium:9,small:20,large:5,xlarge:10,xsmall:20}},
-    { id: 8, name: "Mob Wear Şort", Kategori: "Üst Giyim", stok: 64  , harcama:"30000" ,fiyat:399,img:"https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg" , stoklar:{medium:9,small:20,large:5,xlarge:10,xsmall:20}},
-    { id: 9, name: "Mob Wear Şort", Kategori: "Üst Giyim", stok: 64  , harcama:"30000" ,fiyat:399,img:"https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg" , stoklar:{medium:9,small:20,large:5,xlarge:10,xsmall:20}},
-    { id: 10, name:"Mob Wear Şort", Kategori: "Üst Giyim", stok: 64 , harcama:"30000" , fiyat:399,img:"https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg" , stoklar:{medium:9,small:20,large:5,xlarge:10,xsmall:20}},
-    { id: 11, name:"Mob Wear Şort", Kategori: "Üst Giyim", stok: 64 , harcama:"30000" , fiyat:399,img:"https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg" , stoklar:{medium:9,small:20,large:5,xlarge:10,xsmall:20}},
-    { id: 12, name:"Mob Wear Şort", Kategori: "Üst Giyim", stok: 64 , harcama:"30000" , fiyat:399,img:"https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg" , stoklar:{medium:9,small:20,large:5,xlarge:10,xsmall:20}},
+    { id: 3, name: "Mob Wear Şort", Kategori: "Üst Giyim", stok: 19  , harcama:"30000" ,fiyat:699,img:"https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg" , stoklar:{medium:9,small:2,large:5,xlarge:1,xsmall:2}},
+    { id: 4, name: "Mob Wear Şort", Kategori: "Üst Giyim", stok: 19  , harcama:"30000" ,fiyat:699,img:"https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg" , stoklar:{medium:9,small:2,large:5,xlarge:1,xsmall:2}},
+    { id: 5, name: "Mob Wear Şort", Kategori: "Üst Giyim", stok: 19  , harcama:"30000" ,fiyat:699,img:"https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg" , stoklar:{medium:9,small:2,large:5,xlarge:1,xsmall:2}},
+    { id: 6, name: "Mob Wear Şort", Kategori: "Üst Giyim", stok: 19  , harcama:"30000" ,fiyat:699,img:"https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg" , stoklar:{medium:9,small:2,large:5,xlarge:1,xsmall:2}},
+    { id: 7, name: "search", Kategori: "Üst Giyim", stok: 64  , harcama:"30000" ,fiyat:699,img:"https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg" ,        stoklar:{medium:9,small:2,large:5,xlarge:1,xsmall:2}},
+    { id: 8, name: "Mob Wear Şort", Kategori: "Üst Giyim", stok: 64  , harcama:"30000" ,fiyat:399,img:"https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg" , stoklar:{medium:10,small:2,large:5,xlarge:1,xsmall:2}},
+    { id: 9, name: "Mob Wear Şort", Kategori: "Üst Giyim", stok: 64  , harcama:"30000" ,fiyat:399,img:"https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg" , stoklar:{medium:9,small:2,large:5,xlarge:1,xsmall:2}},
+    { id: 10, name:"Mob Wear Şort", Kategori: "Üst Giyim", stok: 64 , harcama:"30000" , fiyat:399,img:"https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg" , stoklar:{medium:9,small:2,large:5,xlarge:1,xsmall:2}},
+    { id: 11, name:"Mob Wear Şort", Kategori: "Üst Giyim", stok: 64 , harcama:"30000" , fiyat:399,img:"https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg" , stoklar:{medium:9,small:2,large:5,xlarge:1,xsmall:2}},
+    { id: 12, name:"Mob Wear Şort", Kategori: "Üst Giyim", stok: 64 , harcama:"30000" , fiyat:399,img:"https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg" , stoklar:{medium:9,small:2,large:5,xlarge:1,xsmall:2}},
   ];
 
   const lowStockProducts = productsData.filter(product => {
@@ -48,14 +48,17 @@ const Admin_anasayfa=()=> {
 
               <div className="col-lg-6">
                 <div className="site-icerik-shadow">
-                  <div className="row en-cok-row scroll-table">
-                    <div className="col-12 alt-basliklar-admin">En Çok Ürün Alan Kullanıcılar</div>
+                <div className="col-12 alt-basliklar-admin">En Çok Ürün Alan Kullanıcılar</div><br />
+
+                  <div className="row en-cok-row scroll-table" style={{maxHeight:'550px'}} >
+
 
                     <div className="col-12 en-cok-card row">
                       <div className="col-lg-4">Furkan Geren</div>
                       <div className="col-lg-5">FurkanGeren@gmail.com</div>
                       <div className="col-lg-3">05378231123</div>
                     </div>
+
 
 
                     <div className="col-12 en-cok-card row">
@@ -95,7 +98,26 @@ const Admin_anasayfa=()=> {
                       <div className="col-lg-5">FurkanGeren@gmail.com</div>
                       <div className="col-lg-3">05378231123</div>
                     </div>
-
+                    <div className="col-12 en-cok-card row">
+                      <div className="col-lg-4">Furkan Geren</div>
+                      <div className="col-lg-5">FurkanGeren@gmail.com</div>
+                      <div className="col-lg-3">05378231123</div>
+                    </div>
+                    <div className="col-12 en-cok-card row">
+                      <div className="col-lg-4">Furkan Geren</div>
+                      <div className="col-lg-5">FurkanGeren@gmail.com</div>
+                      <div className="col-lg-3">05378231123</div>
+                    </div>
+                    <div className="col-12 en-cok-card row">
+                      <div className="col-lg-4">Furkan Geren</div>
+                      <div className="col-lg-5">FurkanGeren@gmail.com</div>
+                      <div className="col-lg-3">05378231123</div>
+                    </div>
+                    <div className="col-12 en-cok-card row">
+                      <div className="col-lg-4">Furkan Geren</div>
+                      <div className="col-lg-5">FurkanGeren@gmail.com</div>
+                      <div className="col-lg-3">05378231123</div>
+                    </div>
                     
                     </div>
                     <div className="col-12 row justify-content-center mt-5"><a className='tumunu-gor-btn-admin col-6' href="/kullanicilar">Tüm Kullanıcıları Gör</a></div>
@@ -139,9 +161,47 @@ const Admin_anasayfa=()=> {
 
               <div className="col-lg-6">
                 <div className="site-icerik-shadow">
-                  <div className="row scroll-table en-cok-row">
-                    <div className="col-12 alt-basliklar-admin">En Çok Satın Alınan Ürünler</div>
+                <div className="col-12 alt-basliklar-admin">En Çok Satın Alınan Ürünler</div>
+                  <br />
+                  <div className="row scroll-table en-cok-row" style={{maxHeight:'1060px'}}>
 
+                    <a href='#' className="col-12 en-cok-card row" >
+                      <div className="col-lg-3">
+                        <img className='img-fluid w-100' src="https://cdn.aksesuarix.com/Fotograflar/575/90026-story-of-radio-oversize-kahve-erkek-tisort-us4109kh-us4109kh-01.jpg" alt="" />
+                      </div>
+                      <div className="col-lg-9 en-cok-urunler-admin">
+                        <p>Ürün Adı : Mob Wear Şort</p>
+                        <p>Ürün Kodu : 23123</p>
+                        <p>Ürün Fiyatı : 499₺</p>
+                        <p>Ürün Kategorisi : Tişört</p>
+                        <p>Satış Sayısı : 27</p>
+                      </div>
+                    </a>
+
+                    <a href='#' className="col-12 en-cok-card row">
+                      <div className="col-lg-3">
+                        <img className='img-fluid w-100' src="https://cdn.aksesuarix.com/Fotograflar/575/90026-story-of-radio-oversize-kahve-erkek-tisort-us4109kh-us4109kh-01.jpg" alt="" />
+                      </div>
+                      <div className="col-lg-9 en-cok-urunler-admin">
+                        <p>Ürün Adı : Mob Wear Şort</p>
+                        <p>Ürün Kodu : 23123</p>
+                        <p>Ürün Fiyatı : 499₺</p>
+                        <p>Ürün Kategorisi : Tişört</p>
+                        <p>Satış Sayısı : 27</p>
+                      </div>
+                    </a>
+                    <a href='#' className="col-12 en-cok-card row">
+                      <div className="col-lg-3">
+                        <img className='img-fluid w-100' src="https://cdn.aksesuarix.com/Fotograflar/575/90026-story-of-radio-oversize-kahve-erkek-tisort-us4109kh-us4109kh-01.jpg" alt="" />
+                      </div>
+                      <div className="col-lg-9 en-cok-urunler-admin">
+                        <p>Ürün Adı : Mob Wear Şort</p>
+                        <p>Ürün Kodu : 23123</p>
+                        <p>Ürün Fiyatı : 499₺</p>
+                        <p>Ürün Kategorisi : Tişört</p>
+                        <p>Satış Sayısı : 27</p>
+                      </div>
+                    </a>
                     <a href='#' className="col-12 en-cok-card row">
                       <div className="col-lg-3">
                         <img className='img-fluid w-100' src="https://cdn.aksesuarix.com/Fotograflar/575/90026-story-of-radio-oversize-kahve-erkek-tisort-us4109kh-us4109kh-01.jpg" alt="" />

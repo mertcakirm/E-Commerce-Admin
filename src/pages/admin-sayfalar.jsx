@@ -1,30 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import Admin_sidebar from './admin-sidebar';
 import './admin-css/admin-genel.css';
+import {
+  fetchSliderData,
+  addSlider,
+  deleteSlider,
+  fetchCartData,
+  addCart,
+  deleteCart,
+} from './api/sayfalarapi'; 
 
 const Admin_sayfalar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // State for form inputs
   const [sliderImage, setSliderImage] = useState({ bytes: "" });
   const [topTitle, setTopTitle] = useState("");
   const [middleTitle, setMiddleTitle] = useState("");
   const [underTitle, setUnderTitle] = useState("");
   const [redirectAddress, setRedirectAddress] = useState("");
-
-  // State for fetched slider data
   const [sliderData, setSliderData] = useState([]);
-
-  // State for the modal form inputs
   const [cartImage, setCartImage] = useState("");
   const [cartName, setCartName] = useState("");
   const [cartCategory, setCartCategory] = useState("");
   const [cartSize, setCartSize] = useState("Tam");
   const [cartData, setCartData] = useState([]);
-
+  
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-
+  
   const handleInputChange = (e, setState) => {
     setState(e.target.value);
   };
@@ -32,17 +34,9 @@ const Admin_sayfalar = () => {
   const convertImageToBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-
-      reader.onloadend = function () {
-        const base64String = reader.result.split(",")[1]; // Get base64 data
-        resolve(base64String);
-      };
-
-      reader.onerror = function () {
-        reject(new Error("File read error"));
-      };
-
-      reader.readAsDataURL(file); // Read image as base64
+      reader.onloadend = () => resolve(reader.result.split(",")[1]);
+      reader.onerror = () => reject(new Error("File read error"));
+      reader.readAsDataURL(file);
     });
   };
 
@@ -51,7 +45,6 @@ const Admin_sayfalar = () => {
     if (file) {
       const base64 = await convertImageToBase64(file);
       setSliderImage(base64);
-      console.log(base64);
     }
   };
 
@@ -60,7 +53,6 @@ const Admin_sayfalar = () => {
     if (file) {
       const base64 = await convertImageToBase64(file);
       setCartImage(base64);
-      console.log(base64);
     }
   };
 
@@ -74,161 +66,80 @@ const Admin_sayfalar = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
     try {
-      const response = await fetch('http://213.142.159.49:8083/api/slider/main/add', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(sliderDTO),
-      });
-  
-      if (response.ok) {
-        alert("Slider successfully added!");
-        // Reset form state
-        setSliderImage({ bytes: "" });
-        setTopTitle("");
-        setMiddleTitle("");
-        setUnderTitle("");
-        setRedirectAddress("");
-        // Reload page or update data
-        window.setTimeout(() => window.location.reload(), 1000);
-      } else {
-        const errorData = await response.json();
-        alert(`Error: ${errorData.message || "An error occurred"}`);
-      }
+      await addSlider(sliderDTO);
+      alert("Slider successfully added!");
+      // Reset form state
+      setSliderImage({ bytes: "" });
+      setTopTitle("");
+      setMiddleTitle("");
+      setUnderTitle("");
+      setRedirectAddress("");
     } catch (error) {
       console.error("Request error: ", error);
-      alert("An error occurred while adding the slider.");
     }
   };
-  const token = localStorage.getItem("token");
-  
 
-  // Function to handle modal form submission
+  const token = localStorage.getItem("token");
+
   const handleCartSubmit = async (e) => {
     e.preventDefault();
-  
     const cartCategoryDTO = {
       cartName: cartName,
       viewType: cartSize,
-      image: {
-        bytes: cartImage
-      },
-      category:cartCategory
+      image: { bytes: cartImage },
+      category: cartCategory,
     };
-  
+    
     try {
-      const response = await fetch('http://213.142.159.49:8083/api/admin/cart/add', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(cartCategoryDTO),
-      });
-  
-      console.log(cartCategoryDTO);
-      
-      if (response.ok) {
-        alert("Category card added successfully!");
-        // Reset form state
-        setCartImage("");
-        setCartName("");
-        setCartCategory("");
-        setCartSize("Tam");
-        closeModal();
-      } else {
-        const errorData = response; // Convert the response to JSON
-        console.error("Error response: ", errorData); // Log the detailed error
-        alert(`Error: ${errorData.message || "An error occurred"}`);
-      }
+      await addCart(cartCategoryDTO, token);
+      alert("Category card added successfully!");
+      // Reset form state
+      setCartImage("");
+      setCartName("");
+      setCartCategory("");
+      setCartSize("Tam");
+      closeModal();
+      window.setTimeout(() => window.location.reload(), 1000);
     } catch (error) {
       console.error("Request error: ", error);
-      alert("An error occurred while adding the category card.");
+    }
+  };
+
+  const deleteSliderHandler = async (id) => {
+    try {
+      await deleteSlider(id);
+      setSliderData(sliderData.filter(slider => slider.id !== id));
+    } catch (error) {
+      console.error("Request error: ", error);
+      alert("An error occurred while deleting the slider.");
     }
     window.setTimeout(() => window.location.reload(), 1000);
-
   };
 
-
-
-  const deleteSlider = async (id) => {
+  const deleteCartHandler = async (id) => {
     try {
-      const response = await fetch(`http://213.142.159.49:8083/api/slider/main/delete?categoryId=${id}` , {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-  
-      if (response.ok) {
-        // Reload page or update data
-        setSliderData(sliderData.filter(slider => slider.id !== id));
-      } else {
-      }
-      } catch (error) {
-        console.error("Request error: ", error);
-        alert("An error occurred while deleting the slider.");
-      }
-      window.setTimeout(() => window.location.reload(), 1000);
-
-  };
-  
-  const deleteCart = async (id) => {
-    try {
-      const response = await fetch(`http://213.142.159.49:8083/api/admin/cart/delete?cartId=${id}` , {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-  
-      if (response.ok) {
-        setCartData(sliderData.filter(cart => cart.id !== id));
-      } else {
-      }
-      } catch (error) {
-        console.error("Request error: ", error);
-      }
-      window.setTimeout(() => window.location.reload(), 500);
-
+      await deleteCart(id);
+      setCartData(cartData.filter(cart => cart.id !== id));
+    } catch (error) {
+      console.error("Request error: ", error);
+    }
+    window.setTimeout(() => window.location.reload(), 500);
   };
 
   useEffect(() => {
-    const fetchSliderData = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch('http://213.142.159.49:8083/api/slider/main/get');
-        if (response.ok) {
-          const data = await response.json();
-          setSliderData(data); // Update state with fetched data
-        } else {
-          console.error("Failed to fetch slider data");
-        }
+        const sliders = await fetchSliderData();
+        setSliderData(sliders);
+        const carts = await fetchCartData();
+        setCartData(carts);
       } catch (error) {
-        console.error("Error fetching slider data:", error);
+        console.error("Error fetching data:", error);
       }
     };
-
-    fetchSliderData();
-  }, []);
-
-  useEffect(() => {
-    const fetchCartData = async () => {
-      try {
-        const response = await fetch('http://213.142.159.49:8083/api/product/get/cart');
-        if (response.ok) {
-          const data = await response.json();
-          setCartData(data);
-        } else {
-          console.error("Failed to fetch cart data");
-        }
-      } catch (error) {
-        console.error("Error fetching cart data:", error);
-      }
-    };
-    fetchCartData();
+    
+    fetchData();
   }, []);
 
   return (
@@ -278,7 +189,7 @@ const Admin_sayfalar = () => {
                       <p>Kategori:{slider.category}</p>
                     </div>
                     <div className="col-lg-1">
-                      <button className='slider-edit-sil-btn' onClick={() => deleteSlider(slider.id)}>
+                      <button className='slider-edit-sil-btn' onClick={() => deleteSliderHandler(slider.id)}>
                       <svg clipRule="evenodd" fillRule="evenodd" fill='white' strokeLinejoin="round" strokeMiterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m4.015 5.494h-.253c-.413 0-.747-.335-.747-.747s.334-.747.747-.747h5.253v-1c0-.535.474-1 1-1h4c.526 0 1 .465 1 1v1h5.254c.412 0 .746.335.746.747s-.334.747-.746.747h-.254v15.435c0 .591-.448 1.071-1 1.071-2.873 0-11.127 0-14 0-.552 0-1-.48-1-1.071zm14.5 0h-13v15.006h13zm-4.25 2.506c-.414 0-.75.336-.75.75v8.5c0 .414.336.75.75.75s.75-.336.75-.75v-8.5c0-.414-.336-.75-.75-.75zm-4.5 0c-.414 0-.75.336-.75.75v8.5c0 .414.336.75.75.75s.75-.336.75-.75v-8.5c0-.414-.336-.75-.75-.75zm3.75-4v-.5h-3v.5z" fillRule="nonzero"/></svg>
 
                       </button>
@@ -305,7 +216,7 @@ const Admin_sayfalar = () => {
                     <p>Kart Kategori Adı : {cart.cartName}</p>
                     <p>Kategori : {cart.category}</p>
                     <p>Boyut : {cart.viewType}</p>
-                    <button type="button" style={{width:'100%'}} onClick={() => deleteCart(cart.id)} className='tumunu-gor-btn-admin'>Sil</button>
+                    <button type="button" style={{width:'100%'}} onClick={() => deleteCartHandler(cart.id)} className='tumunu-gor-btn-admin'>Sil</button>
                   </div>
                 </div>
 )}

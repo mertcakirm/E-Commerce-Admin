@@ -46,8 +46,10 @@ const Admin_mesajlar = () => {
                     <td><p className='admin-mesajlar-mesaj'>{message.message}</p></td>
                     <td><span className='green'>{message.answered ? 'Evet' : 'Hayır'}</span></td>
                     <td>
-                      <textarea name="admin-mesaj-cevap" id="admin-mesaj-cevap" placeholder='Mesaj Cevabı'></textarea>
-                      <button className='siparis-durumu-btn'>Mesajı Gönder</button>
+                      <div style={{display:'flex',height:'100%'}}>
+                        <textarea name="admin-mesaj-cevap" id="admin-mesaj-cevap" placeholder='Mesaj Cevabı'></textarea>
+                        <button className='siparis-durumu-btn'>Mesajı Gönder</button>
+                      </div>
                     </td>
                   </tr>
                 ))}

@@ -28,7 +28,7 @@ const Admin_product = () => {
   
       fetch(nextPage, {
         headers: {
-          // Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       })
         .then((response) => response.json())
@@ -176,10 +176,10 @@ const Admin_product = () => {
         reader.readAsDataURL(file);
       });
     };
-  
+
     const handleSubmit = async (e) => {
       e.preventDefault();
-  
+
       const productDTO = {
         productName: productName,
         description: productDescription,
