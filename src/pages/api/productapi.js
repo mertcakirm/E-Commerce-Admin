@@ -1,7 +1,8 @@
 // api.js
 const API_BASE_URL = "http://213.142.159.49:8083/api/admin/product";
+const token = localStorage.getItem("token")
 
-export const fetchProducts = async (token, nextPage) => {
+export const fetchProducts = async (nextPage) => {
   const response = await fetch(nextPage, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -9,13 +10,13 @@ export const fetchProducts = async (token, nextPage) => {
   });
 
   if (!response.ok) {
-    throw new Error("Error fetching products");
+    console.error("Ürünler gösterilirken hata oluştu",response);
+    return;
   }
-  
   return await response.json();
 };
 
-export const deleteProduct = async (token, productCode) => {
+export const deleteProduct = async (productCode) => {
   const response = await fetch(`${API_BASE_URL}/delete/${productCode}`, {
     method: "DELETE",
     headers: {
@@ -25,8 +26,9 @@ export const deleteProduct = async (token, productCode) => {
   });
 
   if (!response.ok) {
-    throw new Error("Error deleting product");
+    console.log("Ürün silme işlemi başarısız oldu");
   }
+  
 };
 
 export const updateDiscount = async (discountRate, productCode) => {
@@ -41,10 +43,10 @@ export const updateDiscount = async (discountRate, productCode) => {
   });
 
   if (!response.ok) {
-    throw new Error("Error applying discount");
+    console.log("indirim uygulanamadı");
+    return null;
   }
   
-  return await response.json();
 };
 
 export const addProduct = async (productDTO) => {
@@ -57,8 +59,7 @@ export const addProduct = async (productDTO) => {
   });
 
   if (!response.ok) {
-    throw new Error("Failed to send data");
+    console.error("Ürün eklenemedi",response);
+    return;
   }
-  
-  return await response.json();
-};
+  };

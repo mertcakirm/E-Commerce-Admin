@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useLocation } from 'react-router-dom'; 
 import Admin_sidebar from './admin-sidebar';
 import './admin-css/admin-genel.css';
+import { deleteProductImage, fetchProductDetail,updateProduct } from './api/product-detailapi';
 
 const Admin_product_detail = () => {
     const { productCode } = useParams();
@@ -15,11 +16,10 @@ const Admin_product_detail = () => {
     const [priceWithOutDiscount, setPriceWithOutDiscount] = useState('');
 
     const location = useLocation();
+    const urlpop = location.pathname.split('/').pop();
 
     useEffect(() => {
-        const urlpop = location.pathname.split('/').pop();
-        fetch(`http://213.142.159.49:8083/api/admin/product/get/${urlpop}`)
-            .then(response => response.json())
+            fetchProductDetail(urlpop)
             .then(data => {
                 setProduct(data);
                 setProductName(data.productName);
@@ -28,27 +28,14 @@ const Admin_product_detail = () => {
                 setType(data.type);
                 setPriceWithOutDiscount(data.priceWithOutDiscount);
             })
-            .catch(error => {
-                console.error('Error fetching product:', error);
-            });
-    }, [productCode]);
+    }, [urlpop]);
 
     const handleDeleteImage = (id) => {
-        fetch(`http://213.142.159.49:8083/api/admin/product/image/delete/${id}`, {
-            method: 'DELETE',
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Image deleted:', data);
-            setProduct(prevProduct => ({
-                ...prevProduct,
-                productImage: prevProduct.productImage.filter(image => image.id !== id)
-            }));
-        })
-        .catch(error => {
-            console.error('Error deleting image:', error);
-        });
-        window.setTimeout(()=>window.location.reload(),1000)
+        deleteProductImage(id)
+        setProduct(prevProduct => ({
+            ...prevProduct,
+            productImage: prevProduct.productImage.filter(image => image.id !== id)
+        }));
 
     };
 
@@ -81,7 +68,6 @@ const Admin_product_detail = () => {
         .then(response => response.json())
         .then(updatedProduct => {
             setProduct(updatedProduct);
-            // Reload the page after the product is successfully updated
             window.location.reload();
         })
         .catch(error => {
@@ -90,90 +76,16 @@ const Admin_product_detail = () => {
         window.setTimeout(()=>window.location.reload(),1000)
         }
 
-
-
-
-        // const handleUpload = () => {
-        //     if (selectedFiles.length === 0) {
-        //         alert('Lütfen yüklemek için bir dosya seçin.');
-        //         return;
-        //     }
-        
-        //     const filePromises = Array.from(selectedFiles).map(file => {
-        //         return new Promise((resolve, reject) => {
-        //             const reader = new FileReader();
-        //             reader.onloadend = () => {
-        //                 const base64String = reader.result.split(',')[1]; // Extract base64 part
-        //                 resolve({ fileName: file.name, base64String });
-        //             };
-        //             reader.onerror = reject;
-        //             reader.readAsDataURL(file);
-        //         });
-        //     });
-        
-        //     Promise.all(filePromises)
-        //         .then(filesBase64 => {
-        //             const productCodeFromUrl = location.pathname.split('/').pop();
-        //             const payload = filesBase64.map(({ fileName, base64String }) => ({
-        //                 fileName,
-        //                 base64String
-        //             }));
-        
-        //             return fetch(`http://213.142.159.49:8083/api/admin/add/photo/${productCodeFromUrl}`, {
-        //                 method: 'POST',
-        //                 headers: {
-        //                     'Content-Type': 'application/json'
-        //                 },
-        //                 body: JSON.stringify(payload),
-        //             });
-        //         })
-        //         .then(response => response.json())
-        //         .then(data => {
-        //             console.log('Dosyalar yüklendi:', data);
-        //             return fetch(`http://213.142.159.49:8083/api/admin/product/get/${productCodeFromUrl}`);
-        //         })
-        //         .then(response => response.json())
-        //         .then(updatedProduct => {
-        //             setProduct(updatedProduct);
-        //             // Reload the page after the product is successfully updated
-        //             window.location.reload();
-        //         })
-        //         .catch(error => {
-        //             console.error('Dosyalar yüklenirken bir hata oluştu:', error);
-        //         });
-        // };
-
-    const handleSaveChanges = () => {
-        const updatedProduct = {
-            productCode: product.productCode,
-            productName: productName,
-            description: description,
-            priceWithOutDiscount: priceWithOutDiscount,
+        const handleSaveChanges = () => {
+            const updatedProduct = {
+                productCode: product.productCode,
+                productName: productName,
+                description: description,
+                priceWithOutDiscount: priceWithOutDiscount,
+            };
+            updateProduct(urlpop, updatedProduct)
         };
-        const jsonitem=JSON.stringify(updatedProduct)
-        const urlpop = location.pathname.split('/').pop();
-        
-        
-        fetch(`http://213.142.159.49:8083/api/admin/product/update/${urlpop}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-
-            },
-            body: jsonitem,
-
-        })
-        .then(response => response)
-        .then(data => {
-            console.log('Product updated:', data);
-        })
-        .catch(error => {
-            console.error('Ürün güncellenirken bir hata oluştu:', error);
-            alert('Ürün güncellenirken bir hata oluştu.');
-        });
-        window.setTimeout(()=>window.location.reload(),1000)
-
-    };
+    
 
 
     if (!product) return <div>Loading...</div>;

@@ -1,8 +1,20 @@
-import React, { Component } from 'react'
+import React, { Component, useEffect, useState } from 'react'
 import Admin_sidebar from './admin-sidebar';
 import './admin-css/admin-genel.css'
 
 const Admin_kampanyalar =()=> {
+    const [categories, setCategories] = useState([]);
+
+    useEffect(() => {
+        fetch("http://213.142.159.49:8083/api/category/get/all")
+          .then((response) => response.json())
+          .then((data) => {
+            setCategories(data);
+          })
+          .catch((error) => {
+            console.error("Kategoriler alınırken hata oluştu:", error);
+          });
+      }, []);
     return (
       <div>
         <Admin_sidebar />
@@ -24,7 +36,18 @@ const Admin_kampanyalar =()=> {
                                 </div>
                                 <div className="row col-12">
                                     <label htmlFor="kampanya-adres-inp" className="col-5">Kampanya Adresi</label>
-                                    <input type="text" id='kampanya-adres-inp' className="col-7" />
+                                    <select
+                                    className="col-7"
+                                    id='kampanya-adres-inp'
+                                    style={{height:"30px"}}
+                                    >
+                                    <option value="">Ürün Kategorisi Seçin</option>
+                                    {categories.map((category) => (
+                                        <option key={category} value={category}>
+                                        {category}
+                                        </option>
+                                    ))}
+                                    </select>
                                 </div>
                                 <div className="col-12">
                                     <button className='tumunu-gor-btn-admin'>Kampanya Ekle</button>

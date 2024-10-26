@@ -279,6 +279,12 @@
     border: 1px solid #ccc;
     border-radius: 5px;
   }
+
+  .popup-form select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
   
   .popup-form button {
     padding: 10px;
@@ -368,6 +374,7 @@
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   flex-direction: column;
   width: 100px;
+  overflow: hidden;
   height: 150px;
   position: relative;
 }

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Admin_sidebar from './admin-sidebar';
 import { fetchCategories, addCategory, deleteCategory } from './api/kategoriapi';
-// Function to convert an image file to base64 string
 const convertImageToBase64 = (file) => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();

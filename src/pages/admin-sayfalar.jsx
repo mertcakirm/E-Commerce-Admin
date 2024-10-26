@@ -23,7 +23,9 @@ const Admin_sayfalar = () => {
   const [cartCategory, setCartCategory] = useState("");
   const [cartSize, setCartSize] = useState("Tam");
   const [cartData, setCartData] = useState([]);
-  
+  const [categories, setCategories] = useState([]);
+
+
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
   
@@ -68,7 +70,6 @@ const Admin_sayfalar = () => {
     e.preventDefault();
     try {
       await addSlider(sliderDTO);
-      alert("Slider successfully added!");
       // Reset form state
       setSliderImage({ bytes: "" });
       setTopTitle("");
@@ -140,6 +141,17 @@ const Admin_sayfalar = () => {
     };
     
     fetchData();
+    const fetchCategory = async () =>{
+      await fetch("http://213.142.159.49:8083/api/category/get/all")
+        .then((response) => response.json())
+        .then((data) => {
+          setCategories(data);
+        })
+        .catch((error) => {
+          console.error("Kategoriler alınırken hata oluştu:", error);
+        });
+    }
+    fetchCategory();
   }, []);
 
   return (
@@ -171,7 +183,20 @@ const Admin_sayfalar = () => {
                 </div>
                 <div className="row">
                   <label className='col-5' htmlFor="redirectAddress">Kategori</label>
-                  <input className='col-7' type="text" id='redirectAddress' value={redirectAddress} onChange={(e) => handleInputChange(e, setRedirectAddress)} />
+                  <select
+                    className="col-7"
+                    id='redirectAddress'
+                    style={{height:"30px"}}
+                    value={redirectAddress}
+                    onChange={(e) => handleInputChange(e, setRedirectAddress)}
+                    >
+                    <option value="">Kategori Seçin</option>
+                    {categories.map((category) => (
+                        <option key={category} value={category}>
+                        {category}
+                        </option>
+                    ))}
+                    </select>
                 </div>
                 <button className='tumunu-gor-btn-admin' type="submit">Slider Ekle</button>
               </form>
@@ -244,7 +269,20 @@ const Admin_sayfalar = () => {
                 </div>
                 <div className="row">
                   <label className='col-4' htmlFor="yonlendirme-adresi">Kategori</label>
-                  <input className='col-8' type="text" id='yonlendirme-adresi' value={cartCategory} onChange={(e) => setCartCategory(e.target.value)} />
+                  <select
+                    className="col-8"
+                    id='yonlendirme-adresi'
+                    style={{height:"30px"}}
+                    value={cartCategory}
+                    onChange={(e) => setCartCategory(e.target.value)}
+                    >
+                    <option value="">Kategori Seçin</option>
+                    {categories.map((category) => (
+                        <option key={category} value={category}>
+                        {category}
+                        </option>
+                    ))}
+                    </select>
                 </div>
                 <div className="row">
                   <label className='col-4' htmlFor="boyut">Boyut</label>
