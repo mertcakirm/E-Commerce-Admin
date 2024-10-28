@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import Admin_sidebar from './admin-sidebar';
+import {useState, useEffect, useRef} from 'react';
+import Admin_sidebar from '../components/admin-sidebar.jsx';
 import { fetchCategories, addCategory, deleteCategory } from './api/kategoriapi';
+import {NotificationCard, showNotification} from "../components/notification.jsx";
+
 const convertImageToBase64 = (file) => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -15,14 +17,14 @@ const Admin_kategoriler = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const categoriesPerPage = 5;
-
   const [searchTerm, setSearchTerm] = useState("");
   const [showPopup, setShowPopup] = useState(false);
-
+  const [loading,setloading]=useState(true);
   const [newCategoryName, setNewCategoryName] = useState("");
   const [newCategoryType, setNewCategoryType] = useState("");
   const [newCategoryImage, setNewCategoryImage] = useState(null);
-  
+  const notificationRef=useRef(null)
+
 
   
 
@@ -30,6 +32,7 @@ const Admin_kategoriler = () => {
     const getCategories = async () => {
       try {
         const data = await fetchCategories();
+        setloading(false)
         setCategoriesData(data);
         setTotalPages(Math.ceil(data.length / categoriesPerPage));
       } catch (error) {
@@ -69,16 +72,15 @@ const Admin_kategoriler = () => {
       await deleteCategory(categoryId);
       console.log('Category deleted:', categoryId);
 
-      // Refresh categories after delete
       const refreshedData = await fetchCategories();
+      showNotification(notificationRef, 'Kategori başarıyla silindi!');
+
       setCategoriesData(refreshedData);
     } catch (error) {
       console.error('Error deleting category:', error);
     }
   };
-  
 
-  
   
 
   const handleChange = (event) => {
@@ -110,12 +112,25 @@ const Admin_kategoriler = () => {
       // Refresh categories after adding
       const refreshedData = await fetchCategories();
       setCategoriesData(refreshedData);
+      showNotification(notificationRef, 'Kategori başarıyla eklendi!');
       togglePopup();
     } catch (error) {
       console.error('Error adding category:', error);
     }
   };
-  
+
+  if (loading) {
+    return (
+        <div
+            className="d-flex justify-content-center"
+            style={{ height: "100vh", alignItems: "center" }}
+        >
+          <div className="spinner-border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+    );
+  }
 
   return (
     <div>
@@ -255,6 +270,8 @@ const Admin_kategoriler = () => {
           </div>
         </div>
       )}
+      <NotificationCard ref={notificationRef} message="" />
+
     </div>
   );
 };

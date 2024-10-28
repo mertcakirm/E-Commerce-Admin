@@ -1,7 +1,7 @@
 const API_BASE_URL = "http://213.142.159.49:8083/api/admin/user";
 
-export const getAllUsers = (currentPage, usersPerPage) => {
-  return fetch(`${API_BASE_URL}/all?page=${currentPage - 1}&size=${usersPerPage}`)
+export const getAllUsers = async (currentPage, usersPerPage) => {
+  return await fetch(`${API_BASE_URL}/all?page=${currentPage - 1}&size=${usersPerPage}`)
     .then((response) => response.json())
     .catch((error) => {
       console.error("Error fetching user data:", error);

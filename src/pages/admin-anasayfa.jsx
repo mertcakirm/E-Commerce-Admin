@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Admin_sidebar from './admin-sidebar';
+import Admin_sidebar from '../components/admin-sidebar.jsx';
 import './admin-css/admin-genel.css';
 
 

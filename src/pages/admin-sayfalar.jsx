@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import Admin_sidebar from './admin-sidebar';
+import {useState, useEffect, useRef} from 'react';
+import Admin_sidebar from '../components/admin-sidebar.jsx';
 import './admin-css/admin-genel.css';
 import {
   fetchSliderData,
@@ -8,7 +8,8 @@ import {
   fetchCartData,
   addCart,
   deleteCart,
-} from './api/sayfalarapi'; 
+} from './api/sayfalarapi';
+import {NotificationCard, showNotification} from "../components/notification.jsx";
 
 const Admin_sayfalar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -24,11 +25,14 @@ const Admin_sayfalar = () => {
   const [cartSize, setCartSize] = useState("Tam");
   const [cartData, setCartData] = useState([]);
   const [categories, setCategories] = useState([]);
-
+  const [loading, setLoading] = useState(true);
+  const notificationRef=useRef(null)
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-  
+
+  const token = localStorage.getItem("token");
+
   const handleInputChange = (e, setState) => {
     setState(e.target.value);
   };
@@ -70,7 +74,7 @@ const Admin_sayfalar = () => {
     e.preventDefault();
     try {
       await addSlider(sliderDTO);
-      // Reset form state
+      showNotification(notificationRef, 'Slider başarıyla eklendi!');
       setSliderImage({ bytes: "" });
       setTopTitle("");
       setMiddleTitle("");
@@ -81,7 +85,6 @@ const Admin_sayfalar = () => {
     }
   };
 
-  const token = localStorage.getItem("token");
 
   const handleCartSubmit = async (e) => {
     e.preventDefault();
@@ -94,8 +97,7 @@ const Admin_sayfalar = () => {
     
     try {
       await addCart(cartCategoryDTO, token);
-      alert("Category card added successfully!");
-      // Reset form state
+      showNotification(notificationRef, 'Kategori kartı başarıyla eklendi!');
       setCartImage("");
       setCartName("");
       setCartCategory("");
@@ -110,17 +112,19 @@ const Admin_sayfalar = () => {
   const deleteSliderHandler = async (id) => {
     try {
       await deleteSlider(id);
+      showNotification(notificationRef, 'Slider başarıyla silindi!');
       setSliderData(sliderData.filter(slider => slider.id !== id));
     } catch (error) {
       console.error("Request error: ", error);
       alert("An error occurred while deleting the slider.");
     }
-    window.setTimeout(() => window.location.reload(), 1000);
+    window.setTimeout(() => window.location.reload(), 500);
   };
 
   const deleteCartHandler = async (id) => {
     try {
       await deleteCart(id);
+      showNotification(notificationRef, 'Kategori kartı başarıyla silidni!');
       setCartData(cartData.filter(cart => cart.id !== id));
     } catch (error) {
       console.error("Request error: ", error);
@@ -135,6 +139,8 @@ const Admin_sayfalar = () => {
         setSliderData(sliders);
         const carts = await fetchCartData();
         setCartData(carts);
+        setLoading(false);
+
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -153,6 +159,19 @@ const Admin_sayfalar = () => {
     }
     fetchCategory();
   }, []);
+
+  if (loading) {
+    return (
+        <div
+            className="d-flex justify-content-center"
+            style={{ height: "100vh", alignItems: "center" }}
+        >
+          <div className="spinner-border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+    );
+  }
 
   return (
     <div>
@@ -297,6 +316,8 @@ const Admin_sayfalar = () => {
             </div>
           </div>
         )}
+      <NotificationCard ref={notificationRef} message="" />
+
       </div>
     )
   }

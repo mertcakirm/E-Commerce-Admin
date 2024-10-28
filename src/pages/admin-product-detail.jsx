@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useLocation } from 'react-router-dom'; 
-import Admin_sidebar from './admin-sidebar';
+import Admin_sidebar from '../components/admin-sidebar.jsx';
 import './admin-css/admin-genel.css';
 import { deleteProductImage, fetchProductDetail,updateProduct } from './api/product-detailapi';
 

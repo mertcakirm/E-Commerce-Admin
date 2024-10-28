@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Admin_sidebar from './admin-sidebar';
+import Admin_sidebar from '../components/admin-sidebar.jsx';
 
 const Admin_raporlar = () => {
   // Sample data for reports

@@ -1,18 +1,18 @@
-import { useState, useEffect } from "react";
-import Admin_sidebar from "./admin-sidebar";
+import {useState, useEffect, useRef} from "react";
+import Admin_sidebar from "../components/admin-sidebar.jsx";
 import {
   addProduct,
   deleteProduct,
   fetchProducts,
   updateDiscount,
 } from "./api/productapi";
+import {NotificationCard, showNotification} from "../components/notification.jsx";
 
 const Admin_product = () => {
   const [products, setProducts] = useState([]);
   const [images, setImages] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [showPopup, setShowPopup] = useState(false);
-  const [selectedImages, setSelectedImages] = useState([]);
   const [selectedProductCode, setSelectedProductCode] = useState(null);
   const [discountValue, setDiscountValue] = useState("");
   const [productName, setProductName] = useState("");
@@ -27,11 +27,12 @@ const Admin_product = () => {
   const [nextPage, setNextPage] = useState(
     "http://213.142.159.49:8083/api/admin/product/all?page=0&size=10"
   );
+  const [loading,setloading]=useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [categories, setCategories] = useState([]);
+  const notificationRef=useRef(null)
 
   const productsPerPage = 10;
-  const token = localStorage.getItem("token");
 
   useEffect(() => {
     fetch("http://213.142.159.49:8083/api/category/get/all")
@@ -48,12 +49,13 @@ const Admin_product = () => {
     const fetchData = async () => {
       if (nextPage) {
         const data = await fetchProducts(nextPage);
+        setloading(false)
         setProducts(() => data.content);
         setNextPage(data._links?.next?.href || null);
       }
     };
 
-    fetchData();
+     fetchData();
     
   }, [nextPage]);
 
@@ -115,8 +117,7 @@ const Admin_product = () => {
       });
     });
 
-    Promise.all(imagePreviews).then((images) => {
-      setSelectedImages(images);
+    Promise.all(imagePreviews).then(() => {
       setImages((prevImages) => [...prevImages, ...files]);
     });
   };
@@ -178,6 +179,8 @@ const Admin_product = () => {
     setProducts(
       products.filter((product) => product.productCode !== productCode)
     );
+    showNotification(notificationRef, 'Ürün başarıyla silindi!');
+
   };
 
   const applyDiscount = async () => {
@@ -186,6 +189,8 @@ const Admin_product = () => {
       console.error("Invalid discount value");
       return;
     }
+    showNotification(notificationRef, 'İndirim uygulandı!');
+
     await updateDiscount(discountRate, selectedProductCode);
     setProducts(
       products.map((product) =>
@@ -199,7 +204,8 @@ const Admin_product = () => {
             }
           : product
       )
-    );
+
+  );
     setDiscountValue("");
     setSelectedProductCode(null);
   };
@@ -232,8 +238,24 @@ const Admin_product = () => {
       console.log("resim hatalı");
     }
     addProduct(productDTO);
-    window.setTimeout(() => window.location.reload(), 1000);
+    showNotification(notificationRef, 'Ürün başarıyla eklendi!');
+    togglePopup();
+    setProductName("")
   };
+
+
+  if (loading) {
+    return (
+        <div
+            className="d-flex justify-content-center"
+            style={{ height: "100vh", alignItems: "center" }}
+        >
+          <div className="spinner-border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+    );
+  }
 
   return (
     <div>
@@ -394,7 +416,7 @@ const Admin_product = () => {
                   className="page-link"
                   href="#"
                   aria-label="Previous"
-                  onClick={(e) => handleClick(e, currentPage - 2)}
+                  onClick={(e) => handleClick(e, currentPage - 1)}
                 >
                   <span aria-hidden="true">&laquo;</span>
                 </a>
@@ -413,6 +435,9 @@ const Admin_product = () => {
           </div>
         </div>
       </div>
+
+      <NotificationCard ref={notificationRef} message="" />
+
       {showPopup && (
         <div className="popup-overlay">
           <div className="popup-content">

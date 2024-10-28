@@ -1,22 +1,29 @@
-import React, { useState, useEffect } from "react";
-import Admin_sidebar from "./admin-sidebar";
+import {useState, useEffect, useRef} from "react";
+import Admin_sidebar from "../components/admin-sidebar.jsx";
 import "./admin-css/admin-genel.css";
 import { getAllUsers, toggleUserActivity as toggleUserActivityAPI } from "./api/userapi";
+import {NotificationCard, showNotification} from "../components/notification.jsx";
 
 const Admin_users = () => {
   const [usersData, setUsersData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
+  const [loading,setLoading] = useState(true);
   const usersPerPage = 10;
+  const notificationRef=useRef(null)
 
   useEffect(() => {
-    getAllUsers(currentPage, usersPerPage)
-      .then((data) => {
-        setUsersData(data.content);
-        setTotalPages(data.totalPages);
-      })
-      .catch((error) => console.error(error));
+    const getUser=async ()=>{
+       await getAllUsers(currentPage, usersPerPage)
+          .then((data) => {
+            setUsersData(data.content);
+            setTotalPages(data.totalPages);
+            setLoading(false);
+          })
+          .catch((error) => console.error(error));
+    }
+  getUser();
   }, [currentPage]);
 
   const filteredUsers = usersData.filter(
@@ -47,6 +54,19 @@ const Admin_users = () => {
       })
       .catch((error) => console.error(error));
   };
+
+  if (loading) {
+    return (
+        <div
+            className="d-flex justify-content-center"
+            style={{ height: "100vh", alignItems: "center" }}
+        >
+          <div className="spinner-border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+    );
+  }
 
   return (
     <div>
@@ -155,6 +175,8 @@ const Admin_users = () => {
           </div>
         </div>
       </div>
+      <NotificationCard ref={notificationRef} message="" />
+
     </div>
   );
 };
