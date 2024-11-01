@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useLocation } from 'react-router-dom'; 
+import {useEffect, useRef, useState} from 'react';
+import { useLocation } from 'react-router-dom';
 import Admin_sidebar from '../components/admin-sidebar.jsx';
 import './admin-css/admin-genel.css';
 import { deleteProductImage, fetchProductDetail,updateProduct } from './api/product-detailapi';
+import {NotificationCard, showNotification} from "../components/notification.jsx";
 
 const Admin_product_detail = () => {
-    const { productCode } = useParams();
+    // const { productCode } = useParams();
     const [product, setProduct] = useState(null);
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [productName, setProductName] = useState('');
@@ -14,7 +15,7 @@ const Admin_product_detail = () => {
     const [type, setType] = useState('');
     const [inputfile, setInputfile] = useState();
     const [priceWithOutDiscount, setPriceWithOutDiscount] = useState('');
-
+    const notificationRef=useRef(null)
     const location = useLocation();
     const urlpop = location.pathname.split('/').pop();
 
@@ -30,8 +31,9 @@ const Admin_product_detail = () => {
             })
     }, [urlpop]);
 
-    const handleDeleteImage = (id) => {
-        deleteProductImage(id)
+    const handleDeleteImage = async (id) => {
+        await deleteProductImage(id)
+        showNotification(notificationRef, 'Ürün resmi başarıyla silindi!');
         setProduct(prevProduct => ({
             ...prevProduct,
             productImage: prevProduct.productImage.filter(image => image.id !== id)
@@ -84,6 +86,7 @@ const Admin_product_detail = () => {
                 priceWithOutDiscount: priceWithOutDiscount,
             };
             updateProduct(urlpop, updatedProduct)
+            showNotification(notificationRef, 'Ürün başarıyla güncellendi!');
         };
     
 
@@ -173,6 +176,7 @@ const Admin_product_detail = () => {
                     </div> 
                 </div>
             </div>
+            <NotificationCard ref={notificationRef} message="" />
         </div>
     );
 }

@@ -30,8 +30,8 @@ const Admin_product = () => {
   const [loading,setloading]=useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [categories, setCategories] = useState([]);
-  const notificationRef=useRef(null)
-
+  const notificationRef=useRef(null);
+  const [reloadPage,setReloadPage]=useState(false);
   const productsPerPage = 10;
 
   useEffect(() => {
@@ -45,19 +45,17 @@ const Admin_product = () => {
       });
   }, []);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (nextPage) {
-        const data = await fetchProducts(nextPage);
-        setloading(false)
-        setProducts(() => data.content);
-        setNextPage(data._links?.next?.href || null);
-      }
-    };
+  const fetchData = async () => {
+      const data = await fetchProducts(nextPage);
+      setloading(false);
+      setProducts(() => data.content);
+      //setNextPage(data._links?.next?.href || null);
+  };
 
-     fetchData();
-    
-  }, [nextPage]);
+
+  useEffect(() => {
+    fetchData();
+  }, [nextPage,reloadPage]);
 
   useEffect(() => {
     return () => {
@@ -241,6 +239,13 @@ const Admin_product = () => {
     showNotification(notificationRef, 'Ürün başarıyla eklendi!');
     togglePopup();
     setProductName("")
+    setProductCategory("")
+    setProductDescription("")
+    setSizes([])
+    setProductPrice(0.0)
+    setPurchasePrice(0.0)
+    setImages([]);
+    setTimeout(()=>setReloadPage(prev=>!prev),500 );
   };
 
 
