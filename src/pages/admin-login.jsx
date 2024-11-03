@@ -4,35 +4,32 @@ import logo from '../assets/mob_logo.png';
 import './admin-css/admin-login.css';
 
 const Admin_login = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
-  const sleep = (ms) => {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  };
+  //const sleep = (ms) => {
+  //  return new Promise((resolve) => setTimeout(resolve, ms));
+  //};
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const data = {
-      username: username,
+    const loginDTO = {
+      email: email,
       password: password
     };
-
     try {
-      const response = await fetch('http://213.142.159.49:8083/api/member/login', {
+      const response = await fetch('http://213.142.159.49:6666/api/auth/admin/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(loginDTO)
       });
+      console.log(loginDTO)
 
-      const responseData = await response.json();
-
-      if (response.ok && responseData.token) {
-        localStorage.setItem('token', responseData.token);
-        await sleep(500)
+      if (response.ok) {
+        //await sleep(500)
         navigate('/genel');
       } else {
         setErrorMessage("Giriş başarısız: Geçersiz kullanıcı adı veya parola.");
@@ -62,8 +59,8 @@ const Admin_login = () => {
                 <input 
                   type="text" 
                   id='admin-username' 
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
               <div className="form-item">

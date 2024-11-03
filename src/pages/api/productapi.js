@@ -2,12 +2,15 @@
 const API_BASE_URL = "http://213.142.159.49:8083/api/admin/product";
 const token = localStorage.getItem("token")
 
-export const fetchProducts = async (nextPage) => {
-  const response = await fetch(nextPage, {
+
+
+export const fetchProducts = async (pageNum) => {
+  const response = await fetch(`http://213.142.159.49:8083/api/admin/product/all?page=${pageNum}&size=10`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
+  console.log(pageNum)
 
   if (!response.ok) {
     console.error("Ürünler gösterilirken hata oluştu",response);

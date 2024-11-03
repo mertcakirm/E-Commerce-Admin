@@ -24,11 +24,9 @@ const Admin_product = () => {
   const [sizes, setSizes] = useState([]);
   const [sizeInput, setSizeInput] = useState("");
   const [quantityInput, setQuantityInput] = useState("");
-  const [nextPage, setNextPage] = useState(
-    "http://213.142.159.49:8083/api/admin/product/all?page=0&size=10"
-  );
+  const [pageNum, setPageNum] = useState(0);
   const [loading,setloading]=useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   const [categories, setCategories] = useState([]);
   const notificationRef=useRef(null);
   const [reloadPage,setReloadPage]=useState(false);
@@ -46,16 +44,17 @@ const Admin_product = () => {
   }, []);
 
   const fetchData = async () => {
-      const data = await fetchProducts(nextPage);
+      const data = await fetchProducts(pageNum);
       setloading(false);
-      setProducts(() => data.content);
-      //setNextPage(data._links?.next?.href || null);
+      setProducts(data.content);
+    console.log(pageNum)
   };
 
 
   useEffect(() => {
     fetchData();
-  }, [nextPage,reloadPage]);
+  }, [pageNum,reloadPage]);
+
 
   useEffect(() => {
     return () => {
@@ -63,41 +62,46 @@ const Admin_product = () => {
     };
   }, [images]);
 
-  const filteredProducts = products.filter((product) => {
-    const productNameLower = product.productName?.toLowerCase() || "";
-    const categoryName = product.category?.name?.toLowerCase() || "";
-    const productCode = product.productCode?.toLowerCase() || "";
-    const productId = product.id?.toString() || "";
+  const filteredProducts = ()=>{
+    const newProduct1 = products.filter((product) => {
+      const productNameLower = product.productName?.toLowerCase() || "";
+      const categoryName = product.category?.name?.toLowerCase() || "";
+      const productCode = product.productCode?.toLowerCase() || "";
+      const productId = product.id?.toString() || "";
 
-    return (
-      productNameLower.includes(searchTerm.toLowerCase()) ||
-      categoryName.includes(searchTerm.toLowerCase()) ||
-      productCode.includes(searchTerm.toLowerCase()) ||
-      productId.includes(searchTerm)
+      return (
+          productNameLower.includes(searchTerm.toLowerCase()) ||
+          categoryName.includes(searchTerm.toLowerCase()) ||
+          productCode.includes(searchTerm.toLowerCase()) ||
+          productId.includes(searchTerm)
+      );
+    });
+    return newProduct1;
+  };
+
+  const currentProducts = () => {
+    return filteredProducts();
+    const newProduct =  filteredProducts().slice(
+        (currentPage - 1) * productsPerPage,
+        currentPage * productsPerPage
     );
-  });
-
-  const currentProducts = filteredProducts.slice(
-    (currentPage - 1) * productsPerPage,
-    currentPage * productsPerPage
-  );
+    return newProduct;
+  }
 
   const handleClick = (e, page) => {
-    e.preventDefault();
-    setCurrentPage(page);
-    setNextPage(
-      `http://213.142.159.49:8083/api/admin/product/all?page=${
-        page - 1
-      }&size=10`
-    );
-  };
+    if (pageNum < 0){
+      setPageNum(0)
+    }else {
+      e.preventDefault();
+      setCurrentPage(page);
+      setPageNum(page - 1);
+    }
+    };
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
     setCurrentPage(1);
-    setNextPage(
-      "http://213.142.159.49:8083/api/admin/product/all?page=0&size=10"
-    );
+    setPageNum(0);
     setProducts([]);
   };
 
@@ -299,7 +303,7 @@ const Admin_product = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {currentProducts.map((product) => (
+                  {currentProducts().map((product) => (
                     <tr key={product.productCode}>
                       <th scope="row">{product.productCode}</th>
                       <td>
@@ -421,7 +425,9 @@ const Admin_product = () => {
                   className="page-link"
                   href="#"
                   aria-label="Previous"
-                  onClick={(e) => handleClick(e, currentPage - 1)}
+                  aria-disabled={()=>pageNum===0}
+                  onClick={(e) =>
+                      handleClick(e, currentPage - 1)}
                 >
                   <span aria-hidden="true">&laquo;</span>
                 </a>
@@ -431,7 +437,7 @@ const Admin_product = () => {
                   className="page-link"
                   href="#"
                   onClick={(e) => handleClick(e, currentPage + 1)}
-                  disabled={!nextPage}
+                  disabled={!pageNum}
                 >
                   <span aria-hidden="true">&raquo;</span>
                 </a>
