@@ -7,6 +7,7 @@ import {
   updateDiscount,
 } from "./api/productapi";
 import {NotificationCard, showNotification} from "../components/notification.jsx";
+import {categoryDropdown} from "./api/categoryDropdown.js";
 
 const Admin_product = () => {
   const [products, setProducts] = useState([]);
@@ -33,14 +34,12 @@ const Admin_product = () => {
   const productsPerPage = 10;
 
   useEffect(() => {
-    fetch("http://213.142.159.49:8083/api/category/get/all")
-      .then((response) => response.json())
-      .then((data) => {
-        setCategories(data);
-      })
-      .catch((error) => {
-        console.error("Kategoriler alınırken hata oluştu:", error);
-      });
+    const getCategories = async () => {
+      const data = await categoryDropdown();
+      setCategories(data);
+    };
+
+    getCategories();
   }, []);
 
   const fetchData = async () => {

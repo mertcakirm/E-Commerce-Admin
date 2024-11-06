@@ -47,12 +47,23 @@ const Admin_users = () => {
             prevData.map((user) =>
               user.id === userId ? { ...user, active: !user.active } : user
             )
+
           );
+          showNotification(notificationRef, 'Kullanıcı durumu güncellendi!');
+
         } else {
           console.error("Failed to change user activity");
+          showNotification(notificationRef, 'Hata! Kullanıcı durumu güncellenemedi!');
+
         }
+
       })
-      .catch((error) => console.error(error));
+      .catch(
+          (error) => {
+            console.error(error)
+            showNotification(notificationRef, 'Hata! Kullanıcı durumu güncellenemedi!');
+          }
+      );
   };
 
   if (loading) {

@@ -1,7 +1,6 @@
 
 const API_BASE_URL = 'http://213.142.159.49:8083/api';
 
-// Fetch all categories
 export const fetchCategories = async () => {
   const response = await fetch(`${API_BASE_URL}/category/admin/get/all`);
   if (!response.ok) {

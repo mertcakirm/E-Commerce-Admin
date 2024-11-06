@@ -1,4 +1,5 @@
 // api.js
+
 const BASE_URL = 'http://213.142.159.49:8083/api';
 
 export const fetchSliderData = async () => {

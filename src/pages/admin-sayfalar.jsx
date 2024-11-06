@@ -10,6 +10,7 @@ import {
   deleteCart,
 } from './api/sayfalarapi';
 import {NotificationCard, showNotification} from "../components/notification.jsx";
+import {categoryDropdown} from "./api/categoryDropdown.js";
 
 const Admin_sayfalar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -148,15 +149,9 @@ const Admin_sayfalar = () => {
     
     fetchData();
     const fetchCategory = async () =>{
-      await fetch("http://213.142.159.49:8083/api/category/get/all")
-        .then((response) => response.json())
-        .then((data) => {
-          setCategories(data);
-        })
-        .catch((error) => {
-          console.error("Kategoriler alınırken hata oluştu:", error);
-        });
-    }
+        const data = await categoryDropdown();
+        setCategories(data);
+      };
     fetchCategory();
   }, []);
 

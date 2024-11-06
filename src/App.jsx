@@ -10,12 +10,13 @@ import Admin_aktif_siparis from './pages/admin-aktif-siparis';
 import Admin_mesajlar from './pages/admin-mesajlar';
 import Admin_kampanyalar from './pages/admin-kampanyalar';
 import Admin_login from './pages/admin-login';
+import {getCookie} from "./components/cookie/cookie.js";
 
 
 function App() {
   const ProtectedRoute = ({ element }) => {
-    const token = localStorage.getItem('token');
-    return token ? element : <Navigate to="/" replace />;
+    const session=getCookie("SESSINID")
+    return session ? element : <Navigate to="/" replace />;
   };
   return (
     <>
