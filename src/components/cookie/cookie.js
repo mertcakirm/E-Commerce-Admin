@@ -7,7 +7,7 @@ export function setCookie(name, value, days) {
 }
 
 // Çerez okuma fonksiyonu
-export function getCookies(...names) {
+export function getCookie(...names) {
     const result = {};
     const cookies = document.cookie.split(';');
 
@@ -20,6 +20,7 @@ export function getCookies(...names) {
             }
         }
     });
+
 
     return result;
 }

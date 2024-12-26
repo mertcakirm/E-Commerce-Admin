@@ -1,9 +1,7 @@
 import {getCookie} from "../../components/cookie/cookie.js";
 
-// api.js
 const API_BASE_URL = "http://213.142.159.49:8083/api/admin/product";
 const session = getCookie("SESSIONID")
-
 
 
 export const fetchProducts = async (pageNum) => {

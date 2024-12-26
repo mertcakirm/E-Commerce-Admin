@@ -1,34 +1,23 @@
 import {useState, useEffect, useRef} from "react";
 import Admin_sidebar from "../components/admin-sidebar.jsx";
 import {
-  addProduct,
   deleteProduct,
   fetchProducts,
   updateDiscount,
 } from "./api/productapi";
 import {NotificationCard, showNotification} from "../components/notification.jsx";
 import {categoryDropdown} from "./api/categoryDropdown.js";
+import AddProductPopup from "../components/child/AddProductPopup.jsx";
 
 const Admin_product = () => {
   const [products, setProducts] = useState([]);
-  const [images, setImages] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [showPopup, setShowPopup] = useState(false);
   const [selectedProductCode, setSelectedProductCode] = useState(null);
   const [discountValue, setDiscountValue] = useState("");
-  const [productName, setProductName] = useState("");
-  const [productCategory, setProductCategory] = useState("");
-  const [productDescription, setProductDescription] = useState("");
-  const [productStock, setProductStock] = useState("");
-  const [productPrice, setProductPrice] = useState(0.0);
-  const [purchasePrice, setPurchasePrice] = useState(0.0);
-  const [sizes, setSizes] = useState([]);
-  const [sizeInput, setSizeInput] = useState("");
-  const [quantityInput, setQuantityInput] = useState("");
   const [pageNum, setPageNum] = useState(0);
   const [loading,setloading]=useState(true);
   const [currentPage, setCurrentPage] = useState(0);
-  const [categories, setCategories] = useState([]);
   const notificationRef=useRef(null);
   const [reloadPage,setReloadPage]=useState(false);
   const productsPerPage = 10;
@@ -46,14 +35,10 @@ const Admin_product = () => {
       const data = await fetchProducts(pageNum);
       setloading(false);
       setProducts(data.content);
-    console.log(pageNum)
   };
-
-
   useEffect(() => {
     fetchData();
   }, [pageNum,reloadPage]);
-
 
   useEffect(() => {
     return () => {
@@ -62,7 +47,7 @@ const Admin_product = () => {
   }, [images]);
 
   const filteredProducts = ()=>{
-    const newProduct1 = products.filter((product) => {
+      const newProduct1 = products.filter((product) => {
       const productNameLower = product.productName?.toLowerCase() || "";
       const categoryName = product.category?.name?.toLowerCase() || "";
       const productCode = product.productCode?.toLowerCase() || "";
@@ -108,73 +93,6 @@ const Admin_product = () => {
     setShowPopup(!showPopup);
   };
 
-  const handleImageUpload = (event) => {
-    const files = Array.from(event.target.files);
-    const imagePreviews = files.map((file) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      return new Promise((resolve) => {
-        reader.onload = () => resolve({ file, preview: reader.result });
-      });
-    });
-
-    Promise.all(imagePreviews).then(() => {
-      setImages((prevImages) => [...prevImages, ...files]);
-    });
-  };
-
-  const convertImageToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-
-      reader.onloadend = function () {
-        const base64String = reader.result.split(",")[1];
-        resolve(base64String);
-      };
-
-      reader.onerror = function () {
-        reject(new Error("Dosya okuma hatası"));
-      };
-
-      reader.readAsDataURL(file);
-    });
-  };
-
-  const addStock = (event) => {
-    event.preventDefault();
-
-    if (sizeInput && quantityInput) {
-      const updatedSizes = sizes.slice();
-      let found = false;
-
-      for (let i = 0; i < updatedSizes.length; i++) {
-        if (updatedSizes[i].size === sizeInput) {
-          updatedSizes[i].stock += parseInt(quantityInput, 10);
-          found = true;
-          break;
-        }
-      }
-
-      if (!found) {
-        updatedSizes.push({
-          size: sizeInput,
-          stock: parseInt(quantityInput, 10),
-        });
-      }
-
-      const totalStock = updatedSizes.reduce(
-        (total, item) => total + item.stock,
-        0
-      );
-
-      setSizes(updatedSizes);
-      setProductStock(totalStock);
-      setSizeInput("");
-      setQuantityInput("");
-    }
-  };
-
-  // APİ
   const handleDelete = (productCode) => {
     deleteProduct(productCode);
     setProducts(
@@ -210,47 +128,6 @@ const Admin_product = () => {
     setDiscountValue("");
     setSelectedProductCode(null);
   };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const productDTO = {
-      productName: productName,
-      description: productDescription,
-      categoryString: productCategory || "",
-      sizes: sizes || [],
-      price: parseFloat(productPrice) || 0.0,
-      purchasePrice: parseFloat(purchasePrice) || 0.0,
-    };
-
-    try {
-      const imageBase64Array = [];
-      for (const image of images) {
-        if (image instanceof File || image instanceof Blob) {
-          const base64String = await convertImageToBase64(image);
-          imageBase64Array.push({ bytes: base64String });
-        } else {
-          console.error("Hatalı dosya tipi: ", image);
-        }
-      }
-
-      productDTO.images = imageBase64Array;
-    } catch {
-      console.log("resim hatalı");
-    }
-    addProduct(productDTO);
-    showNotification(notificationRef, 'Ürün başarıyla eklendi!');
-    togglePopup();
-    setProductName("")
-    setProductCategory("")
-    setProductDescription("")
-    setSizes([])
-    setProductPrice(0.0)
-    setPurchasePrice(0.0)
-    setImages([]);
-    setTimeout(()=>setReloadPage(prev=>!prev),500 );
-  };
-
 
   if (loading) {
     return (
@@ -295,7 +172,6 @@ const Admin_product = () => {
                     <th scope="col">Ürün Adı</th>
                     <th scope="col">Ürün Kategorisi</th>
                     <th scope="col">Satış Bilgisi</th>
-
                     <th scope="col">Stok Sayısı</th>
                     <th scope="col">Ürün Fiyatı</th>
                     <th scope="col">İşlem</th>
@@ -445,126 +321,19 @@ const Admin_product = () => {
           </div>
         </div>
       </div>
-
       <NotificationCard ref={notificationRef} message="" />
-
       {showPopup && (
-        <div className="popup-overlay">
-          <div className="popup-content">
-            <div className="popup-header">
-              <div></div>
-              <button className="popup-close-btn" onClick={togglePopup}>
-                &times;
-              </button>
-            </div>
-            <form className="popup-form" onSubmit={handleSubmit}>
-              <div className="row" style={{ rowGap: "10px" }}>
-                <div className="col-6">
-                  <h4>Resim Yönetim Paneli</h4>
-
-                  <input type="file" multiple onChange={handleImageUpload} />
-                  <div className="preview-flex">
-                    {images.map((image, index) => (
-                      <div className="preview-flex-child" key={index}>
-                        <img
-                          src={URL.createObjectURL(image)}
-                          alt={`uploaded-img-${index}`}
-                          width="100"
-                        />
-                        <p>{image.name}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div className="col-6">
-                  <h4>Stok Yönetim Paneli</h4>
-                  <div className="row mt-3">
-                    <div className="col-3 row">
-                      <div
-                        style={{ padding: "0" }}
-                        className="col-6 stok-giris-inp"
-                      >
-                        <input
-                          type="text"
-                          placeholder="XL"
-                          value={sizeInput}
-                          onChange={(e) => setSizeInput(e.target.value)}
-                        />
-                      </div>
-                      <div className="col-6 stok-giris-inp">
-                        <input
-                          type="number"
-                          placeholder="0"
-                          value={quantityInput}
-                          onChange={(e) => setQuantityInput(e.target.value)}
-                        />
-                      </div>
-                      <button className="mt-3 col-12" onClick={addStock}>
-                        Stok Ekle
-                      </button>
-                    </div>
-                    <div className="col-9 stoklar-card-flex">
-                      {sizes.map((item, index) => (
-                        <div key={index} className="stok-card">
-                          {item.size}: {item.stock}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-                <h4>Ürün Yönetim Paneli</h4>
-
-                <input
-                  type="text"
-                  placeholder="Ürün Adı"
-                  value={productName}
-                  onChange={(e) => setProductName(e.target.value)}
-                  className="col-12"
-                />
-                <select
-                  value={productCategory}
-                  onChange={(e) => setProductCategory(e.target.value)}
-                  className="col-12"
-                >
-                  <option value="">Ürün Kategorisi Seçin</option>
-                  {categories.map((category) => (
-                    <option key={category} value={category}>
-                      {category}
-                    </option>
-                  ))}
-                </select>
-
-                <input
-                  type="text"
-                  placeholder="Ürün Açıklaması"
-                  value={productDescription}
-                  onChange={(e) => setProductDescription(e.target.value)}
-                  className="col-12"
-                />
-                <input
-                  type="number"
-                  placeholder="Ürün Alış Fiyatı"
-                  value={purchasePrice}
-                  onChange={(e) => setPurchasePrice(e.target.value)}
-                  className="col-12"
-                />
-                <input
-                  type="number"
-                  placeholder="Ürün Fiyatı"
-                  value={productPrice}
-                  onChange={(e) => setProductPrice(e.target.value)}
-                  className="col-12"
-                />
-                <button onClick={handleSubmit} type="submit">
-                  Kaydet
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+          <AddProductPopup
+              popupCloser={(b) => {
+                if (b === false) removeQueryParamsAndReload();
+                setShowPopup(b);
+              }}
+          />
       )}
     </div>
   );
 };
 
 export default Admin_product;
+
+//popypdaki reloadPage eksik

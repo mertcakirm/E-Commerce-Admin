@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Admin_sidebar from '../components/admin-sidebar.jsx';
+import { getCookie } from '../components/cookie/cookie.js';
 import './admin-css/admin-genel.css';
 
 
@@ -23,6 +24,8 @@ const Admin_anasayfa=()=> {
     const totalStock = Object.values(product.stoklar).reduce((acc, curr) => acc + curr, 0);
     return totalStock < 20; 
   });
+  const session=getCookie("SESSIONID","ID")
+  console.log(session)
     return (
       <div>
         <Admin_sidebar />

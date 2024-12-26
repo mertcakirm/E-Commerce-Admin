@@ -15,25 +15,26 @@ import {getCookie} from "./components/cookie/cookie.js";
 
 function App() {
   const ProtectedRoute = ({ element }) => {
-    const session=getCookie("SESSINID")
+    const session=getCookie("SESSIONID")
     return session ? element : <Navigate to="/" replace />;
   };
+
   return (
     <>
       <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Admin_login />} />
-        <Route path="/urunler" element={<ProtectedRoute element={<Admin_product />} />} />
-        <Route path="/urunler-guncelle/:id" element={<ProtectedRoute element={<Admin_product_detail />} />} />
-        <Route path="/genel" element={<ProtectedRoute element={<Admin_anasayfa />} />} />
-        <Route path="/kullanicilar" element={<ProtectedRoute element={<Admin_users />} />} />
-        <Route path="/raporlar" element={<ProtectedRoute element={<Admin_raporlar />} />} />
-        <Route path="/sayfalar" element={<ProtectedRoute element={<Admin_sayfalar />} />} />
-        <Route path="/kampanyalar" element={<ProtectedRoute element={<Admin_kampanyalar />} />} />
-        <Route path="/kategoriler" element={<ProtectedRoute element={<Admin_kategoriler />} />} />
-        <Route path="/aktif-siparisler" element={<ProtectedRoute element={<Admin_aktif_siparis />} />} />
-        <Route path="/mesajlar" element={<ProtectedRoute element={<Admin_mesajlar />} />} />
-      </Routes>
+        <Routes>
+          <Route path="/" element={<Admin_login />} />
+          <Route path="/urunler" element={<ProtectedRoute element={<Admin_product />} />} />
+          <Route path="/urunler-guncelle/:id" element={<ProtectedRoute element={<Admin_product_detail />} />} />
+          <Route path="/genel" element={<ProtectedRoute element={<Admin_anasayfa />} />} />
+          <Route path="/kullanicilar" element={<ProtectedRoute element={<Admin_users />} />} />
+          <Route path="/raporlar" element={<ProtectedRoute element={<Admin_raporlar />} />} />
+          <Route path="/sayfalar" element={<ProtectedRoute element={<Admin_sayfalar />} />} />
+          <Route path="/kampanyalar" element={<ProtectedRoute element={<Admin_kampanyalar />} />} />
+          <Route path="/kategoriler" element={<ProtectedRoute element={<Admin_kategoriler />} />} />
+          <Route path="/aktif-siparisler" element={<ProtectedRoute element={<Admin_aktif_siparis />} />} />
+          <Route path="/mesajlar" element={<ProtectedRoute element={<Admin_mesajlar />} />} />
+        </Routes>
       </BrowserRouter>
     </>
   )

@@ -8,9 +8,6 @@ const Admin_login = () => {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
-  //const sleep = (ms) => {
-  //  return new Promise((resolve) => setTimeout(resolve, ms));
-  //};
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -19,23 +16,21 @@ const Admin_login = () => {
       password: password
     };
     try {
-      const response = await fetch('http://213.142.159.49:6666/api/auth/admin/login', {
+      const response = await fetch('http://213.142.159.49:8000/api/auth/admin/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(loginDTO)
-      });
-      console.log(loginDTO)
+        body: JSON.stringify(loginDTO),
+        credentials: 'include'
 
-      if (response.ok) {
-        //await sleep(500)
+      });
+        if (response.ok) {
         navigate('/genel');
       } else {
         setErrorMessage("Giriş başarısız: Geçersiz kullanıcı adı veya parola.");
-        navigate('/genel');
-
       }
+
     } catch (error) {
       console.error("There was an error!", error);
       setErrorMessage("Giriş başarısız: Şifre Yanlış.");
