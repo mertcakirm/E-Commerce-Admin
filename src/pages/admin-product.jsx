@@ -8,6 +8,7 @@ import {
 import {NotificationCard, showNotification} from "../components/notification.jsx";
 import {categoryDropdown} from "./api/categoryDropdown.js";
 import AddProductPopup from "../components/child/AddProductPopup.jsx";
+import LoadingComp from "../components/child/Loading.jsx";
 
 const Admin_product = () => {
   const [products, setProducts] = useState([]);
@@ -22,12 +23,13 @@ const Admin_product = () => {
   const [reloadPage,setReloadPage]=useState(false);
   const productsPerPage = 10;
 
-  useEffect(() => {
-    const getCategories = async () => {
-      const data = await categoryDropdown();
-      setCategories(data);
-    };
 
+  const getCategories = async () => {
+    const data = await categoryDropdown();
+    setCategories(data);
+  };
+
+  useEffect(() => {
     getCategories();
   }, []);
 
@@ -36,15 +38,12 @@ const Admin_product = () => {
       setloading(false);
       setProducts(data.content);
   };
+
   useEffect(() => {
     fetchData();
   }, [pageNum,reloadPage]);
 
-  useEffect(() => {
-    return () => {
-      images.forEach((image) => URL.revokeObjectURL(image.preview));
-    };
-  }, [images]);
+
 
   const filteredProducts = ()=>{
       const newProduct1 = products.filter((product) => {
@@ -130,16 +129,7 @@ const Admin_product = () => {
   };
 
   if (loading) {
-    return (
-        <div
-            className="d-flex justify-content-center"
-            style={{ height: "100vh", alignItems: "center" }}
-        >
-          <div className="spinner-border" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </div>
-        </div>
-    );
+    <LoadingComp />
   }
 
   return (

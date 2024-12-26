@@ -1,19 +1,14 @@
 import React, { Component, useEffect, useState } from 'react'
 import Admin_sidebar from '../components/admin-sidebar.jsx';
 import './admin-css/admin-genel.css'
+import {categoryDropdown} from "./api/categoryDropdown.js";
 
 const Admin_kampanyalar =()=> {
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
-        fetch("http://213.142.159.49:8083/api/category/get/all")
-          .then((response) => response.json())
-          .then((data) => {
-            setCategories(data);
-          })
-          .catch((error) => {
-            console.error("Kategoriler alınırken hata oluştu:", error);
-          });
+            const data = categoryDropdown()
+            setCategories(data)
       }, []);
     return (
       <div>
@@ -42,11 +37,20 @@ const Admin_kampanyalar =()=> {
                                     style={{height:"30px"}}
                                     >
                                     <option value="">Ürün Kategorisi Seçin</option>
-                                    {categories.map((category) => (
+
+                                    {categories && categories.length > 0 ? (
+                                        categories.map((category) => (
                                         <option key={category} value={category}>
                                         {category}
                                         </option>
-                                    ))}
+                                    ))
+                                    ) : (
+                                        <option value="">Kategori bulunamadı</option>
+
+                                    )}
+
+
+
                                     </select>
                                 </div>
                                 <div className="col-12">

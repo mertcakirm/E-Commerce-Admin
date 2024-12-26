@@ -4,9 +4,9 @@ import Admin_sidebar from '../components/admin-sidebar.jsx';
 import './admin-css/admin-genel.css';
 import { deleteProductImage, fetchProductDetail,updateProduct } from './api/product-detailapi';
 import {NotificationCard, showNotification} from "../components/notification.jsx";
+import LoadingComp from "../components/child/Loading.jsx";
 
 const Admin_product_detail = () => {
-    // const { productCode } = useParams();
     const [product, setProduct] = useState(null);
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [productName, setProductName] = useState('');
@@ -88,10 +88,10 @@ const Admin_product_detail = () => {
             updateProduct(urlpop, updatedProduct)
             showNotification(notificationRef, 'Ürün başarıyla güncellendi!');
         };
-    
 
-
-    if (!product) return <div>Loading...</div>;
+    if (!product) {
+        return LoadingComp()
+    }
 
     return (
         <div>

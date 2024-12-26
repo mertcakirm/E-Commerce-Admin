@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { addProduct } from "../../pages/api/productapi.js";
 import { showNotification } from "../notification.jsx";
 
@@ -24,6 +24,12 @@ const AddProductPopup = ({ popupCloser }) => {
             [name]: name === "productPrice" || name === "purchasePrice" ? parseFloat(value) || 0.0 : value,
         }));
     };
+
+    useEffect(() => {
+        return () => {
+            images.forEach((image) => URL.revokeObjectURL(image.preview));
+        };
+    }, [images]);
 
     const convertImageToBase64 = (file) => {
         return new Promise((resolve, reject) => {
