@@ -1,5 +1,7 @@
-const BASE_URL = 'http://213.142.159.49:8000/api';
+import {getCookie} from "../../components/cookie/cookie.js";
 
+const BASE_URL = 'http://213.142.159.49:8000/api';
+const token =getCookie('SESSIONID');
 export const fetchSliderData = async () => {
   const response = await fetch(`${BASE_URL}/slider/main/get`);
   if (!response.ok) throw new Error('Failed to fetch slider data');
@@ -32,7 +34,7 @@ export const fetchCartData = async () => {
   return await response.json();
 };
 
-export const addCart = async (cartCategoryDTO, token) => {
+export const addCart = async (cartCategoryDTO) => {
     try {
         const response = await fetch(`${BASE_URL}/admin/cart/add`, {
             method: 'POST',

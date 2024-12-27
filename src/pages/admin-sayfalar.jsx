@@ -11,6 +11,8 @@ import {
 } from './api/sayfalarapi';
 import {NotificationCard, showNotification} from "../components/notification.jsx";
 import {categoryDropdown} from "./api/categoryDropdown.js";
+import AddCartPopup from "../components/child/addCartPopup.jsx";
+import {getCookie} from "../components/cookie/cookie.js";
 
 const Admin_sayfalar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -20,19 +22,14 @@ const Admin_sayfalar = () => {
   const [underTitle, setUnderTitle] = useState("");
   const [redirectAddress, setRedirectAddress] = useState("");
   const [sliderData, setSliderData] = useState([]);
-  const [cartImage, setCartImage] = useState("");
-  const [cartName, setCartName] = useState("");
-  const [cartCategory, setCartCategory] = useState("");
-  const [cartSize, setCartSize] = useState("Tam");
   const [cartData, setCartData] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const notificationRef=useRef(null)
 
   const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
 
-  const token = localStorage.getItem("token");
+  const token = getCookie("SESSIONID");
 
   const handleInputChange = (e, setState) => {
     setState(e.target.value);
@@ -55,13 +52,7 @@ const Admin_sayfalar = () => {
     }
   };
 
-  const handleCartFileChange = async (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const base64 = await convertImageToBase64(file);
-      setCartImage(base64);
-    }
-  };
+
 
   const sliderDTO = {
     image: { bytes: sliderImage },
@@ -87,28 +78,7 @@ const Admin_sayfalar = () => {
   };
 
 
-  const handleCartSubmit = async (e) => {
-    e.preventDefault();
-    const cartCategoryDTO = {
-      cartName: cartName,
-      viewType: cartSize,
-      image: { bytes: cartImage },
-      category: cartCategory,
-    };
-    
-    try {
-      await addCart(cartCategoryDTO, token);
-      showNotification(notificationRef, 'Kategori kartı başarıyla eklendi!');
-      setCartImage("");
-      setCartName("");
-      setCartCategory("");
-      setCartSize("Tam");
-      closeModal();
-      window.setTimeout(() => window.location.reload(), 1000);
-    } catch (error) {
-      console.error("Request error: ", error);
-    }
-  };
+
 
   const deleteSliderHandler = async (id) => {
     try {
@@ -298,59 +268,14 @@ const Admin_sayfalar = () => {
           </div>
         </div>
 
-      {/* Popup Modal */}
       {isModalOpen && (
-          <div className="modal-overlay">
-            <div className="modal-content">
-              <div className="model-header">
-                <h3>Kategori Kartı Ekle</h3>
-                <button className="popup-close-btn" onClick={closeModal}>&times;</button>
-              </div>
-              <div className='row mt-3' style={{ rowGap: '30px' }}>
-                <div className="row">
-                  <label htmlFor="kategori-kart-ekle-resim" className='col-4'>Kart Resmi</label>
-                  <input className='col-8' type="file" onChange={handleCartFileChange} />
-                </div>
-                <div className="row">
-                  <label className='col-4' htmlFor="kategori-adi">Kart Adı</label>
-                  <input className='col-8' type="text" id='kategori-adi' value={cartName} onChange={(e) => setCartName(e.target.value)} />
-                </div>
-                <div className="row">
-                  <label className='col-4' htmlFor="yonlendirme-adresi">Kategori</label>
-                  <select
-                    className="col-8"
-                    id='yonlendirme-adresi'
-                    style={{height:"30px"}}
-                    value={cartCategory}
-                    onChange={(e) => setCartCategory(e.target.value)}
-                    >
-                    <option value="">Kategori Seçin</option>
-                    {categories && categories.length > 0 ? (
-                        categories.map((category) => (
-                            <option key={category} value={category}>
-                              {category}
-                            </option>
-                        ))
-                    ) : (
-                        <option disabled>Kategori bulunamadı</option>
-                    )}
-                    </select>
-                </div>
-                <div className="row">
-                  <label className='col-4' htmlFor="boyut">Boyut</label>
-                  <select name="kart-kategori-select" id="kart-kategori-select" className="col-8" value={cartSize} onChange={(e) => setCartSize(e.target.value)}>
-                    <option value="Tam">Full</option>
-                    <option value="Yarım">Yarım</option>
-                    <option value="1/3">1/3</option>
-                  </select>
-                </div>
-                <button onClick={handleCartSubmit} className='tumunu-gor-btn-admin'>Kaydet</button>
-              </div>
-            </div>
-          </div>
+          <AddCartPopup
+              popupCloser={(b) => {
+            if (b === false);
+            isModalOpen(b);
+          }} />
         )}
       <NotificationCard ref={notificationRef} message="" />
-
       </div>
     )
   }
