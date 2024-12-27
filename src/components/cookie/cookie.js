@@ -1,4 +1,3 @@
-// Çerez ayarlama fonksiyonu
 export function setCookie(name, value, days) {
     const date = new Date();
     date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
@@ -6,7 +5,6 @@ export function setCookie(name, value, days) {
     document.cookie = `${name}=${value}; ${expires}; path=/`;
 }
 
-// Çerez okuma fonksiyonu
 export function getCookie(...names) {
     const result = {};
     const cookies = document.cookie.split(';');
@@ -20,13 +18,10 @@ export function getCookie(...names) {
             }
         }
     });
-
-
     return result;
 }
 
 
-// Çerez silme fonksiyonu
 export function deleteCookie(name) {
     document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
 }

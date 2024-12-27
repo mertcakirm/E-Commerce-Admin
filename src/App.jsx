@@ -16,7 +16,10 @@ import {getCookie} from "./components/cookie/cookie.js";
 function App() {
   const ProtectedRoute = ({ element }) => {
     const session=getCookie("SESSIONID")
-    return session ? element : <Navigate to="/" replace />;
+    if(session){
+      return session ? element : <Navigate to="/" replace />;
+
+    }
   };
 
   return (

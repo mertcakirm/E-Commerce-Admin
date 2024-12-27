@@ -1,6 +1,6 @@
 import {getCookie} from "../../components/cookie/cookie.js";
 
-const API_BASE_URL = "http://213.142.159.49:8083/api/admin/product";
+const API_BASE_URL = "http://213.142.159.49:8000/api/admin/product";
 const session = getCookie("SESSIONID")
 
 

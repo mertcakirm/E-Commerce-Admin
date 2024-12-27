@@ -133,25 +133,25 @@ const Admin_sayfalar = () => {
     window.setTimeout(() => window.location.reload(), 500);
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const sliders = await fetchSliderData();
-        setSliderData(sliders);
-        const carts = await fetchCartData();
-        setCartData(carts);
-        setLoading(false);
+  const fetchData = async () => {
+    try {
+      const sliders = await fetchSliderData();
+      setSliderData(sliders || []);
+      const carts = await fetchCartData();
+      setCartData(carts || []);
+      setLoading(false);
 
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const fetchCategory = async () =>{
+    const data = await categoryDropdown();
+    setCategories(data || []);
+  };
+  useEffect(() => {
     fetchData();
-    const fetchCategory = async () =>{
-        const data = await categoryDropdown();
-        setCategories(data);
-      };
     fetchCategory();
   }, []);
 
@@ -178,7 +178,7 @@ const Admin_sayfalar = () => {
             <div className="site-icerik-shadow2 row">
               <div className="col-12 alt-basliklar-admin">Slider İçerikleri</div>
 
-              <form className="col-lg-4 sayfa-icerikleri-flex" onSubmit={handleSubmit}>
+              <div className="col-lg-4 sayfa-icerikleri-flex">
                 <div className="row">
                   <label className='col-5' htmlFor="image">Slider Görseli</label>
                   <input className='col-7' type="file" id='image' onChange={handleFileChange} />
@@ -205,36 +205,65 @@ const Admin_sayfalar = () => {
                     onChange={(e) => handleInputChange(e, setRedirectAddress)}
                     >
                     <option value="">Kategori Seçin</option>
-                    {categories.map((category) => (
-                        <option key={category} value={category}>
-                        {category}
-                        </option>
-                    ))}
+                    {categories && categories.length > 0 ? (
+                        categories.map((category) => (
+                            <option key={category} value={category}>
+                              {category}
+                            </option>
+                        ))
+                    ) : (
+                        <option disabled>Kategori bulunamadı</option>
+                    )}
                     </select>
                 </div>
-                <button className='tumunu-gor-btn-admin' type="submit">Slider Ekle</button>
-              </form>
+                <button  onClick={handleSubmit} className='tumunu-gor-btn-admin'>Slider Ekle</button>
+              </div>
 
                 <div className="col-lg-8 row sayfa-icerikleri-overflow" style={{padding:'2%'}}>
-                {sliderData.map((slider, index) => (
-                  <div key={index} className="col-12 row sliderlar-card site-icerik-shadow2">
-                    <div className="col-lg-6">
-                      <img src={`data:image/jpeg;base64,${slider.image.bytes}`} style={{maxHeight:'300px',objectFit:'contain'}} className='img-fluid w-100' alt={slider.topTitle} />
-                    </div>
-                    <div className="col-lg-5">
-                      <p>Üst Başlık:{slider.topTitle}</p>
-                      <p>Ana Başlık:{slider.middleTitle}</p>
-                      <p>Alt Başlık:{slider.underTitle}</p>
-                      <p>Kategori:{slider.category}</p>
-                    </div>
-                    <div className="col-lg-1">
-                      <button className='slider-edit-sil-btn' onClick={() => deleteSliderHandler(slider.id)}>
-                      <svg clipRule="evenodd" fillRule="evenodd" fill='white' strokeLinejoin="round" strokeMiterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m4.015 5.494h-.253c-.413 0-.747-.335-.747-.747s.334-.747.747-.747h5.253v-1c0-.535.474-1 1-1h4c.526 0 1 .465 1 1v1h5.254c.412 0 .746.335.746.747s-.334.747-.746.747h-.254v15.435c0 .591-.448 1.071-1 1.071-2.873 0-11.127 0-14 0-.552 0-1-.48-1-1.071zm14.5 0h-13v15.006h13zm-4.25 2.506c-.414 0-.75.336-.75.75v8.5c0 .414.336.75.75.75s.75-.336.75-.75v-8.5c0-.414-.336-.75-.75-.75zm-4.5 0c-.414 0-.75.336-.75.75v8.5c0 .414.336.75.75.75s.75-.336.75-.75v-8.5c0-.414-.336-.75-.75-.75zm3.75-4v-.5h-3v.5z" fillRule="nonzero"/></svg>
+                  {sliderData && sliderData.length > 0 ? (
+                      sliderData.map((slider, index) => (
+                          <div key={index} className="col-12 row sliderlar-card site-icerik-shadow2">
+                            <div className="col-lg-6">
+                              <img
+                                  src={`data:image/jpeg;base64,${slider.image.bytes}`}
+                                  style={{ maxHeight: '300px', objectFit: 'contain' }}
+                                  className="img-fluid w-100"
+                                  alt={slider.topTitle}
+                              />
+                            </div>
+                            <div className="col-lg-5">
+                              <p>Üst Başlık: {slider.topTitle}</p>
+                              <p>Ana Başlık: {slider.middleTitle}</p>
+                              <p>Alt Başlık: {slider.underTitle}</p>
+                              <p>Kategori: {slider.category}</p>
+                            </div>
+                            <div className="col-lg-1">
+                              <button
+                                  className="slider-edit-sil-btn"
+                                  onClick={() => deleteSliderHandler(slider.id)}
+                              >
+                                <svg
+                                    clipRule="evenodd"
+                                    fillRule="evenodd"
+                                    fill="white"
+                                    strokeLinejoin="round"
+                                    strokeMiterlimit="2"
+                                    viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                      d="m4.015 5.494h-.253c-.413 0-.747-.335-.747-.747s.334-.747.747-.747h5.253v-1c0-.535.474-1 1-1h4c.526 0 1 .465 1 1v1h5.254c.412 0 .746.335.746.747s-.334.747-.746.747h-.254v15.435c0 .591-.448 1.071-1 1.071-2.873 0-11.127 0-14 0-.552 0-1-.48-1-1.071zm14.5 0h-13v15.006h13zm-4.25 2.506c-.414 0-.75.336-.75.75v8.5c0 .414.336.75.75.75s.75-.336.75-.75v-8.5c0-.414-.336-.75-.75-.75zm-4.5 0c-.414 0-.75.336-.75.75v8.5c0 .414.336.75.75.75s.75-.336.75-.75v-8.5c0-.414-.336-.75-.75-.75zm3.75-4v-.5h-3v.5z"
+                                      fillRule="nonzero"
+                                  />
+                                </svg>
+                              </button>
+                            </div>
+                          </div>
+                      ))
+                  ) : (
+                      <div>Kart Bulunamadı</div>
+                  )}
 
-                      </button>
-                    </div>
-                  </div>
-                ))}
                 </div>
               </div>
             </div>
@@ -248,7 +277,9 @@ const Admin_sayfalar = () => {
               <div>
               <button className='tumunu-gor-btn-admin col-12' onClick={openModal} style={{width:'300px', marginTop:'30px'}} >Kategori Kartı Ekle</button>
               </div>
-                {cartData.map((cart,index)=>
+
+                {cartData && cartData.length > 0 ? (
+                  cartData.map((cart,index)=>
                 <div className="col-lg-4">
                   <div className="kategori-card-admin-sayfalar">
                     <img src={`data:image/jpeg;base64,${cart.image.bytes}`} className='img-fluid w-100 kategori-card-admin-sayfalar-img' alt="" />
@@ -258,7 +289,10 @@ const Admin_sayfalar = () => {
                     <button type="button" style={{width:'100%'}} onClick={() => deleteCartHandler(cart.id)} className='tumunu-gor-btn-admin'>Sil</button>
                   </div>
                 </div>
-)}
+                  )
+                  ) : (
+                  <div>Kart Bulunamadı</div>
+                  )}
               </div>
             </div>
           </div>
@@ -272,7 +306,7 @@ const Admin_sayfalar = () => {
                 <h3>Kategori Kartı Ekle</h3>
                 <button className="popup-close-btn" onClick={closeModal}>&times;</button>
               </div>
-              <form className='row mt-3' style={{ rowGap: '30px' }} onSubmit={handleCartSubmit}>
+              <div className='row mt-3' style={{ rowGap: '30px' }}>
                 <div className="row">
                   <label htmlFor="kategori-kart-ekle-resim" className='col-4'>Kart Resmi</label>
                   <input className='col-8' type="file" onChange={handleCartFileChange} />
@@ -291,11 +325,15 @@ const Admin_sayfalar = () => {
                     onChange={(e) => setCartCategory(e.target.value)}
                     >
                     <option value="">Kategori Seçin</option>
-                    {categories.map((category) => (
-                        <option key={category} value={category}>
-                        {category}
-                        </option>
-                    ))}
+                    {categories && categories.length > 0 ? (
+                        categories.map((category) => (
+                            <option key={category} value={category}>
+                              {category}
+                            </option>
+                        ))
+                    ) : (
+                        <option disabled>Kategori bulunamadı</option>
+                    )}
                     </select>
                 </div>
                 <div className="row">
@@ -306,8 +344,8 @@ const Admin_sayfalar = () => {
                     <option value="1/3">1/3</option>
                   </select>
                 </div>
-                <button type="submit" className='tumunu-gor-btn-admin'>Kaydet</button>
-              </form>
+                <button onClick={handleCartSubmit} className='tumunu-gor-btn-admin'>Kaydet</button>
+              </div>
             </div>
           </div>
         )}

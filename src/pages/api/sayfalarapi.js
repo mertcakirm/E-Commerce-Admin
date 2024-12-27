@@ -1,4 +1,4 @@
-const BASE_URL = 'http://213.142.159.49:8083/api';
+const BASE_URL = 'http://213.142.159.49:8000/api';
 
 export const fetchSliderData = async () => {
   const response = await fetch(`${BASE_URL}/slider/main/get`);
@@ -31,6 +31,7 @@ export const fetchCartData = async () => {
   if (!response.ok) throw new Error('Failed to fetch cart data');
   return await response.json();
 };
+
 export const addCart = async (cartCategoryDTO, token) => {
     try {
         const response = await fetch(`${BASE_URL}/admin/cart/add`, {

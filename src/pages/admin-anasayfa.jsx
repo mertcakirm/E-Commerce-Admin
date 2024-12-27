@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, {useEffect} from 'react'
 import Admin_sidebar from '../components/admin-sidebar.jsx';
 import { getCookie } from '../components/cookie/cookie.js';
 import './admin-css/admin-genel.css';
@@ -19,6 +19,11 @@ const Admin_anasayfa=()=> {
     { id: 11, name:"Mob Wear Şort", Kategori: "Üst Giyim", stok: 64 , harcama:"30000" , fiyat:399,img:"https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg" , stoklar:{medium:9,small:2,large:5,xlarge:1,xsmall:2}},
     { id: 12, name:"Mob Wear Şort", Kategori: "Üst Giyim", stok: 64 , harcama:"30000" , fiyat:399,img:"https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg" , stoklar:{medium:9,small:2,large:5,xlarge:1,xsmall:2}},
   ];
+
+  useEffect(() => {
+    const test = getCookie("SESSIONID");
+    console.log(test)
+  }, []);
 
   const lowStockProducts = productsData.filter(product => {
     const totalStock = Object.values(product.stoklar).reduce((acc, curr) => acc + curr, 0);

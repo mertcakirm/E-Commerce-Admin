@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import { addProduct } from "../../pages/api/productapi.js";
 import { showNotification } from "../notification.jsx";
 
-const AddProductPopup = ({ popupCloser }) => {
+const AddProductPopup = ({ popupCloser ,reload}) => {
     const [productData, setProductData] = useState({
         productName: "",
         productCategory: "",
@@ -16,6 +16,7 @@ const AddProductPopup = ({ popupCloser }) => {
     const [sizeInput, setSizeInput] = useState("");
     const [quantityInput, setQuantityInput] = useState("");
     const [categories, setCategories] = useState([]);
+    const notificationRef=useRef(null);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -115,7 +116,7 @@ const AddProductPopup = ({ popupCloser }) => {
             console.log("resim hatalı");
         }
 
-        addProduct(productDTO);
+        await addProduct(productDTO);
         showNotification(notificationRef, "Ürün başarıyla eklendi!");
         popupCloser(false);
 
@@ -129,7 +130,7 @@ const AddProductPopup = ({ popupCloser }) => {
             totalStock: 0,
         });
         setImages([]);
-        setTimeout(() => setReloadPage((prev) => !prev), 500);
+        reload(true);
     };
 
     return (
@@ -141,7 +142,7 @@ const AddProductPopup = ({ popupCloser }) => {
                         &times;
                     </button>
                 </div>
-                <div className="popup-form" onClick={handleSubmit}>
+                <div className="popup-form">
                     <div className="row" style={{ rowGap: "10px" }}>
                         <div className="col-6">
                             <h4>Resim Yönetim Paneli</h4>
@@ -238,7 +239,7 @@ const AddProductPopup = ({ popupCloser }) => {
                             onChange={handleInputChange}
                             className="col-12"
                         />
-                        <button onClick={handleSubmit} type="submit">
+                        <button onClick={handleSubmit}>
                             Kaydet
                         </button>
                     </div>

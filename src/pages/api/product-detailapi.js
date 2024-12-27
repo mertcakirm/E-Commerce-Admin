@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://213.142.159.49:8083/api/admin/product';
+const API_BASE_URL = 'http://213.142.159.49:8000/api/admin/product';
 
 export const fetchProductDetail = (urlpop) => {
     return fetch(`${API_BASE_URL}/get/${urlpop}`)

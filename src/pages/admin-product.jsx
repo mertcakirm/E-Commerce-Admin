@@ -315,8 +315,13 @@ const Admin_product = () => {
       {showPopup && (
           <AddProductPopup
               popupCloser={(b) => {
-                if (b === false) removeQueryParamsAndReload();
+                if (b === false);
                 setShowPopup(b);
+              }}
+              reload={(a)=>{
+                if (a === true) {
+                  setReloadPage(a)
+                }
               }}
           />
       )}

@@ -13,17 +13,22 @@ const Admin_users = () => {
   const usersPerPage = 10;
   const notificationRef=useRef(null)
 
-  useEffect(() => {
-    const getUser=async ()=>{
-       await getAllUsers(currentPage, usersPerPage)
-          .then((data) => {
-            setUsersData(data.content);
-            setTotalPages(data.totalPages);
-            setLoading(false);
-          })
-          .catch((error) => console.error(error));
+
+  const getUser = async () => {
+    try {
+      const data = await getAllUsers(currentPage, usersPerPage);
+      setTotalPages(data.totalPages);
+      setUsersData(data.content || []);
+
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
     }
-  getUser();
+  };
+
+  useEffect(() => {
+    getUser();
+
   }, [currentPage]);
 
   const filteredUsers = usersData.filter(
@@ -98,60 +103,69 @@ const Admin_users = () => {
             <div className="table-responsive">
               <table className="table">
                 <thead>
-                  <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Ad Soyad</th>
-                    <th scope="col">Telefon</th>
-                    <th scope="col">Toplam Harcama</th>
-                    <th scope="col">Toplam Sipariş</th>
-                    <th scope="col">Aktiflik Durumu</th>
-                    <th scope="col">İşlem</th>
-                  </tr>
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Ad Soyad</th>
+                  <th scope="col">Telefon</th>
+                  <th scope="col">Toplam Harcama</th>
+                  <th scope="col">Toplam Sipariş</th>
+                  <th scope="col">Aktiflik Durumu</th>
+                  <th scope="col">İşlem</th>
+                </tr>
                 </thead>
                 <tbody>
-                  {filteredUsers.map((user) => (
-                    <tr key={user.id}>
-                      <th scope="row">{user.id}</th>
-                      <td>{user.nameSurname}</td>
-                      <td>{user.phoneNumber}</td>
-                      <td>{user.totalSpent}</td>
-                      <td>{user.totalOrder}</td>
-                      <td>{user.active ? "Aktif" : "Pasif"}</td>
-                      <td>
-                        <div className="user-duzenle-row">
-                          <button
-                            className="user-sil-btn"
-                            style={{ background: "#000", fontWeight: "600" }}
-                            onClick={() => toggleUserActivity(user.id)}
-                          >
-                            {user.active ? "Pasif Yap" : "Aktif Yap"}
-                          </button>
-                        </div>
+                {filteredUsers.length > 0 ? (
+                    filteredUsers.map((user) => (
+                        <tr key={user.id}>
+                          <th scope="row">{user.id}</th>
+                          <td>{user.nameSurname}</td>
+                          <td>{user.phoneNumber}</td>
+                          <td>{user.totalSpent}</td>
+                          <td>{user.totalOrder}</td>
+                          <td>{user.active ? "Aktif" : "Pasif"}</td>
+                          <td>
+                            <div className="user-duzenle-row">
+                              <button
+                                  className="user-sil-btn"
+                                  style={{background: "#000", fontWeight: "600"}}
+                                  onClick={() => toggleUserActivity(user.id)}
+                              >
+                                {user.active ? "Pasif Yap" : "Aktif Yap"}
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                    ))
+                ) : (
+                    <tr>
+                      <td colSpan="7" className="text-center">
+                        Kullanıcı bulunamadı.
                       </td>
                     </tr>
-                  ))}
+                )}
                 </tbody>
+
               </table>
               <div className="row col-12 justify-content-center">
                 <nav aria-label="Page navigation example" className="col-5">
                   <ul className="pagination">
                     <li
-                      className={`page-item ${
-                        currentPage === 1 ? "disabled" : ""
-                      }`}
+                        className={`page-item ${
+                            currentPage === 1 ? "disabled" : ""
+                        }`}
                     >
                       <a
-                        className="page-link"
-                        href="#"
-                        aria-label="Previous"
-                        onClick={(e) => handleClick(e, currentPage - 1)}
+                          className="page-link"
+                          href="#"
+                          aria-label="Previous"
+                          onClick={(e) => handleClick(e, currentPage - 1)}
                       >
                         <span aria-hidden="true">&laquo;</span>
                       </a>
                     </li>
                     {[...Array(totalPages)].map((_, index) => (
-                      <li
-                        key={index}
+                        <li
+                            key={index}
                         className={`page-item ${
                           currentPage === index + 1 ? "active" : ""
                         }`}

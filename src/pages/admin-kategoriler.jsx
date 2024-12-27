@@ -2,6 +2,7 @@ import {useState, useEffect, useRef} from 'react';
 import Admin_sidebar from '../components/admin-sidebar.jsx';
 import { fetchCategories, addCategory, deleteCategory } from './api/kategoriapi';
 import {NotificationCard, showNotification} from "../components/notification.jsx";
+import LoadingComp from "../components/child/Loading.jsx";
 
 const convertImageToBase64 = (file) => {
   return new Promise((resolve, reject) => {
@@ -25,21 +26,21 @@ const Admin_kategoriler = () => {
   const [newCategoryImage, setNewCategoryImage] = useState(null);
   const notificationRef=useRef(null)
 
+  const getCategories = async () => {
+    try {
+      const data = await fetchCategories();
+      setCategoriesData(data);
+      setloading(false)
+      setTotalPages(Math.ceil(data.length / categoriesPerPage));
+    } catch (error) {
+      console.error('Error fetching categories data:', error);
+    }
+  };
 
-  
 
   useEffect(() => {
-    const getCategories = async () => {
-      try {
-        const data = await fetchCategories();
-        setloading(false)
-        setCategoriesData(data);
-        setTotalPages(Math.ceil(data.length / categoriesPerPage));
-      } catch (error) {
-        console.error('Error fetching categories data:', error);
-      }
-    };
     getCategories();
+
   }, []);
 
   useEffect(() => {
@@ -109,7 +110,6 @@ const Admin_kategoriler = () => {
     try {
       await addCategory(categoryDTO);
 
-      // Refresh categories after adding
       const refreshedData = await fetchCategories();
       setCategoriesData(refreshedData);
       showNotification(notificationRef, 'Kategori başarıyla eklendi!');
@@ -120,16 +120,7 @@ const Admin_kategoriler = () => {
   };
 
   if (loading) {
-    return (
-        <div
-            className="d-flex justify-content-center"
-            style={{ height: "100vh", alignItems: "center" }}
-        >
-          <div className="spinner-border" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </div>
-        </div>
-    );
+    <LoadingComp />
   }
 
   return (
