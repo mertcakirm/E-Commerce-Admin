@@ -16,7 +16,7 @@ const Admin_product = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [selectedProductCode, setSelectedProductCode] = useState(null);
   const [discountValue, setDiscountValue] = useState("");
-  const [pageNum, setPageNum] = useState(0);
+  const [pageNum, setPageNum] = useState(1);
   const [loading,setloading]=useState(true);
   const [currentPage, setCurrentPage] = useState(0);
   const notificationRef=useRef(null);
@@ -330,5 +330,3 @@ const Admin_product = () => {
 };
 
 export default Admin_product;
-
-//popypdaki reloadPage eksik

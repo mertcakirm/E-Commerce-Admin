@@ -5,12 +5,11 @@ const session = getCookie("SESSIONID")
 
 
 export const fetchProducts = async (pageNum) => {
-  const response = await fetch(`http://213.142.159.49:8083/api/admin/product/all?page=${pageNum}&size=10`, {
+  const response = await fetch(`${API_BASE_URL}/product/all?page=${pageNum}&size=10`, {
     headers: {
       Authorization: `Bearer ${session}`,
     },
   });
-  console.log(pageNum)
 
   if (!response.ok) {
     console.error("Ürünler gösterilirken hata oluştu",response);
@@ -41,6 +40,7 @@ export const updateDiscount = async (discountRate, productCode) => {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${session}`,
     },
     body: JSON.stringify(discountDTO),
   });
@@ -57,6 +57,7 @@ export const addProduct = async (productDTO) => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${session}`,
     },
     body: JSON.stringify(productDTO),
   });

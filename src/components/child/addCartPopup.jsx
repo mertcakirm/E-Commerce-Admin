@@ -62,6 +62,9 @@ const AddCartPopup = ({popupCloser}) => {
             popupCloser(false);
         } catch (error) {
             console.error("Request error: ", error);
+            popupCloser(false);
+            showNotification(notificationRef, 'Kategori kartı eklenemedi!');
+
         }
     };
 

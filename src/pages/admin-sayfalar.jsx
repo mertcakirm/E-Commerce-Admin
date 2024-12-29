@@ -110,9 +110,9 @@ const Admin_sayfalar = () => {
       const carts = await fetchCartData();
       setCartData(carts || []);
       setLoading(false);
-
     } catch (error) {
       console.error("Error fetching data:", error);
+      setLoading(false)
     }
   };
 
@@ -272,10 +272,10 @@ const Admin_sayfalar = () => {
           <AddCartPopup
               popupCloser={(b) => {
             if (b === false);
-            isModalOpen(b);
+            setIsModalOpen(b);
           }} />
         )}
-      <NotificationCard ref={notificationRef} message="" />
+        <NotificationCard ref={notificationRef} message="" />
       </div>
     )
   }
