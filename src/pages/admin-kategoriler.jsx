@@ -188,27 +188,10 @@ const Admin_kategoriler = () => {
                 </tbody>
               </table>
               <div className="row col-12 justify-content-center">
-                <nav aria-label="Page navigation example" className="col-5">
-                  <ul className="pagination">
-                    <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-                      <a className="page-link" href="#" aria-label="Previous" onClick={(e) => handleClick(e, currentPage - 1)}>
-                        <span aria-hidden="true">&laquo;</span>
-                      </a>
-                    </li>
-                    {[...Array(totalPages).keys()].map(number => (
-                      <li key={number + 1} className={`page-item ${currentPage === number + 1 ? 'active' : ''}`}>
-                        <a className="page-link" href="#" onClick={(e) => handleClick(e, number + 1)}>
-                          {number + 1}
-                        </a>
-                      </li>
-                    ))}
-                    <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
-                      <a className="page-link" href="#" aria-label="Next" onClick={(e) => handleClick(e, currentPage + 1)}>
-                        <span aria-hidden="true">&raquo;</span>
-                      </a>
-                    </li>
-                  </ul>
-                </nav>
+                <div className="row col-12 px-3 justify-content-between">
+                  <button className="tumunu-gor-btn-admin col-1" onClick={() => setPageNum(pageNum - 1)}>Geri</button>
+                  <button className="tumunu-gor-btn-admin col-1" onClick={() => setPageNum(pageNum + 1)}>İleri</button>
+                </div>
               </div>
             </div>
           </div>
@@ -217,12 +200,12 @@ const Admin_kategoriler = () => {
 
       {/* Popup form for adding a new category */}
       {showPopup && (
-        <div className="popup-overlay">
-          <div className="popup-content">
-            <div className='popup-header'>
-            <h2>Kategori Ekle</h2>
+          <div className="popup-overlay">
+            <div className="popup-content">
+              <div className='popup-header'>
+                <h2>Kategori Ekle</h2>
 
-            <button className="popup-close-btn" onClick={togglePopup}>&times;</button>
+                <button className="popup-close-btn" onClick={togglePopup}>&times;</button>
             </div>
             <form className='popup-form' onSubmit={handleSubmit}>
               <div>

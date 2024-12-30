@@ -30,26 +30,28 @@ const Admin_aktif_siparis = () => {
           <div className="table-responsive">
             <table className="table">
               <thead>
-                <tr>
-                  <th scope="col">Ürün Kodu</th>
-                  <th scope="col">Müşteri Ad Soyad</th>
-                  <th scope="col">Müşteri Adres</th>
-                  <th scope="col">Müşteri Telefon Numarası</th>
-                  <th scope="col">Ödeme Alındı mı?</th>
-                  <th scope="col">Sipariş Durumu</th>
-                </tr>
+              <tr>
+                <th scope="col">Ürün Kodu</th>
+                <th scope="col">Müşteri Ad Soyad</th>
+                <th scope="col">Müşteri Adres</th>
+                <th scope="col">Müşteri Telefon Numarası</th>
+                <th scope="col">Ödeme Alındı mı?</th>
+                <th scope="col">Sipariş Durumu</th>
+              </tr>
               </thead>
               <tbody>
-                {currentOrders.map(order => (
+              {currentOrders.map(order => (
                   <tr key={order.id}>
                     <th scope="row">{order.id}</th>
                     <td>{order.name}</td>
                     <td>{order.address}</td>
                     <td>{order.phone}</td>
-                    <td><span className='green' style={{fontWeight:'600'}}>{order.payment ? 'Evet' : 'Hayır'}</span></td>
+                    <td><span className='green' style={{fontWeight: '600'}}>{order.payment ? 'Evet' : 'Hayır'}</span>
+                    </td>
                     <td>
                       <p>Şuanki sipariş durumu: <span className='green'>{order.status}</span></p>
-                      <select style={{marginRight:'5px', height:'35px'}} name="siparis-durumu-admin" id="siparis-durumu-admin">
+                      <select style={{marginRight: '5px', height: '35px'}} name="siparis-durumu-admin"
+                              id="siparis-durumu-admin">
                         <option value="Sipariş Durumu">Sipariş Durumu</option>
                         <option value="Onaylandı">Onaylandı</option>
                         <option value="Hazırlanıyor">Hazırlanıyor</option>
@@ -59,29 +61,14 @@ const Admin_aktif_siparis = () => {
                       <button className='siparis-durumu-btn'>Güncelle</button>
                     </td>
                   </tr>
-                ))}
+              ))}
               </tbody>
             </table>
           </div>
-          <nav aria-label="Page navigation example">
-            <ul className="pagination">
-              <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-                <button className="page-link" onClick={() => paginate(currentPage - 1)} aria-label="Previous">
-                  <span aria-hidden="true">&laquo;</span>
-                </button>
-              </li>
-              {[...Array(totalPages)].map((_, index) => (
-                <li key={index + 1} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
-                  <button className="page-link" onClick={() => paginate(index + 1)}>{index + 1}</button>
-                </li>
-              ))}
-              <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
-                <button className="page-link" onClick={() => paginate(currentPage + 1)} aria-label="Next">
-                  <span aria-hidden="true">&raquo;</span>
-                </button>
-              </li>
-            </ul>
-          </nav>
+          <div className="row col-12 px-3 justify-content-between">
+            <button className="tumunu-gor-btn-admin col-1" onClick={() => setPageNum(pageNum - 1)}>Geri</button>
+            <button className="tumunu-gor-btn-admin col-1" onClick={() => setPageNum(pageNum + 1)}>İleri</button>
+          </div>
         </div>
       </div>
     </div>

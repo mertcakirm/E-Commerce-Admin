@@ -29,53 +29,36 @@ const Admin_raporlar = () => {
         <div className="row admin-genel-row">
           <div className="col-12 alt-basliklar-admin mb-5">RAPORLAR</div>
           {currentReports.map((report, index) => (
-            <div key={index} className="col-lg-3 mb-3">
-              <div className="rapor-card">
-                <div className="rapor-card-baslik">{report.month}</div>
-                <div className="row col-12 mb-3">
-                  <div className="col-lg-8 finansal-bakis-anasayfa-admin">Havale ile Alınan Ödeme</div>
-                  <div className="col-lg-4 finansal-bakis-anasayfa-admin">{report.data.bankTransfer}</div>
-                </div>
-                <div className="row col-12 mb-3">
-                  <div className="col-lg-8 finansal-bakis-anasayfa-admin">Kredi Kartı ile Alınan Ödeme</div>
-                  <div className="col-lg-4 finansal-bakis-anasayfa-admin">{report.data.creditCard}</div>
-                </div>
-                <div className="row col-12 mb-3">
-                  <div className="col-lg-8 finansal-bakis-anasayfa-admin">Toplam Alınan Ödeme</div>
-                  <div className="col-lg-4 finansal-bakis-anasayfa-admin">{report.data.totalPayment}</div>
-                </div>
-                <div className="row col-12 mb-3">
-                  <div className="col-lg-8 finansal-bakis-anasayfa-admin">Toplam Net Kar</div>
-                  <div className="col-lg-4 finansal-bakis-anasayfa-admin">{report.data.netProfit}</div>
-                </div>
-                <div className="row col-12 mb-3">
-                  <div className="col-lg-8 finansal-bakis-anasayfa-admin">Toplam Yapılan Satış Sayısı</div>
-                  <div className="col-lg-4 finansal-bakis-anasayfa-admin">{report.data.totalSales}</div>
+              <div key={index} className="col-lg-3 mb-3">
+                <div className="rapor-card">
+                  <div className="rapor-card-baslik">{report.month}</div>
+                  <div className="row col-12 mb-3">
+                    <div className="col-lg-8 finansal-bakis-anasayfa-admin">Havale ile Alınan Ödeme</div>
+                    <div className="col-lg-4 finansal-bakis-anasayfa-admin">{report.data.bankTransfer}</div>
+                  </div>
+                  <div className="row col-12 mb-3">
+                    <div className="col-lg-8 finansal-bakis-anasayfa-admin">Kredi Kartı ile Alınan Ödeme</div>
+                    <div className="col-lg-4 finansal-bakis-anasayfa-admin">{report.data.creditCard}</div>
+                  </div>
+                  <div className="row col-12 mb-3">
+                    <div className="col-lg-8 finansal-bakis-anasayfa-admin">Toplam Alınan Ödeme</div>
+                    <div className="col-lg-4 finansal-bakis-anasayfa-admin">{report.data.totalPayment}</div>
+                  </div>
+                  <div className="row col-12 mb-3">
+                    <div className="col-lg-8 finansal-bakis-anasayfa-admin">Toplam Net Kar</div>
+                    <div className="col-lg-4 finansal-bakis-anasayfa-admin">{report.data.netProfit}</div>
+                  </div>
+                  <div className="row col-12 mb-3">
+                    <div className="col-lg-8 finansal-bakis-anasayfa-admin">Toplam Yapılan Satış Sayısı</div>
+                    <div className="col-lg-4 finansal-bakis-anasayfa-admin">{report.data.totalSales}</div>
+                  </div>
                 </div>
               </div>
-            </div>
           ))}
-          <nav aria-label="Page navigation example">
-            <ul className="pagination">
-              <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-                <a className="page-link" href="#" aria-label="Previous" onClick={() => handlePageChange(currentPage - 1)}>
-                  <span aria-hidden="true">&laquo;</span>
-                </a>
-              </li>
-              {[...Array(totalPages)].map((_, index) => (
-                <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
-                  <a className="page-link" href="#" onClick={() => handlePageChange(index + 1)}>
-                    {index + 1}
-                  </a>
-                </li>
-              ))}
-              <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
-                <a className="page-link" href="#" aria-label="Next" onClick={() => handlePageChange(currentPage + 1)}>
-                  <span aria-hidden="true">&raquo;</span>
-                </a>
-              </li>
-            </ul>
-          </nav>
+          <div className="row col-12 px-3 justify-content-between">
+            <button className="tumunu-gor-btn-admin col-1" onClick={() => setPageNum(pageNum - 1)}>Geri</button>
+            <button className="tumunu-gor-btn-admin col-1" onClick={() => setPageNum(pageNum + 1)}>İleri</button>
+          </div>
         </div>
       </div>
     </div>

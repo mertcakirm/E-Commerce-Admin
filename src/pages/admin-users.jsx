@@ -146,61 +146,15 @@ const Admin_users = () => {
                 </tbody>
 
               </table>
-              <div className="row col-12 justify-content-center">
-                <nav aria-label="Page navigation example" className="col-5">
-                  <ul className="pagination">
-                    <li
-                        className={`page-item ${
-                            currentPage === 1 ? "disabled" : ""
-                        }`}
-                    >
-                      <a
-                          className="page-link"
-                          href="#"
-                          aria-label="Previous"
-                          onClick={(e) => handleClick(e, currentPage - 1)}
-                      >
-                        <span aria-hidden="true">&laquo;</span>
-                      </a>
-                    </li>
-                    {[...Array(totalPages)].map((_, index) => (
-                        <li
-                            key={index}
-                        className={`page-item ${
-                          currentPage === index + 1 ? "active" : ""
-                        }`}
-                      >
-                        <a
-                          className="page-link"
-                          href="#"
-                          onClick={(e) => handleClick(e, index + 1)}
-                        >
-                          {index + 1}
-                        </a>
-                      </li>
-                    ))}
-                    <li
-                      className={`page-item ${
-                        currentPage === totalPages ? "disabled" : ""
-                      }`}
-                    >
-                      <a
-                        className="page-link"
-                        href="#"
-                        aria-label="Next"
-                        onClick={(e) => handleClick(e, currentPage + 1)}
-                      >
-                        <span aria-hidden="true">&raquo;</span>
-                      </a>
-                    </li>
-                  </ul>
-                </nav>
+                <div className="row col-12 px-3 justify-content-between">
+                  <button className="tumunu-gor-btn-admin col-1" onClick={() => setPageNum(pageNum - 1)}>Geri</button>
+                  <button className="tumunu-gor-btn-admin col-1" onClick={() => setPageNum(pageNum + 1)}>İleri</button>
+                </div>
               </div>
-            </div>
           </div>
         </div>
       </div>
-      <NotificationCard ref={notificationRef} message="" />
+      <NotificationCard ref={notificationRef} message=""/>
 
     </div>
   );

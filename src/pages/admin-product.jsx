@@ -185,7 +185,6 @@ const Admin_product = () => {
                       <td>{product.productName}</td>
                       <td>{product.category}</td>
                       <td>Toplam Satış : 80</td>
-
                       <td>
                         <div className="stok-flex">
                           <p>
@@ -284,30 +283,10 @@ const Admin_product = () => {
                 </tbody>
               </table>
             </div>
-            <ul className="pagination">
-              <li className="page-item">
-                <a
-                  className="page-link"
-                  href="#"
-                  aria-label="Previous"
-                  aria-disabled={()=>pageNum===0}
-                  onClick={(e) =>
-                      handleClick(e, currentPage - 1)}
-                >
-                  <span aria-hidden="true">&laquo;</span>
-                </a>
-              </li>
-              <li className="page-item">
-                <a
-                  className="page-link"
-                  href="#"
-                  onClick={(e) => handleClick(e, currentPage + 1)}
-                  disabled={!pageNum}
-                >
-                  <span aria-hidden="true">&raquo;</span>
-                </a>
-              </li>
-            </ul>
+            <div className="row col-12 px-3 justify-content-between">
+              <button className="tumunu-gor-btn-admin col-1" onClick={()=>setPageNum(pageNum-1)}>Geri</button>
+              <button className="tumunu-gor-btn-admin col-1" onClick={()=>setPageNum(pageNum+1)}>İleri</button>
+            </div>
           </div>
         </div>
       </div>
