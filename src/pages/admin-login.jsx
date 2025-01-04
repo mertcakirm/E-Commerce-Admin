@@ -23,10 +23,9 @@ const Admin_login = () => {
         },
         body: JSON.stringify(loginDTO),
         credentials: 'include'
-
       });
         if (response.ok) {
-        navigate('/genel');
+          console.log([...response.headers.entries()]);
       } else {
         setErrorMessage("Giriş başarısız: Geçersiz kullanıcı adı veya parola.");
       }

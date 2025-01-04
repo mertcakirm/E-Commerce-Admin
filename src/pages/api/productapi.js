@@ -1,18 +1,18 @@
 import {getCookie} from "../../components/cookie/cookie.js";
 
-const API_BASE_URL = "http://213.142.159.49:8000/api/admin/product";
+const API_BASE_URL = "http://213.142.159.49:8000/api";
 const session = getCookie("SESSIONID")
 
-
 export const fetchProducts = async (pageNum) => {
-  const response = await fetch(`${API_BASE_URL}/product/all?page=${pageNum}&size=10`, {
+  const response = await fetch(`${API_BASE_URL}/product-management/product/all`, {
     headers: {
-      Authorization: `Bearer ${session}`,
     },
+    credentials: 'include',
   });
 
   if (!response.ok) {
     console.error("Ürünler gösterilirken hata oluştu",response);
+    console.log(response);
     return;
   }
   return await response.json();
