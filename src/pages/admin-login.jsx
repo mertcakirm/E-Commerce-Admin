@@ -16,7 +16,7 @@ const Admin_login = () => {
       password: password
     };
     try {
-      const response = await fetch('http://213.142.159.49:8000/api/auth/admin/login', {
+      const response = await fetch('http://localhost:8084/api/auth/admin/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

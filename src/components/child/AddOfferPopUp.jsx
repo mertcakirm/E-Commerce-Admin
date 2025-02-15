@@ -1,58 +1,58 @@
 import React, {useState} from 'react';
 
-const AddOfferPopup = () => {
-    const [userData, setUserData] = useState({
-        Username: "",
-        Password: "",
-        RoleId: "",
+const AddOfferPopup = ({popupCloser}) => {
+    const [popUpData, setPopUpData] = useState({
+        Image: "",
+        Title: "",
+        Address: "",
     });
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setUserData({ ...userData, [name]: value });
+        setPopUpData({ ...popUpData, [name]: value });
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        popupCloser(false);
 
-        AddUserReq(userData)
-        onClose();
     };
 
-    if (!isOpen) return null;
+    // if (!isOpen) return null;
 
     return (
         <div className="popup-overlay">
             <div className="popup-content">
-                <h2>Kullanıcı Ekle</h2>
-                <form onSubmit={handleSubmit}>
-                    <div className="form-group">
-                        <label>İsim:</label>
+                <h2 className="mb-5">Kampanya Ekle</h2>
+                <div className="form-group">
+                    <div className="row justify-content-between align-items-center">
+                        <label className="col-4">İsim:</label>
                         <input
                             type="text"
-                            name="Username"
-                            value={userData.Username}
-                            style={{ height: "40px",color: "black" }}
+                            name="Title"
+                            className="popup-inp col-8"
+                            value={popUpData.Title}
                             onChange={handleChange}
                             required
                         />
                     </div>
-                    <div className="form-group">
-                        <label>Şifre:</label>
+                    <div className="row justify-content-between align-items-center">
+                        <label className="col-4">Şifre:</label>
                         <input
-                            type="password"
-                            name="Password"
-                            value={userData.Password}
-                            style={{ height: "40px",color: "black" }}
+                            type="file"
+                            name="Image"
+                            className="col-8"
+                            value={popUpData.Image}
                             onChange={handleChange}
                             required
                         />
                     </div>
-                    <div className="form-group">
-                        <label>Rol:</label>
+                    <div className="row justify-content-between align-items-center">
+                        <label className="col-4">Ürün Kategorisi:</label>
                         <select
-                            name="RoleId"
-                            value={userData.RoleId}
+                            name="Address"
+                            className="col-8"
+                            value={popUpData.Address}
                             onChange={handleChange}
                             style={{ height: "40px",color: "black" }}
                         >
@@ -61,13 +61,13 @@ const AddOfferPopup = () => {
                             <option value="2">User</option>
                         </select>
                     </div>
-                    <div className="form-actions">
-                        <button type="button" className="add-btn" onClick={onClose}>
+                    <div className="row justify-content-between align-items-center">
+                        <button type="button" onClick={()=>popupCloser(false)} className="add-btn col-4">
                             İptal
                         </button>
-                        <button type="submit" className="add-btn">Kaydet</button>
+                        <button type="submit" className="add-btn col-4">Kaydet</button>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     );
