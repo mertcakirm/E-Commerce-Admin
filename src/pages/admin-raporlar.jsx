@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Admin_sidebar from '../components/admin-sidebar.jsx';
 
 const Admin_raporlar = () => {
-  // Sample data for reports
   const reports = [
     { month: '05/2024', data: { bankTransfer: '14499₺', creditCard: '14499₺', totalPayment: '14499₺', netProfit: '14499₺', totalSales: '1449' } },
     { month: '06/2024', data: { bankTransfer: '12000₺', creditCard: '13000₺', totalPayment: '25000₺', netProfit: '5000₺', totalSales: '1500' } },
