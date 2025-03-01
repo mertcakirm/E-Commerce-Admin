@@ -50,10 +50,10 @@ export const addCart = async (cartCategoryDTO) => {
             throw new Error(errorData.message || 'Failed to add cart');
         }
 
-        return response; // Başarılı olduğunda yanıtı döndür
+        return response;
     } catch (error) {
         console.error("Request error: ", error);
-        throw error; // Hata fırlat
+        throw error;
     }
 };
 

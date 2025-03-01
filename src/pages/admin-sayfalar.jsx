@@ -6,13 +6,12 @@ import {
   addSlider,
   deleteSlider,
   fetchCartData,
-  addCart,
   deleteCart,
 } from './api/sayfalarapi';
 import {NotificationCard, showNotification} from "../components/notification.jsx";
-import {categoryDropdown} from "./api/categoryDropdown.js";
 import AddCartPopup from "../components/child/addCartPopup.jsx";
 import {getCookie} from "../components/cookie/cookie.js";
+import {categoryDropdown} from "./api/kategoriapi.js";
 
 const Admin_sayfalar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

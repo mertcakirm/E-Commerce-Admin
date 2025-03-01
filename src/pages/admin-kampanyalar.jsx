@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import Admin_sidebar from '../components/admin-sidebar.jsx';
 import './admin-css/admin-genel.css'
-import {categoryDropdown} from "./api/categoryDropdown.js";
 import AddOfferPopUp from "../components/child/AddOfferPopUp.jsx";
+import {categoryDropdown} from "./api/kategoriapi.js";
 
 const Admin_kampanyalar =()=> {
     const [categories, setCategories] = useState([]);

@@ -6,7 +6,7 @@ import {
   updateDiscount,
 } from "./api/productapi";
 import {NotificationCard, showNotification} from "../components/notification.jsx";
-import {categoryDropdown} from "./api/categoryDropdown.js";
+import {categoryDropdown} from "./api/kategoriapi.js";
 import AddProductPopup from "../components/child/AddProductPopup.jsx";
 import LoadingComp from "../components/child/Loading.jsx";
 
