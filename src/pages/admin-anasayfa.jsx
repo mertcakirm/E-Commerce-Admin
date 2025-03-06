@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import {useEffect} from 'react'
 import Admin_sidebar from '../components/admin-sidebar.jsx';
 import { getCookie } from '../components/cookie/cookie.js';
 import './admin-css/admin-genel.css';

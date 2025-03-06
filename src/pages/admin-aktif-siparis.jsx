@@ -18,9 +18,9 @@ const Admin_aktif_siparis = () => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentOrders = orders.slice(indexOfFirstItem, indexOfLastItem);
 
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+//  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  const totalPages = Math.ceil(orders.length / itemsPerPage);
+//  const totalPages = Math.ceil(orders.length / itemsPerPage);
 
   return (
     <div>

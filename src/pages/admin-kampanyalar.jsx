@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Admin_sidebar from '../components/admin-sidebar.jsx';
 import './admin-css/admin-genel.css'
 import AddOfferPopUp from "../components/child/AddOfferPopUp.jsx";

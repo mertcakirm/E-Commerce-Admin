@@ -1,5 +1,5 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {categoryDropdown} from "../../pages/api/categoryDropdown.js";
+import {useEffect, useRef, useState} from 'react';
+import {categoryDropdown} from "../../pages/api/kategoriapi.js";
 import {addCart} from "../../pages/api/sayfalarapi.js";
 import {NotificationCard, showNotification} from "../notification.jsx";
 
@@ -20,6 +20,18 @@ const AddCartPopup = ({popupCloser}) => {
             [name]: value,
         }));
     };
+
+    const convertImageToBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+
+            reader.onloadend = () => resolve(reader.result.split(",")[1]);
+            reader.onerror = () => reject(new Error("Dosya okuma hatası"));
+
+            reader.readAsDataURL(file);
+        });
+    };
+
 
     const handleCartFileChange = async (e) => {
         const file = e.target.files[0];

@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import { addProduct } from "../../pages/api/productapi.js";
 import { showNotification } from "../notification.jsx";
 
@@ -135,7 +135,7 @@ const AddProductPopup = ({ popupCloser ,reload}) => {
 
     return (
         <div className="popup-overlay">
-            <div className="popup-content">
+            <div className="popup-content" style={{width:'1200px'}}>
                 <div className="popup-header">
                     <div></div>
                     <button className="popup-close-btn" onClick={() => popupCloser(false)}>
