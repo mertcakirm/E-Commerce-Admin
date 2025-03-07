@@ -17,10 +17,6 @@ const Admin_mesajlar = () => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentMessages = messages.slice(indexOfFirstItem, indexOfLastItem);
 
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
-  const totalPages = Math.ceil(messages.length / itemsPerPage);
-
   return (
     <div>
       <Admin_sidebar />
@@ -56,8 +52,8 @@ const Admin_mesajlar = () => {
               </tbody>
             </table>
             <div className="row col-12 px-3 justify-content-between">
-              <button className="tumunu-gor-btn-admin col-1" onClick={() => setPageNum(pageNum - 1)}>Geri</button>
-              <button className="tumunu-gor-btn-admin col-1" onClick={() => setPageNum(pageNum + 1)}>İleri</button>
+              <button className="tumunu-gor-btn-admin col-1" onClick={() => setCurrentPage(currentPage - 1)}>Geri</button>
+              <button className="tumunu-gor-btn-admin col-1" onClick={() => setCurrentPage(currentPage + 1)}>İleri</button>
             </div>
           </div>
         </div>

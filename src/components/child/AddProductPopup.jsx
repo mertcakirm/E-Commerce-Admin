@@ -1,6 +1,7 @@
 import {useEffect, useRef, useState} from "react";
 import { addProduct } from "../../pages/api/productapi.js";
 import { showNotification } from "../notification.jsx";
+import {categoryDropdown} from "../../pages/api/kategoriapi.js";
 
 const AddProductPopup = ({ popupCloser ,reload}) => {
     const [productData, setProductData] = useState({
@@ -25,6 +26,15 @@ const AddProductPopup = ({ popupCloser ,reload}) => {
             [name]: name === "productPrice" || name === "purchasePrice" ? parseFloat(value) || 0.0 : value,
         }));
     };
+
+    const getDropdown =async ()=>{
+        const categoriesObj = await categoryDropdown()
+        setCategories(categoriesObj)
+    }
+
+    useEffect(() => {
+        getDropdown();
+    }, []);
 
     useEffect(() => {
         return () => {

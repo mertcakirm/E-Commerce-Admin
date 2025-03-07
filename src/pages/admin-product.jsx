@@ -6,7 +6,6 @@ import {
   updateDiscount,
 } from "./api/productapi";
 import {NotificationCard, showNotification} from "../components/notification.jsx";
-import {categoryDropdown} from "./api/kategoriapi.js";
 import AddProductPopup from "../components/child/AddProductPopup.jsx";
 import LoadingComp from "../components/child/Loading.jsx";
 
@@ -24,13 +23,6 @@ const Admin_product = () => {
   const productsPerPage = 10;
 
 
-  const getCategories = async () => {
-    const data = await categoryDropdown();
-  };
-
-  useEffect(() => {
-    getCategories();
-  }, []);
 
   const fetchData = async () => {
       const data = await fetchProducts(pageNum);
