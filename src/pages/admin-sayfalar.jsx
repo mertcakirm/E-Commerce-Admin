@@ -245,7 +245,7 @@ const Admin_sayfalar = () => {
 
                 {cartData && cartData.length > 0 ? (
                   cartData.map((cart,index)=>
-                <div className="col-lg-4">
+                <div key={index} className="col-lg-4">
                   <div className="kategori-card-admin-sayfalar">
                     <img src={`data:image/jpeg;base64,${cart.image.bytes}`} className='img-fluid w-100 kategori-card-admin-sayfalar-img' alt="" />
                     <p>Kart Kategori Adı : {cart.cartName}</p>

@@ -12,7 +12,6 @@ const AddProductPopup = ({ popupCloser ,reload}) => {
         purchasePrice: 0.0,
         sizes: [],
     });
-    const [totalStock, setTotalStock] = useState(0);
     const [images, setImages] = useState([]);
     const [sizeInput, setSizeInput] = useState("");
     const [quantityInput, setQuantityInput] = useState("");

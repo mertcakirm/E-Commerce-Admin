@@ -7,7 +7,6 @@ import {NotificationCard, showNotification} from "../components/notification.jsx
 const Admin_users = () => {
   const [usersData, setUsersData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading,setLoading] = useState(false);
   const usersPerPage = 10;
@@ -17,7 +16,6 @@ const Admin_users = () => {
   const getUser = async () => {
     try {
       const data = await getAllUsers(currentPage, usersPerPage);
-      setTotalPages(data.totalPages);
       setUsersData(data.content || []);
 
       setLoading(false);

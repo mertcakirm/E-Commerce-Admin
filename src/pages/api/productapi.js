@@ -4,7 +4,7 @@ const API_BASE_URL = "http://213.142.159.49:8000/api/product-management";
 const session = getCookie("SESSIONID")
 
 export const fetchProducts = async (pageNum) => {
-  const response = await fetch(`${API_BASE_URL}/product/all`, {
+  const response = await fetch(`${API_BASE_URL}/product/all&page=${pageNum}`, {
     headers: {
     },
     credentials: 'include',

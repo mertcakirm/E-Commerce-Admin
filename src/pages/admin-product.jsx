@@ -54,23 +54,13 @@ const Admin_product = () => {
   };
 
   const currentProducts = () => {
-    return filteredProducts();
+    //return filteredProducts();
     const newProduct =  filteredProducts().slice(
         (currentPage - 1) * productsPerPage,
         currentPage * productsPerPage
     );
     return newProduct;
   }
-
-  const handleClick = (e, page) => {
-    if (pageNum < 0){
-      setPageNum(0)
-    }else {
-      e.preventDefault();
-      setCurrentPage(page);
-      setPageNum(page - 1);
-    }
-    };
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);

@@ -35,12 +35,10 @@ const Admin_kategoriler = () => {
     }
   };
 
-
   useEffect(() => {
     getCategories();
 
   }, []);
-
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -53,11 +51,6 @@ const Admin_kategoriler = () => {
   const indexOfLastCategory = currentPage * categoriesPerPage;
   const indexOfFirstCategory = indexOfLastCategory - categoriesPerPage;
   const currentCategories = filteredCategories.slice(indexOfFirstCategory, indexOfLastCategory);
-
-  const handleClick = (event, pageNumber) => {
-    event.preventDefault();
-    setCurrentPage(pageNumber);
-  };
 
   const togglePopup = () => {
     setShowPopup(!showPopup);
@@ -74,8 +67,6 @@ const Admin_kategoriler = () => {
       console.error('Error deleting category:', error);
     }
   };
-
-  
 
   const handleChange = (event) => {
     const { name, value, files } = event.target;
@@ -102,7 +93,6 @@ const Admin_kategoriler = () => {
 
     try {
       await addCategory(categoryDTO);
-
       const refreshedData = await fetchCategories();
       setCategoriesData(refreshedData);
       showNotification(notificationRef, 'Kategori başarıyla eklendi!');

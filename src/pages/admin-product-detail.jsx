@@ -10,7 +10,7 @@ const Admin_product_detail = () => {
     const [product, setProduct] = useState(null);
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [productName, setProductName] = useState('');
-    const [categoryName, setCategoryName] = useState('');
+    //const [categoryName, setCategoryName] = useState('');
     const [description, setDescription] = useState('');
     const [type, setType] = useState('');
     const [inputfile, setInputfile] = useState();
@@ -24,7 +24,7 @@ const Admin_product_detail = () => {
             .then(data => {
                 setProduct(data);
                 setProductName(data.productName);
-                setCategoryName(data.category?.name);
+                //setCategoryName(data.category?.name);
                 setDescription(data.description);
                 setType(data.type);
                 setPriceWithOutDiscount(data.priceWithOutDiscount);

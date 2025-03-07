@@ -26,6 +26,7 @@ const Admin_login = () => {
       });
         if (response.ok) {
           console.log([...response.headers.entries()]);
+          navigate('/genel')
       } else {
         setErrorMessage("Giriş başarısız: Geçersiz kullanıcı adı veya parola.");
       }

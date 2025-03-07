@@ -65,7 +65,7 @@ const AddOfferPopup = ({popupCloser}) => {
                         <button type="button" onClick={()=>popupCloser(false)} className="add-btn col-4">
                             İptal
                         </button>
-                        <button type="submit" className="add-btn col-4">Kaydet</button>
+                        <button onClick={handleSubmit} className="add-btn col-4">Kaydet</button>
                     </div>
                 </div>
             </div>

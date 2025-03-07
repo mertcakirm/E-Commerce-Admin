@@ -11,7 +11,7 @@ const Admin_aktif_siparis = () => {
     { id: 1, name: 'Furkan Geren', address: 'Şehitler Tepesi Mah. 3686 sokak Salkım evleri sitesi ablok kat 4 no 10', phone: '05237236273', payment: true, status: 'Hazırlanıyor' },
     { id: 2, name: 'Furkan Geren', address: 'Şehitler Tepesi Mah. 3686 sokak Salkım evleri sitesi ablok kat 4 no 10', phone: '05237236273', payment: true, status: 'Hazırlanıyor' },
     { id: 3, name: 'Furkan Geren', address: 'Şehitler Tepesi Mah. 3686 sokak Salkım evleri sitesi ablok kat 4 no 10', phone: '05237236273', payment: true, status: 'Hazırlanıyor' },
-    { id: 4, name: 'Furkan Geren', address: 'Şehitler Tepesi Mah. 3686 sokak Salkım evleri sitesi ablok kat 4 no 10', phone: '05237236273', payment: true, status: 'Hazırlanıyor' },
+    { id: 4, name: 'Furkan Geren', address: 'Şehitler Tepesi Mah. 3686 sokak Salkım evleri sitesi ablok kat 4 no 10', phone: '05237236273', payment: false, status: 'Hazırlanıyor' },
     { id: 5, name: 'Furkan Geren', address: 'Şehitler Tepesi Mah. 3686 sokak Salkım evleri sitesi ablok kat 4 no 10', phone: '05237236273', payment: true, status: 'Hazırlanıyor' },
     { id: 5, name: 'Furkan Geren', address: 'Şehitler Tepesi Mah. 3686 sokak Salkım evleri sitesi ablok kat 4 no 10', phone: '05237236273', payment: true, status: 'Hazırlanıyor' }
   ]);

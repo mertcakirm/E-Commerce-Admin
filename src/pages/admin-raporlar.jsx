@@ -10,18 +10,21 @@ const Admin_raporlar = () => {
     { month: '06/2024', data: { bankTransfer: '12000₺', creditCard: '13000₺', totalPayment: '25000₺', netProfit: '5000₺', totalSales: '1500' } },
     { month: '06/2024', data: { bankTransfer: '12000₺', creditCard: '13000₺', totalPayment: '25000₺', netProfit: '5000₺', totalSales: '1500' } },
     { month: '06/2024', data: { bankTransfer: '12000₺', creditCard: '13000₺', totalPayment: '25000₺', netProfit: '5000₺', totalSales: '1500' } },
+    { month: '06/2024', data: { bankTransfer: '12000₺', creditCard: '13000₺', totalPayment: '25000₺', netProfit: '5000₺', totalSales: '1500' } },
+    { month: '06/2024', data: { bankTransfer: '12000₺', creditCard: '13000₺', totalPayment: '25000₺', netProfit: '5000₺', totalSales: '1500' } },
+    { month: '06/2024', data: { bankTransfer: '12000₺', creditCard: '13000₺', totalPayment: '25000₺', netProfit: '5000₺', totalSales: '1500' } },
+    { month: '06/2024', data: { bankTransfer: '12000₺', creditCard: '13000₺', totalPayment: '25000₺', netProfit: '5000₺', totalSales: '1500' } },
+    { month: '06/2024', data: { bankTransfer: '12000₺', creditCard: '13000₺', totalPayment: '25000₺', netProfit: '5000₺', totalSales: '1500' } },
+    { month: '06/2024', data: { bankTransfer: '12000₺', creditCard: '13000₺', totalPayment: '25000₺', netProfit: '5000₺', totalSales: '1500' } },
+    { month: '06/2024', data: { bankTransfer: '12000₺', creditCard: '13000₺', totalPayment: '25000₺', netProfit: '5000₺', totalSales: '1500' } },
+    { month: '06/2024', data: { bankTransfer: '12000₺', creditCard: '13000₺', totalPayment: '25000₺', netProfit: '5000₺', totalSales: '1500' } },
+    { month: '06/2024', data: { bankTransfer: '12000₺', creditCard: '13000₺', totalPayment: '25000₺', netProfit: '5000₺', totalSales: '1500' } },
   ];
 
-  const itemsPerPage = 10;
+  const itemsPerPage = 15;
   const [currentPage, setCurrentPage] = useState(1);
 
-  const totalPages = Math.ceil(reports.length / itemsPerPage);
-
   const currentReports = reports.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
-
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
 
   return (
     <div>
@@ -55,8 +58,8 @@ const Admin_raporlar = () => {
               </table>
 
             <div className="row col-12 px-3 justify-content-between">
-              <button className="tumunu-gor-btn-admin col-2" onClick={() => setPageNum(pageNum - 1)}>Geri</button>
-              <button className="tumunu-gor-btn-admin col-2" onClick={() => setPageNum(pageNum + 1)}>İleri</button>
+              <button className="tumunu-gor-btn-admin col-2" onClick={() => setCurrentPage(currentPage - 1)}>Geri</button>
+              <button className="tumunu-gor-btn-admin col-2" onClick={() => setCurrentPage(currentPage + 1)}>İleri</button>
             </div>
         </div>
       </div>
