@@ -9,7 +9,7 @@ const Admin_users = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
-  const [loading,setLoading] = useState(true);
+  const [loading,setLoading] = useState(false);
   const usersPerPage = 10;
   const notificationRef=useRef(null)
 

@@ -10,7 +10,6 @@ import {
 } from './api/sayfalarapi';
 import {NotificationCard, showNotification} from "../components/notification.jsx";
 import AddCartPopup from "../components/child/addCartPopup.jsx";
-import {getCookie} from "../components/cookie/cookie.js";
 import {categoryDropdown} from "./api/kategoriapi.js";
 
 const Admin_sayfalar = () => {
@@ -23,12 +22,11 @@ const Admin_sayfalar = () => {
   const [sliderData, setSliderData] = useState([]);
   const [cartData, setCartData] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const notificationRef=useRef(null)
 
   const openModal = () => setIsModalOpen(true);
 
-  const token = getCookie("SESSIONID");
 
   const handleInputChange = (e, setState) => {
     setState(e.target.value);
@@ -141,10 +139,9 @@ const Admin_sayfalar = () => {
     <div>
       <Admin_sidebar />
       <div className="admin-sag-container">
-        <div className="col-12 alt-basliklar-admin">Sayfa İçerikleri</div>
         <div className="row admin-genel-row">
           <div className="col-12">
-            <div className="site-icerik-shadow2 row">
+            <div className="row">
               <div className="col-12 alt-basliklar-admin">Slider İçerikleri</div>
 
               <div className="col-lg-4 sayfa-icerikleri-flex">
@@ -238,10 +235,9 @@ const Admin_sayfalar = () => {
             </div>
           </div>
 
-          <div className="row admin-genel-row">
-
+          <div className="row admin-genel-row pt-3" style={{borderTop:'1px solid #000'}}>
           <div className="col-12">
-            <div className="site-icerik-shadow2 row" style={{rowGap:'30px'}}>
+            <div className=" row" style={{rowGap:'30px'}}>
               <div className="col-12 alt-basliklar-admin ">Kategori Kartları</div>
               <div>
               <button className='tumunu-gor-btn-admin col-12' onClick={openModal} style={{width:'300px', marginTop:'30px'}} >Kategori Kartı Ekle</button>

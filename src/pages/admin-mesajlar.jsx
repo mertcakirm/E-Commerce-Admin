@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import Admin_sidebar from '../components/admin-sidebar.jsx';
 import './admin-css/admin-genel.css';
+import ProcessPopup from "../components/child/processPopup.jsx";
 
 const Admin_mesajlar = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10); 
+  const [itemsPerPage] = useState(10);
+  const [isProcessPopupOpen, setProcessIsPopupOpen] = useState(false);
   const [messages] = useState([
     { email: 'furkangeren@gmail.com', subject: 'Üyelik İşlemleri', message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, fuga quidem officia illum commodi maiores quis similique numquam nobis beatae, dignissimos eligendi omnis at aperiam impedit accusantium id nulla tenetur.', answered: true },
     { email: 'furkangeren@gmail.com', subject: 'Üyelik İşlemleri', message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, fuga quidem officia illum commodi maiores quis similique numquam nobis beatae, dignissimos eligendi omnis at aperiam impedit accusantium id nulla tenetur.', answered: true },
@@ -16,7 +18,9 @@ const Admin_mesajlar = () => {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentMessages = messages.slice(indexOfFirstItem, indexOfLastItem);
-
+  const toggleProcessPopup = () => {
+    setProcessIsPopupOpen(!isProcessPopupOpen);
+  };
   return (
     <div>
       <Admin_sidebar />
@@ -44,7 +48,7 @@ const Admin_mesajlar = () => {
                     <td>
                       <div style={{display: 'flex', height: '100%'}}>
                         <textarea name="admin-mesaj-cevap" id="admin-mesaj-cevap" placeholder='Mesaj Cevabı'></textarea>
-                        <button className='siparis-durumu-btn'>Mesajı Gönder</button>
+                        <button className='siparis-durumu-btn' onClick={toggleProcessPopup}>Mesajı Gönder</button>
                       </div>
                     </td>
                   </tr>
@@ -58,6 +62,17 @@ const Admin_mesajlar = () => {
           </div>
         </div>
       </div>
+      {isProcessPopupOpen && (
+          <ProcessPopup
+              onClose={(b) => {
+                if (b === false) setProcessIsPopupOpen(b);
+              }}
+              text="Mesaj gönderilsin mi?"
+              acceptedText="Mesajınız gönderildi"
+              type="offer_delete"
+              id="1"
+          />
+      )}
     </div>
   );
 }

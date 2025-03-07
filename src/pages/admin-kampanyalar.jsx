@@ -1,12 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Admin_sidebar from '../components/admin-sidebar.jsx';
 import './admin-css/admin-genel.css'
 import AddOfferPopUp from "../components/child/AddOfferPopUp.jsx";
-import {categoryDropdown} from "./api/kategoriapi.js";
 import ProcessPopup from "../components/child/processPopup.jsx";
 
 const Admin_kampanyalar =()=> {
-    const [categories, setCategories] = useState([]);
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [isProcessPopupOpen, setProcessIsPopupOpen] = useState(false);
 
@@ -17,12 +15,6 @@ const Admin_kampanyalar =()=> {
     const toggleProcessPopup = () => {
         setProcessIsPopupOpen(!isProcessPopupOpen);
     };
-
-    useEffect(() => {
-            const data = categoryDropdown()
-            setCategories(data)
-      }, []);
-
 
     return (
       <div>

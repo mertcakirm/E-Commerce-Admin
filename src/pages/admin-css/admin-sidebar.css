@@ -9,7 +9,7 @@
     justify-content: space-between;
     padding: 2% 0%;
     overflow: hidden;
-    overflow-y: scroll;
+    overflow-y: visible;
 }   
 
 

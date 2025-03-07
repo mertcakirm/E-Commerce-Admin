@@ -16,7 +16,6 @@ const convertImageToBase64 = (file) => {
 const Admin_kategoriler = () => {
   const [categoriesData, setCategoriesData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
   const categoriesPerPage = 5;
   const [searchTerm, setSearchTerm] = useState("");
   const [showPopup, setShowPopup] = useState(false);
@@ -31,7 +30,6 @@ const Admin_kategoriler = () => {
       const data = await fetchCategories();
       setCategoriesData(data);
       setloading(false)
-      setTotalPages(Math.ceil(data.length / categoriesPerPage));
     } catch (error) {
       console.error('Error fetching categories data:', error);
     }
@@ -43,9 +41,6 @@ const Admin_kategoriler = () => {
 
   }, []);
 
-  useEffect(() => {
-    setTotalPages(Math.ceil(categoriesData.length / categoriesPerPage));
-  }, [categoriesData]);
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -72,10 +67,8 @@ const Admin_kategoriler = () => {
     try {
       await deleteCategory(categoryId);
       console.log('Category deleted:', categoryId);
-
       const refreshedData = await fetchCategories();
       showNotification(notificationRef, 'Kategori başarıyla silindi!');
-
       setCategoriesData(refreshedData);
     } catch (error) {
       console.error('Error deleting category:', error);
@@ -189,8 +182,8 @@ const Admin_kategoriler = () => {
               </table>
               <div className="row col-12 justify-content-center">
                 <div className="row col-12 px-3 justify-content-between">
-                  <button className="tumunu-gor-btn-admin col-1" onClick={() => setPageNum(pageNum - 1)}>Geri</button>
-                  <button className="tumunu-gor-btn-admin col-1" onClick={() => setPageNum(pageNum + 1)}>İleri</button>
+                  <button className="tumunu-gor-btn-admin col-1" onClick={() => setCurrentPage(currentPage - 1)}>Geri</button>
+                  <button className="tumunu-gor-btn-admin col-1" onClick={() => setCurrentPage(currentPage + 1)}>İleri</button>
                 </div>
               </div>
             </div>
@@ -198,7 +191,6 @@ const Admin_kategoriler = () => {
         </div>
       </div>
 
-      {/* Popup form for adding a new category */}
       {showPopup && (
           <div className="popup-overlay">
             <div className="popup-content">
