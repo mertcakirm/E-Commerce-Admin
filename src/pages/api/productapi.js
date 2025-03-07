@@ -1,10 +1,10 @@
 import {getCookie} from "../../components/cookie/cookie.js";
 
-const API_BASE_URL = "http://213.142.159.49:8000/api";
+const API_BASE_URL = "http://213.142.159.49:8000/api/product-management";
 const session = getCookie("SESSIONID")
 
 export const fetchProducts = async (pageNum) => {
-  const response = await fetch(`${API_BASE_URL}/product-management/product/all`, {
+  const response = await fetch(`${API_BASE_URL}/product/all`, {
     headers: {
     },
     credentials: 'include',
