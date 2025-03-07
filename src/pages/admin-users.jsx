@@ -37,13 +37,6 @@ const Admin_users = () => {
       user.phoneNumber.includes(searchQuery)
   );
 
-  const handleClick = (event, pageNumber) => {
-    event.preventDefault();
-    if (pageNumber >= 1 && pageNumber <= totalPages) {
-      setCurrentPage(pageNumber);
-    }
-  };
-
   const toggleUserActivity = (userId) => {
     toggleUserActivityAPI(userId)
       .then((data) => {
@@ -147,8 +140,8 @@ const Admin_users = () => {
 
               </table>
                 <div className="row col-12 px-3 justify-content-between">
-                  <button className="tumunu-gor-btn-admin col-1" onClick={() => setPageNum(pageNum - 1)}>Geri</button>
-                  <button className="tumunu-gor-btn-admin col-1" onClick={() => setPageNum(pageNum + 1)}>İleri</button>
+                  <button className="tumunu-gor-btn-admin col-1" onClick={() => setCurrentPage(currentPage - 1)}>Geri</button>
+                  <button className="tumunu-gor-btn-admin col-1" onClick={() => setCurrentPage(currentPage + 1)}>İleri</button>
                 </div>
               </div>
           </div>

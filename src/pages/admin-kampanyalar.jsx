@@ -3,7 +3,7 @@ import Admin_sidebar from '../components/admin-sidebar.jsx';
 import './admin-css/admin-genel.css'
 import AddOfferPopUp from "../components/child/AddOfferPopUp.jsx";
 import {categoryDropdown} from "./api/kategoriapi.js";
-import DeletePopup from "../components/child/DeletePopup.jsx";
+import ProcessPopup from "../components/child/processPopup.jsx";
 
 const Admin_kampanyalar =()=> {
     const [categories, setCategories] = useState([]);
@@ -75,11 +75,13 @@ const Admin_kampanyalar =()=> {
                             )}
 
                             {isDelPopupOpen && (
-                                <DeletePopup
+                                <ProcessPopup
                                     onClose={(b) => {
                                         if (b === false) setDelIsPopupOpen(b);
                                     }}
-                                    type="Kampanya"
+                                    text="Kampanya öğesini silmek istediğinize emin misiniz?"
+                                    acceptedText="Silme işlemi onaylandı"
+                                    type="offer_delete"
                                     id="1"
                                 />
                             )}

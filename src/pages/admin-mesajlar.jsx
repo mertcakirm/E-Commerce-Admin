@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Admin_sidebar from '../components/admin-sidebar.jsx';
 import './admin-css/admin-genel.css';
 
@@ -28,7 +28,7 @@ const Admin_mesajlar = () => {
         <div className="row admin-genel-row">
           <div className="col-12 alt-basliklar-admin">Mesaj Listesi</div>
           <div className="table-responsive">
-            <table className="table">
+            <table className="table table-striped">
               <thead>
               <tr>
                 <th scope="col">Müşteri E-Posta Adresi</th>

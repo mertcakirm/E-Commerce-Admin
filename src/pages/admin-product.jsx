@@ -26,7 +26,6 @@ const Admin_product = () => {
 
   const getCategories = async () => {
     const data = await categoryDropdown();
-    setCategories(data);
   };
 
   useEffect(() => {
