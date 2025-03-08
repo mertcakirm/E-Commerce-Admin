@@ -28,13 +28,6 @@ const Admin_anasayfa=()=> {
     const totalStock = Object.values(product.stoklar).reduce((acc, curr) => acc + curr, 0);
     return totalStock < 20; 
   });
-  const session=getCookie("SESSIONID","ID")
-
-
-
-
-  console.log(session)
-
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -56,7 +49,6 @@ const Admin_anasayfa=()=> {
         <Admin_sidebar />
         <div className="admin-sag-container">
             <div className="row admin-genel-row">
-
 
               <div className="col-lg-6 justify-content-center col-12 m-0 row">
                 <div className="row site-icerik-shadow" style={{height:'fit-content',padding:'50px 0px 100px 30px'}} >
@@ -114,33 +106,31 @@ const Admin_anasayfa=()=> {
                       >
                         <path d="M11.5 23l-8.5-4.535v-3.953l5.4 3.122 3.1-3.406v8.772zm1-.001v-8.806l3.162 3.343 5.338-2.958v3.887l-8.5 4.534zm-10.339-10.125l-2.161-1.244 3-3.302-3-2.823 8.718-4.505 3.215 2.385 3.325-2.385 8.742 4.561-2.995 2.771 2.995 3.443-2.242 1.241v-.001l-5.903 3.27-3.348-3.541 7.416-3.962-7.922-4.372-7.923 4.372 7.422 3.937v.024l-3.297 3.622-5.203-3.008-.16-.092-.679-.393v.002z" />
                       </svg>
-                      <h3 className="text-center col-12 mb-3 font-weight-bold">1098</h3>
+                      <h3 className="text-center col-12 mb-3 font-weight-bold">2918</h3>
                     </div>
                     <div className="tooltip">Toplam Ürün Sayısı</div>
                   </div>
                 </div>
 
                 <div className="col-lg-6 justify-content-center col-12 m-0 row">
-                <div className="tooltip-container">
-                  <div className="row site-icerik-shadow" style={{ height: '200px' }}>
+                  <div className="tooltip-container">
+                    <div className="row site-icerik-shadow align-items-center justify-content-center" style={{ height: '200px', paddingTop: '30px' }}>
+                      <svg fill="green" width="70" viewBox="0 0 24 24" height="70" xmlns="http://www.w3.org/2000/svg" fillRule="evenodd" clipRule="evenodd"><path d="M13.403 24h-13.403v-22h3c1.231 0 2.181-1.084 3-2h8c.821.916 1.772 2 3 2h3v9.15c-.485-.098-.987-.15-1.5-.15l-.5.016v-7.016h-4l-2 2h-3.897l-2.103-2h-4v18h9.866c.397.751.919 1.427 1.537 2zm5.097-11c3.035 0 5.5 2.464 5.5 5.5s-2.465 5.5-5.5 5.5c-3.036 0-5.5-2.464-5.5-5.5s2.464-5.5 5.5-5.5zm0 2c1.931 0 3.5 1.568 3.5 3.5s-1.569 3.5-3.5 3.5c-1.932 0-3.5-1.568-3.5-3.5s1.568-3.5 3.5-3.5zm2.5 4h-3v-3h1v2h2v1zm-15.151-4.052l-1.049-.984-.8.823 1.864 1.776 3.136-3.192-.815-.808-2.336 2.385zm6.151 1.052h-2v-1h2v1zm2-2h-4v-1h4v1zm-8.151-4.025l-1.049-.983-.8.823 1.864 1.776 3.136-3.192-.815-.808-2.336 2.384zm8.151 1.025h-4v-1h4v1zm0-2h-4v-1h4v1zm-5-6c0 .552.449 1 1 1 .553 0 1-.448 1-1s-.447-1-1-1c-.551 0-1 .448-1 1z"/></svg>
+                      <h3 className="text-center col-12 mb-3 font-weight-bold">102</h3>
+                    </div>
+                    <div className="tooltip">Toplam Aktif Sipariş</div>
+                  </div>
+                </div>
+                </div>
+
+                <div className="col-lg-6 justify-content-center col-12 m-0 row">
+                  <div className="row site-icerik-shadow" style={{height:'fit-content'}} >
+                    <div className="col-lg-12 col-12 " >
+                      <BarChart title="Yıllık Finans Grafiği" type="general" />
+                    </div>
 
                   </div>
-                  <div className="tooltip">Toplam Kullanıcı Sayısı</div>
                 </div>
-              </div>
-              </div>
-
-
-
-
-              <div className="col-lg-6 justify-content-center col-12 m-0 row">
-                <div className="row site-icerik-shadow" style={{height:'fit-content'}} >
-                  <div className="col-lg-12 col-12 " >
-                    <BarChart title="Genel Finans Dağılımı" type="general" />
-                  </div>
-
-                </div>
-              </div>
 
 
               <div className="col-12 site-icerik-shadow mt-5">
@@ -167,14 +157,8 @@ const Admin_anasayfa=()=> {
                     </tr>
                   ))}
 
-
-
                   </tbody>
                 </table>
-
-
-
-
                 </div>
                 <div className="col-12 row justify-content-center mt-5"><a className='tumunu-gor-btn-admin col-6' href="/urunler">Tüm Ürünleri Gör</a></div>
 
@@ -182,10 +166,10 @@ const Admin_anasayfa=()=> {
 
 
             </div>
-          </div>
-      </div>
+            </div>
+        </div>
     )
-  }
+}
 
 
 export default Admin_anasayfa;
