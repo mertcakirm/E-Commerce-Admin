@@ -28,18 +28,25 @@
     color: #fff;
     font-size: 20px;
     padding-left: 20px;
-    width: 100%;
-    height: 50px;
+    width: fit-content;
+    height: 40px;
     transition: .4s;
     line-height: 50px;
+    display: flex;
+    flex-direction: row;
+    column-gap: 5px;
+    align-items: center;
+    justify-content: start;
 }
 
 .admin-sidebar-link:hover{
-    background: #fff;
-    color: #000;
     transition: .4s;
     padding-left: 40px;
     font-size: 24px;
+}
+
+.admin-sidebar-link-text{
+    color: #fff;
 }
 
 
@@ -52,7 +59,13 @@
     align-items: center;
     column-gap: 5px;
     border: 0;
+    transition: .4s;
     background: transparent;
+}
+
+.admin-sidebar-logout:hover{
+    padding-left: 40px;
+    transition: .4s;
 }
 
 .admin-sidebar-logo-part{

@@ -1,5 +1,4 @@
 import Admin_sidebar from '../components/admin-sidebar.jsx';
-import { getCookie } from '../components/cookie/cookie.js';
 import './admin-css/admin-genel.css';
 import PieChart from "../components/child/chart.jsx";
 import BarChart from "../components/child/scatter.jsx";
