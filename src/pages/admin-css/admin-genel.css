@@ -37,9 +37,9 @@
   overflow-y: visible;
 }
 .scroll-table2{
-  max-height: 500px;
-  overflow: hidden;
-  overflow-y: visible;
+  max-height: 350px;
+  overflow: visible;
+  overflow-y: auto;
 }
 .sliderlar-card{
   align-items: center;
@@ -621,3 +621,9 @@ outline: none;
         font-weight: bold;
         margin: 0;
 }
+.go-product{
+    opacity: 0;
+    text-decoration: none;
+    color: #000;
+}
+

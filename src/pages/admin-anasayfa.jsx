@@ -43,6 +43,9 @@ const Admin_anasayfa=()=> {
     return () => clearInterval(timer);
   }, []);
 
+  const GoProduct=(id)=>{
+    window.location.href=`/urunler-guncelle/${id}`;
+  }
 
     return (
       <div>
@@ -133,26 +136,22 @@ const Admin_anasayfa=()=> {
                 </div>
 
 
-              <div className="col-12 site-icerik-shadow mt-5">
-                <h3>Stoğu Azalanlar</h3>
-              <div className="table-responsive scroll-table2 mt-5">
-                <table className="table ">
-                  <thead className="table">
+              <div className="col-6 site-icerik-shadow" style={{padding:'2% 2%'}}>
+                <h3 className="text-center">Stoğu Azalan Ürünler</h3>
+              <div className="table-responsive scroll-table2 mt-1">
+                <table className="table text-center table-striped">
+                  <thead>
                     <tr>
                       <th scope="col">Ürün Kodu</th>
-                      <th scope="col">Ürün Görseli</th>
-                      <th scope="col">Ürün Adı</th>
                       <th scope="col">Ürün Kategorisi</th>
                       <th scope="col">Stok Sayısı</th>
                     </tr>
                   </thead>
                   <tbody>
                   {lowStockProducts.map(product => (
-                    <tr key={product.id}>
+                    <tr onClick={()=>GoProduct(product.id)} style={{cursor:'pointer'}} key={product.id}>
                       <th scope="row">{product.id}</th>
-                      <td><img src={product.img} alt={product.name} className="img-fluid" style={{ maxWidth: '50px' }} /></td>
                       <td>{product.name}</td>
-                      <td>{product.Kategori}</td>
                       <td style={{color:'red',fontWeight:'700'}}>{Object.values(product.stoklar).reduce((acc, curr) => acc + curr, 0)}</td>
                     </tr>
                   ))}
@@ -160,7 +159,6 @@ const Admin_anasayfa=()=> {
                   </tbody>
                 </table>
                 </div>
-                <div className="col-12 row justify-content-center mt-5"><a className='tumunu-gor-btn-admin col-6' href="/urunler">Tüm Ürünleri Gör</a></div>
 
                 </div>
 
