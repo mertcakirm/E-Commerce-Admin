@@ -38,8 +38,8 @@
 }
 .scroll-table2{
   max-height: 350px;
-  overflow: visible;
-  overflow-y: auto;
+  overflow: hidden;
+  overflow-y: scroll;
 }
 .sliderlar-card{
   align-items: center;
@@ -627,3 +627,6 @@ outline: none;
     color: #000;
 }
 
+.table {
+    --bs-table-striped-bg: rgb(205, 231, 255) !important;
+}
