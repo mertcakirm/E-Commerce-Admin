@@ -252,12 +252,6 @@
     box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
   }
 
-  .form-group{
-      display: flex;
-      flex-direction: column;
-      row-gap: 30px;
-
-  }
 
   .popup-header {
     display: flex;
@@ -611,4 +605,24 @@ outline: none;
 
 .table {
     --bs-table-striped-bg: rgb(205, 231, 255) !important;
+}
+
+.drop-zone {
+    border: 2px dashed #5f77ff;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    background-color: #f9f9f9;
+    transition: 0.3s;
+    border-radius: 15px;
+    position: relative;
+}
+
+.drop-zone.dragging {
+    background-color: #e3e3e3;
+    border-color: #000;
+}
+
+.file-input {
+    opacity: 0;
 }
