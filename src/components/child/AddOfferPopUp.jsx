@@ -90,6 +90,7 @@ const AddOfferPopup = ({ popupCloser }) => {
                             type="file"
                             name="Image"
                             className="file-input"
+                            accept="image/*"
                             onChange={handleImageChange}
                             required
                         />

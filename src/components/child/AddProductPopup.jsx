@@ -1,9 +1,9 @@
-import {useEffect, useRef, useState} from "react";
-import { addProduct } from "../../pages/api/productapi.js";
-import { showNotification } from "../notification.jsx";
+import {useEffect, useState} from "react";
 import {categoryDropdown} from "../../pages/api/kategoriapi.js";
+import {addProduct} from "../../pages/api/productapi.js";
+import {showNotification} from "../notification.jsx";
 
-const AddProductPopup = ({ popupCloser ,reload}) => {
+const AddProductPopup = ({ popupCloser, reload }) => {
     const [productData, setProductData] = useState({
         productName: "",
         productCategory: "",
@@ -16,7 +16,6 @@ const AddProductPopup = ({ popupCloser ,reload}) => {
     const [sizeInput, setSizeInput] = useState("");
     const [quantityInput, setQuantityInput] = useState("");
     const [categories, setCategories] = useState([]);
-    const notificationRef=useRef(null);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -26,35 +25,50 @@ const AddProductPopup = ({ popupCloser ,reload}) => {
         }));
     };
 
-    const getDropdown =async ()=>{
-        const categoriesObj = await categoryDropdown()
-        setCategories(categoriesObj)
-    }
+    const getDropdown = async () => {
+        const categoriesObj = await categoryDropdown();
+        setCategories(categoriesObj);
+    };
 
     useEffect(() => {
         getDropdown();
     }, []);
 
-    useEffect(() => {
-        return () => {
-            images.forEach((image) => URL.revokeObjectURL(image.preview));
-        };
-    }, [images]);
-
     const convertImageToBase64 = (file) => {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
-
             reader.onloadend = () => resolve(reader.result.split(",")[1]);
             reader.onerror = () => reject(new Error("Dosya okuma hatası"));
-
             reader.readAsDataURL(file);
         });
     };
 
+    const handleImageUpload = (event) => {
+        const files = Array.from(event.target.files);
+        handleImageFiles(files);
+    };
+
+    const handleDragOver = (event) => {
+        event.preventDefault();
+    };
+
+    const handleDrop = (event) => {
+        event.preventDefault();
+        const files = Array.from(event.dataTransfer.files);
+        handleImageFiles(files);
+    };
+
+    const handleImageFiles = (files) => {
+        const validImages = files.filter((file) => file.type.startsWith("image/"));
+        if (validImages.length > 0) {
+            setImages((prevImages) => [...prevImages, ...validImages]);
+        } else {
+            console.log("Geçersiz dosya formatı");
+        }
+    };
+
     const addStock = (event) => {
         event.preventDefault();
-
         if (sizeInput && quantityInput) {
             const updatedSizes = [...productData.sizes];
             let found = false;
@@ -87,21 +101,6 @@ const AddProductPopup = ({ popupCloser ,reload}) => {
         }
     };
 
-    const handleImageUpload = (event) => {
-        const files = Array.from(event.target.files);
-        const imagePreviews = files.map((file) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            return new Promise((resolve) => {
-                reader.onload = () => resolve({ file, preview: reader.result });
-            });
-        });
-
-        Promise.all(imagePreviews).then(() => {
-            setImages((prevImages) => [...prevImages, ...files]);
-        });
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -122,11 +121,10 @@ const AddProductPopup = ({ popupCloser ,reload}) => {
 
             productDTO.images = imageBase64Array;
         } catch {
-            console.log("resim hatalı");
+            console.log("Resim hatalı");
         }
 
         await addProduct(productDTO);
-        showNotification(notificationRef, "Ürün başarıyla eklendi!");
         popupCloser(false);
 
         setProductData({
@@ -144,7 +142,7 @@ const AddProductPopup = ({ popupCloser ,reload}) => {
 
     return (
         <div className="popup-overlay">
-            <div className="popup-content" style={{width:'1200px'}}>
+            <div className="popup-content" style={{ width: "1200px" }}>
                 <div className="popup-header">
                     <div></div>
                     <button className="popup-close-btn" onClick={() => popupCloser(false)}>
@@ -152,10 +150,28 @@ const AddProductPopup = ({ popupCloser ,reload}) => {
                     </button>
                 </div>
                 <div className="popup-form">
-                    <div className="row" style={{ rowGap: "10px" }}>
-                        <div className="col-6">
+                    <div className="row row-gap-3 column-gap-3 justify-content-between">
+                        <div className="col-5">
                             <h4>Resim Yönetim Paneli</h4>
-                            <input type="file" multiple onChange={handleImageUpload} />
+                            <div
+                                className="drop-zone"
+                                onDragOver={handleDragOver}
+                                onDrop={handleDrop}
+                            >
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="purple" viewBox="0 0 24 24">
+                                        <path d="M14 9l-2.519 4-2.481-1.96-5 6.96h16l-6-9zm8-5v16h-20v-16h20zm2-2h-24v20h24v-20zm-20 6c0-1.104.896-2 2-2s2 .896 2 2c0 1.105-.896 2-2 2s-2-.895-2-2z"/>
+                                    </svg>
+                                    <p>Ürün görsellerini sürükleyin veya seçmek için tıklayın</p>
+                                </div>
+                                <input
+                                    type="file"
+                                    multiple
+                                    onChange={handleImageUpload}
+                                    className="file-input"
+                                />
+                            </div>
+
                             <div className="preview-flex">
                                 {images.map((image, index) => (
                                     <div className="preview-flex-child" key={index}>
@@ -169,31 +185,29 @@ const AddProductPopup = ({ popupCloser ,reload}) => {
                                 ))}
                             </div>
                         </div>
-                        <div className="col-6">
+                        <div className="col-5">
                             <h4>Stok Yönetim Paneli</h4>
-                            <div className="row mt-3">
-                                <div className="col-3 row">
-                                    <div style={{ padding: "0" }} className="col-6 stok-giris-inp">
-                                        <input
-                                            type="text"
-                                            placeholder="XL"
-                                            value={sizeInput}
-                                            onChange={(e) => setSizeInput(e.target.value)}
-                                        />
-                                    </div>
-                                    <div className="col-6 stok-giris-inp">
-                                        <input
-                                            type="number"
-                                            placeholder="0"
-                                            value={quantityInput}
-                                            onChange={(e) => setQuantityInput(e.target.value)}
-                                        />
-                                    </div>
-                                    <button className="mt-3 col-12" onClick={addStock}>
+                            <div className="row row-gap-3 mt-3">
+                                <div className="col-12 row justify-content-between align-items-center">
+                                    <input
+                                        type="text"
+                                        className="col-3"
+                                        placeholder="XL"
+                                        value={sizeInput}
+                                        onChange={(e) => setSizeInput(e.target.value)}
+                                    />
+                                    <input
+                                        type="number"
+                                        className="col-3"
+                                        placeholder="0"
+                                        value={quantityInput}
+                                        onChange={(e) => setQuantityInput(e.target.value)}
+                                    />
+                                    <button className="mt-3 col-5 add-stock-btn" onClick={addStock}>
                                         Stok Ekle
                                     </button>
                                 </div>
-                                <div className="col-9 stoklar-card-flex">
+                                <div className="col-12 stoklar-card-flex p-0">
                                     {productData.sizes.map((item, index) => (
                                         <div key={index} className="stok-card">
                                             {item.size}: {item.stock}
@@ -209,13 +223,13 @@ const AddProductPopup = ({ popupCloser ,reload}) => {
                             placeholder="Ürün Adı"
                             value={productData.productName}
                             onChange={handleInputChange}
-                            className="col-12"
+                            className="col-5"
                         />
                         <select
                             name="productCategory"
                             value={productData.productCategory}
                             onChange={handleInputChange}
-                            className="col-12"
+                            className="col-5"
                         >
                             <option value="">Ürün Kategorisi Seçin</option>
                             {categories.map((category) => (
@@ -225,6 +239,20 @@ const AddProductPopup = ({ popupCloser ,reload}) => {
                             ))}
                         </select>
                         <input
+                            type="number"
+                            name="purchasePrice"
+                            placeholder="Ürün Alış Fiyatı"
+                            onChange={handleInputChange}
+                            className="col-5"
+                        />
+                        <input
+                            type="number"
+                            name="productPrice"
+                            placeholder="Ürün Fiyatı"
+                            onChange={handleInputChange}
+                            className="col-5"
+                        />
+                        <input
                             type="text"
                             name="productDescription"
                             placeholder="Ürün Açıklaması"
@@ -232,22 +260,7 @@ const AddProductPopup = ({ popupCloser ,reload}) => {
                             onChange={handleInputChange}
                             className="col-12"
                         />
-                        <input
-                            type="number"
-                            name="purchasePrice"
-                            placeholder="Ürün Alış Fiyatı"
-                            value={productData.purchasePrice}
-                            onChange={handleInputChange}
-                            className="col-12"
-                        />
-                        <input
-                            type="number"
-                            name="productPrice"
-                            placeholder="Ürün Fiyatı"
-                            value={productData.productPrice}
-                            onChange={handleInputChange}
-                            className="col-12"
-                        />
+
                         <button className="tumunu-gor-btn-admin" onClick={handleSubmit}>
                             Kaydet
                         </button>

@@ -18,8 +18,8 @@ const AddCategoryPopup = ({ popupCloser, reloadPageCat }) => {
 
     const handleChange = (event) => {
         const { name, value, files } = event.target;
-        if (name === "image") {
-            setNewCategoryImage(files[0] || null);
+        if (name === "image" && files.length > 0) {
+            setNewCategoryImage(files[0]);
         } else if (name === "name") {
             setNewCategoryName(value);
         } else if (name === "type") {
@@ -43,14 +43,9 @@ const AddCategoryPopup = ({ popupCloser, reloadPageCat }) => {
         }
     };
 
-    const handleDragEnter = (e) => {
-        e.preventDefault();
+    const handleDragOver = (event) => {
+        event.preventDefault();
         setDragging(true);
-    };
-
-    const handleDragLeave = (e) => {
-        e.preventDefault();
-        setDragging(false);
     };
 
     const handleSubmit = async (event) => {
@@ -60,28 +55,27 @@ const AddCategoryPopup = ({ popupCloser, reloadPageCat }) => {
             return;
         }
 
+        const base64Image = await convertImageToBase64(newCategoryImage);
+        const base64new = base64Image.split(",")[1];
+
+        const categoryDTO = {
+            image: { bytes: base64new },
+            typeName: newCategoryType,
+            categoryName: newCategoryName,
+        };
+
         try {
-            const base64Image = await convertImageToBase64(newCategoryImage);
-            const base64new = base64Image.split(",")[1];
-
-            const categoryDTO = {
-                image: { bytes: base64new },
-                typeName: newCategoryType,
-                categoryName: newCategoryName,
-            };
-
             await addCategory(categoryDTO);
             popupCloser(false);
             reloadPageCat(true);
         } catch (error) {
-            console.error("Kategori ekleme hatası:", error);
-            alert("Kategori eklenirken bir hata oluştu!");
+            console.error("Error adding category:", error);
         }
     };
 
     return (
         <div className="popup-overlay">
-            <div className="popup-content" style={{ width: "500px" }}>
+            <div className="popup-content" style={{ width: "600px" }}>
                 <div className="popup-header">
                     <h2>Kategori Ekle</h2>
                     <button className="popup-close-btn" onClick={() => popupCloser(false)}>&times;</button>
@@ -109,12 +103,13 @@ const AddCategoryPopup = ({ popupCloser, reloadPageCat }) => {
                         onChange={handleChange}
                         required
                     />
+
+                    {/* DROPZONE KUTUSU */}
                     <div
-                        onDrop={handleDrop}
-                        onDragOver={(e) => e.preventDefault()}
-                        onDragEnter={handleDragEnter}
-                        onDragLeave={handleDragLeave}
                         className={`drop-zone col-12 ${dragging ? "dragging" : ""}`}
+                        onDrop={handleDrop}
+                        onDragOver={handleDragOver}
+                        onDragLeave={() => setDragging(false)}
                     >
                         {newCategoryImage ? (
                             <p>{newCategoryImage.name}</p>
@@ -123,17 +118,21 @@ const AddCategoryPopup = ({ popupCloser, reloadPageCat }) => {
                                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="purple" viewBox="0 0 24 24">
                                     <path d="M14 9l-2.519 4-2.481-1.96-5 6.96h16l-6-9zm8-5v16h-20v-16h20zm2-2h-24v20h24v-20zm-20 6c0-1.104.896-2 2-2s2 .896 2 2c0 1.105-.896 2-2 2s-2-.895-2-2z"/>
                                 </svg>
-                                 Kategori görselini buraya sürükleyin veya yükleyin
+                                <p>Kategori görselini sürükleyin veya seçmek için tıklayın</p>
                             </div>
                         )}
+
                         <input
                             type="file"
+                            id="fileInput"
                             name="image"
                             className="file-input"
+                            accept="image/*"
                             onChange={handleImageChange}
-                            required
+
                         />
                     </div>
+
                     <button onClick={handleSubmit} className="tumunu-gor-btn-admin col-12">
                         Ekle
                     </button>
