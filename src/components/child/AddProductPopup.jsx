@@ -248,7 +248,7 @@ const AddProductPopup = ({ popupCloser ,reload}) => {
                             onChange={handleInputChange}
                             className="col-12"
                         />
-                        <button onClick={handleSubmit}>
+                        <button className="tumunu-gor-btn-admin" onClick={handleSubmit}>
                             Kaydet
                         </button>
                     </div>

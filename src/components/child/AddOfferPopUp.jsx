@@ -37,7 +37,7 @@ const AddOfferPopup = ({popupCloser}) => {
                         />
                     </div>
                     <div className="row justify-content-between align-items-center">
-                        <label className="col-4">Şifre:</label>
+                        <label className="col-4">Kampanya Görseli:</label>
                         <input
                             type="file"
                             name="Image"
@@ -62,10 +62,10 @@ const AddOfferPopup = ({popupCloser}) => {
                         </select>
                     </div>
                     <div className="row justify-content-between align-items-center">
-                        <button type="button" onClick={()=>popupCloser(false)} className="add-btn col-4">
+                        <button type="button" onClick={()=>popupCloser(false)} className="tumunu-gor-btn-admin col-4">
                             İptal
                         </button>
-                        <button onClick={handleSubmit} className="add-btn col-4">Kaydet</button>
+                        <button onClick={handleSubmit} className="tumunu-gor-btn-admin col-4">Kaydet</button>
                     </div>
                 </div>
             </div>

@@ -3,15 +3,10 @@ import Admin_sidebar from '../components/admin-sidebar.jsx';
 import { fetchCategories, addCategory, deleteCategory } from './api/kategoriapi';
 import {NotificationCard, showNotification} from "../components/notification.jsx";
 import LoadingComp from "../components/child/Loading.jsx";
+import AddProductPopup from "../components/child/AddProductPopup.jsx";
+import AddCategoryPopup from "../components/child/addCategoryPopup.jsx";
 
-const convertImageToBase64 = (file) => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onloadend = () => resolve(reader.result);
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-};
+
 
 const Admin_kategoriler = () => {
   const [categoriesData, setCategoriesData] = useState([]);
@@ -20,9 +15,7 @@ const Admin_kategoriler = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [showPopup, setShowPopup] = useState(false);
   const [loading,setloading]=useState(true);
-  const [newCategoryName, setNewCategoryName] = useState("");
-  const [newCategoryType, setNewCategoryType] = useState("");
-  const [newCategoryImage, setNewCategoryImage] = useState(null);
+  const [reloadPage,setReloadPage]=useState(false);
   const notificationRef=useRef(null)
 
   const getCategories = async () => {
@@ -39,6 +32,11 @@ const Admin_kategoriler = () => {
     getCategories();
 
   }, []);
+
+  useEffect(() => {
+    getCategories();
+
+  }, [reloadPage]);
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -68,39 +66,8 @@ const Admin_kategoriler = () => {
     }
   };
 
-  const handleChange = (event) => {
-    const { name, value, files } = event.target;
-    if (name === "image") {
-      setNewCategoryImage(files ? files[0] : null);
-    } else if (name === "name") {
-      setNewCategoryName(value);
-    } else if (name === "type") {
-      setNewCategoryType(value);
-    }
-  };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    
-    const base64Image = await convertImageToBase64(newCategoryImage);
-    const base64new = base64Image.split(",")[1];
 
-    const categoryDTO = {
-      image: { "bytes": base64new },
-      typeName: newCategoryType,
-      categoryName: newCategoryName,
-    };
-
-    try {
-      await addCategory(categoryDTO);
-      const refreshedData = await fetchCategories();
-      setCategoriesData(refreshedData);
-      showNotification(notificationRef, 'Kategori başarıyla eklendi!');
-      togglePopup();
-    } catch (error) {
-      console.error('Error adding category:', error);
-    }
-  };
 
   if (loading) {
     <LoadingComp />
@@ -179,49 +146,17 @@ const Admin_kategoriler = () => {
       </div>
 
       {showPopup && (
-          <div className="popup-overlay">
-            <div className="popup-content">
-              <div className='popup-header'>
-                <h2>Kategori Ekle</h2>
-
-                <button className="popup-close-btn" onClick={togglePopup}>&times;</button>
-            </div>
-            <form className='popup-form' onSubmit={handleSubmit}>
-              <div>
-                <label htmlFor="name">Kategori Adı:</label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={newCategoryName}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="type">Kategori Türü:</label>
-                <input
-                  type="text"
-                  id="type"
-                  name="type"
-                  value={newCategoryType}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="image">Kategori Resmi:</label>
-                <input
-                  type="file"
-                  id="image"
-                  name="image"
-                  onChange={handleChange}
-                />
-              </div>
-              <button type="submit">Ekle</button>
-            </form>
-          </div>
-        </div>
+          <AddCategoryPopup
+              popupCloser={(b) => {
+                if (b === false);
+                setShowPopup(b);
+              }}
+              reloadPageCat={(a)=>{
+                if (a === true) {
+                  setReloadPage(a)
+                }
+              }}
+          />
       )}
       <NotificationCard ref={notificationRef} message="" />
 
