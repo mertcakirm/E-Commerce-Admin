@@ -110,20 +110,17 @@ const Admin_kategoriler = () => {
     <div>
       <Admin_sidebar />
       <div className="admin-sag-container">
-        <div className="row admin-genel-row">
+        <div className="row justify-content-between align-items-center row-gap-3 admin-genel-row">
           <div className="col-12 alt-basliklar-admin">Kategori Listesi</div>
-          <div>
-            <br />
             <input
               type="text"
               placeholder="Ara..."
-              className="admin-search-inp"
+              className="admin-search-inp col-6"
               value={searchTerm}
               onChange={handleSearch}
-              style={{ height: '50px' }}
+              style={{ height: '50px'}}
             />
-          </div>
-          <button className='tumunu-gor-btn-admin' style={{ width: '300px', marginTop: '30px' }} onClick={togglePopup}>Kategori Ekle</button>
+          <button className='tumunu-gor-btn-admin col-2' onClick={togglePopup}>Kategori Ekle</button>
           <div className="col-12 mt-5">
             <div className="table-responsive">
               <table className="table">

@@ -118,18 +118,16 @@ const Admin_product = () => {
       <Admin_sidebar />
       <div className="admin-sag-container">
         <div className="row admin-genel-row">
-          <div className="col-12 alt-basliklar-admin">
-            <p>Ürün Listesi</p>
+          <div className="col-12 justify-content-between row alt-basliklar-admin">
+            <p className="col-12">Ürün Listesi</p>
             <input
               type="text"
               placeholder="Ara..."
-              className="admin-search-inp"
+              className="admin-search-inp col-6"
               value={searchTerm}
               onChange={handleSearch}
             />
-            <br />
-            <br />
-            <button className="tumunu-gor-btn-admin" onClick={togglePopup}>
+            <button className="tumunu-gor-btn-admin col-2" onClick={togglePopup}>
               Ürün Ekle
             </button>
           </div>

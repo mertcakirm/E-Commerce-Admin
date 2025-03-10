@@ -28,8 +28,8 @@
     color: #fff;
     font-size: 20px;
     padding-left: 20px;
-    width: fit-content;
-    height: 40px;
+    width: 100%;
+    height: 50px;
     transition: .4s;
     line-height: 50px;
     display: flex;
@@ -43,6 +43,13 @@
     transition: .4s;
     padding-left: 40px;
     font-size: 24px;
+}
+
+.active-link{
+    transition: .4s;
+    padding-left: 40px;
+    font-size: 24px;
+    background: rgb(27, 103, 165);
 }
 
 .admin-sidebar-link-text{
