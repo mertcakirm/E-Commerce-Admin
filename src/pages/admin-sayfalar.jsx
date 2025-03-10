@@ -3,76 +3,25 @@ import Admin_sidebar from '../components/admin-sidebar.jsx';
 import './admin-css/admin-genel.css';
 import {
   fetchSliderData,
-  addSlider,
   deleteSlider,
   fetchCartData,
   deleteCart,
 } from './api/sayfalarapi';
 import {NotificationCard, showNotification} from "../components/notification.jsx";
 import AddCartPopup from "../components/child/addCartPopup.jsx";
-import {categoryDropdown} from "./api/kategoriapi.js";
+import AddSliderContentPopup from "../components/child/addSliderContentPopup.jsx";
 
 const Admin_sayfalar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [sliderImage, setSliderImage] = useState({ bytes: "" });
-  const [topTitle, setTopTitle] = useState("");
-  const [middleTitle, setMiddleTitle] = useState("");
-  const [underTitle, setUnderTitle] = useState("");
-  const [redirectAddress, setRedirectAddress] = useState("");
+  const [isModalOpen2, setIsModalOpen2] = useState(false);
+
   const [sliderData, setSliderData] = useState([]);
   const [cartData, setCartData] = useState([]);
-  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const notificationRef=useRef(null)
 
   const openModal = () => setIsModalOpen(true);
-
-
-  const handleInputChange = (e, setState) => {
-    setState(e.target.value);
-  };
-
-  const convertImageToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result.split(",")[1]);
-      reader.onerror = () => reject(new Error("File read error"));
-      reader.readAsDataURL(file);
-    });
-  };
-
-  const handleFileChange = async (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const base64 = await convertImageToBase64(file);
-      setSliderImage(base64);
-    }
-  };
-
-
-
-  const sliderDTO = {
-    image: { bytes: sliderImage },
-    topTitle: topTitle,
-    middleTitle: middleTitle,
-    underTitle: underTitle,
-    category: redirectAddress,
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await addSlider(sliderDTO);
-      showNotification(notificationRef, 'Slider başarıyla eklendi!');
-      setSliderImage({ bytes: "" });
-      setTopTitle("");
-      setMiddleTitle("");
-      setUnderTitle("");
-      setRedirectAddress("");
-    } catch (error) {
-      console.error("Request error: ", error);
-    }
-  };
+  const openModal2 = () => setIsModalOpen2(true);
 
 
 
@@ -113,13 +62,9 @@ const Admin_sayfalar = () => {
     }
   };
 
-  const fetchCategory = async () =>{
-    const data = await categoryDropdown();
-    setCategories(data || []);
-  };
+
   useEffect(() => {
     fetchData();
-    fetchCategory();
   }, []);
 
   if (loading) {
@@ -142,50 +87,11 @@ const Admin_sayfalar = () => {
         <div className="row admin-genel-row">
           <div className="col-12">
             <div className="row">
-              <div className="col-12 alt-basliklar-admin">Slider İçerikleri</div>
-
-              <div className="col-lg-4 sayfa-icerikleri-flex">
-                <div className="row">
-                  <label className='col-5' htmlFor="image">Slider Görseli</label>
-                  <input className='col-7' type="file" id='image' onChange={handleFileChange} />
-                </div>
-                <div className="row">
-                  <label className='col-5' htmlFor="topTitle">Üst Başlık</label>
-                  <input className='col-7' type="text" id='topTitle' value={topTitle} onChange={(e) => handleInputChange(e, setTopTitle)} />
-                </div>
-                <div className="row">
-                  <label className='col-5' htmlFor="middleTitle">Ana Başlık</label>
-                  <input className='col-7' type="text" id='middleTitle' value={middleTitle} onChange={(e) => handleInputChange(e, setMiddleTitle)} />
-                </div>
-                <div className="row">
-                  <label className='col-5' htmlFor="underTitle">Alt Başlık</label>
-                  <input className='col-7' type="text" id='underTitle' value={underTitle} onChange={(e) => handleInputChange(e, setUnderTitle)} />
-                </div>
-                <div className="row">
-                  <label className='col-5' htmlFor="redirectAddress">Kategori</label>
-                  <select
-                    className="col-7"
-                    id='redirectAddress'
-                    style={{height:"30px"}}
-                    value={redirectAddress}
-                    onChange={(e) => handleInputChange(e, setRedirectAddress)}
-                    >
-                    <option value="">Kategori Seçin</option>
-                    {categories && categories.length > 0 ? (
-                        categories.map((category) => (
-                            <option key={category} value={category}>
-                              {category}
-                            </option>
-                        ))
-                    ) : (
-                        <option disabled>Kategori bulunamadı</option>
-                    )}
-                    </select>
-                </div>
-                <button  onClick={handleSubmit} className='tumunu-gor-btn-admin'>Slider Ekle</button>
+              <div className="row justify-content-between">
+                <div className="col-6 alt-basliklar-admin">Slider İçerikleri</div>
+                <button className="tumunu-gor-btn-admin col-3" onClick={openModal2}>Slider Ekle</button>
               </div>
-
-                <div className="col-lg-8 row sayfa-icerikleri-overflow" style={{padding:'2%'}}>
+                <div className="col-lg-8 row sayfa-icerikleri-overflow" style={{padding:'2% 1%'}}>
                   {sliderData && sliderData.length > 0 ? (
                       sliderData.map((slider, index) => (
                           <div key={index} className="col-12 row sliderlar-card site-icerik-shadow2">
@@ -237,10 +143,11 @@ const Admin_sayfalar = () => {
 
           <div className="row admin-genel-row pt-3" style={{borderTop:'1px solid #000'}}>
           <div className="col-12">
-            <div className=" row" style={{rowGap:'30px'}}>
-              <div className="col-12 alt-basliklar-admin ">Kategori Kartları</div>
-              <div>
-              <button className='tumunu-gor-btn-admin col-12' onClick={openModal} style={{width:'300px', marginTop:'30px'}} >Kategori Kartı Ekle</button>
+            <div className="row" style={{rowGap:'30px'}}>
+
+              <div className="row justify-content-between">
+                <div className="col-6 alt-basliklar-admin">Kategori Kartları</div>
+                <button className="tumunu-gor-btn-admin col-3" onClick={openModal}>Kategori Kartı Ekle</button>
               </div>
 
                 {cartData && cartData.length > 0 ? (
@@ -270,6 +177,13 @@ const Admin_sayfalar = () => {
             setIsModalOpen(b);
           }} />
         )}
+      {isModalOpen2 && (
+          <AddSliderContentPopup
+              popupCloser={(b) => {
+                if (b === false);
+                setIsModalOpen2(b);
+              }} />
+      )}
         <NotificationCard ref={notificationRef} message="" />
       </div>
     )
