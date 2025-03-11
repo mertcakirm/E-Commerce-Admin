@@ -146,41 +146,41 @@ const Admin_anasayfa=()=> {
                   </div>
                 </div>
 
-<div className="col-lg-6 col-12 " style={{padding:'0% 2% 0% 1%'}}>
-  <div className="site-icerik-shadow" style={{paddingBottom:'6%'}}>
-    <h3 className="text-center">Stoğu Azalan Ürünler</h3>
-    <div className="table-responsive scroll-table2 mt-1">
-      <table className="table text-center  table-striped">
-        <thead>
-        <tr>
-          <th scope="col">Ürün Kodu</th>
-          <th scope="col">Ürün Kategorisi</th>
-          <th scope="col">Stok Sayısı</th>
-        </tr>
-        </thead>
-        <tbody>
-        {lowStockProducts.map(product => (
-            <tr onClick={()=>GoProduct(product.id)} style={{cursor:'pointer'}} key={product.id}>
-              <th scope="row">{product.id}</th>
-              <td>{product.name}</td>
-              <td
-                  style={{
-                    color: Object.values(product.stoklar).reduce((acc, curr) => acc + curr, 0) < 10 ? 'red' : 'orange',
-                    fontWeight: '700'
-                  }}
-              >
-                {Object.values(product.stoklar).reduce((acc, curr) => acc + curr, 0)}
-              </td>
-            </tr>
-        ))}
+              <div className="col-lg-6 col-12 " style={{padding:'0% 2% 0% 1%'}}>
+                <div className="site-icerik-shadow" style={{paddingBottom:'6%'}}>
+                  <h3 className="text-center">Stoğu Azalan Ürünler</h3>
+                  <div className="table-responsive scroll-table2 mt-1">
+                    <table className="table text-center  table-striped">
+                      <thead>
+                      <tr>
+                        <th scope="col">Ürün Kodu</th>
+                        <th scope="col">Ürün Kategorisi</th>
+                        <th scope="col">Stok Sayısı</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      {lowStockProducts.map(product => (
+                          <tr onClick={()=>GoProduct(product.id)} style={{cursor:'pointer'}} key={product.id}>
+                            <th scope="row">{product.id}</th>
+                            <td>{product.name}</td>
+                            <td
+                                style={{
+                                  color: Object.values(product.stoklar).reduce((acc, curr) => acc + curr, 0) < 10 ? 'red' : 'orange',
+                                  fontWeight: '700'
+                                }}
+                            >
+                              {Object.values(product.stoklar).reduce((acc, curr) => acc + curr, 0)}
+                            </td>
+                          </tr>
+                      ))}
 
-        </tbody>
-      </table>
-    </div>
+                      </tbody>
+                    </table>
+                  </div>
 
-  </div>
+                </div>
 
-</div>
+              </div>
 
 
             </div>

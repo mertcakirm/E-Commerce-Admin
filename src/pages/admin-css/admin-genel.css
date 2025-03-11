@@ -201,7 +201,10 @@
 .admin-search-inp{
     width: 600px;
     padding-left: 1%;
-    border-radius: 20px;
+    border-radius: 10px;
+    font-size: 18px;
+    border: 1px solid #000;
+    height: 40px!important;
 }
 
 
