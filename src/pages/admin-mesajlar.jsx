@@ -1,26 +1,33 @@
 import { useState } from 'react';
 import Admin_sidebar from '../components/admin-sidebar.jsx';
 import './admin-css/admin-genel.css';
+import ReplyMessagePopup from "../components/child/ReplyMessagePopup.jsx";
 import ProcessPopup from "../components/child/processPopup.jsx";
 
 const Admin_mesajlar = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
-  const [isProcessPopupOpen, setProcessIsPopupOpen] = useState(false);
+  const [popupOpen, setPopupOpen] = useState(false);
   const [messages] = useState([
     { email: 'furkangeren@gmail.com', subject: 'Üyelik İşlemleri', message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, fuga quidem officia illum commodi maiores quis similique numquam nobis beatae, dignissimos eligendi omnis at aperiam impedit accusantium id nulla tenetur.', answered: true },
     { email: 'furkangeren@gmail.com', subject: 'Üyelik İşlemleri', message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, fuga quidem officia illum commodi maiores quis similique numquam nobis beatae, dignissimos eligendi omnis at aperiam impedit accusantium id nulla tenetur.', answered: true },
-    { email: 'furkangeren@gmail.com', subject: 'Üyelik İşlemleri', message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, fuga quidem officia illum commodi maiores quis similique numquam nobis beatae, dignissimos eligendi omnis at aperiam impedit accusantium id nulla tenetur.', answered: true },
-    { email: 'furkangeren@gmail.com', subject: 'Üyelik İşlemleri', message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, fuga quidem officia illum commodi maiores quis similique numquam nobis beatae, dignissimos eligendi omnis at aperiam impedit accusantium id nulla tenetur.', answered: true },
+    { email: 'furkangeren@gmail.com', subject: 'Üyelik İşlemleri', message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, fuga quidem officia illum commodi maiores quis similique numquam nobis beatae, dignissimos eligendi omnis at aperiam impedit accusantium id nulla tenetur.', answered: false },
+    { email: 'furkangeren@gmail.com', subject: 'Üyelik İşlemleri', message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, fuga quidem officia illum commodi maiores quis similique numquam nobis beatae, dignissimos eligendi omnis at aperiam impedit accusantium id nulla tenetur.', answered: false },
     { email: 'furkangeren@gmail.com', subject: 'Üyelik İşlemleri', message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, fuga quidem officia illum commodi maiores quis similique numquam nobis beatae, dignissimos eligendi omnis at aperiam impedit accusantium id nulla tenetur.', answered: true }
-  ]); 
+  ]);
+  const [isProcessPopupOpen, setProcessIsPopupOpen] = useState(false);
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentMessages = messages.slice(indexOfFirstItem, indexOfLastItem);
+
   const toggleProcessPopup = () => {
     setProcessIsPopupOpen(!isProcessPopupOpen);
   };
+  const togglePopup = () => {
+    setPopupOpen(!popupOpen);
+  };
+
   return (
     <div>
       <Admin_sidebar />
@@ -45,10 +52,10 @@ const Admin_mesajlar = () => {
                     <td>{message.subject}</td>
                     <td><p className='admin-mesajlar-mesaj'>{message.message}</p></td>
                     <td><span className='green'>{message.answered ? 'Evet' : 'Hayır'}</span></td>
-                    <td>
-                      <div style={{display: 'flex', height: '100%'}}>
-                        <textarea name="admin-mesaj-cevap" id="admin-mesaj-cevap" placeholder='Mesaj Cevabı'></textarea>
-                        <button className='siparis-durumu-btn' onClick={toggleProcessPopup}>Mesajı Gönder</button>
+                    <td style={{position:'relative',width:'200px'}}>
+                      <div style={{display: 'flex',position:'absolute',width:'100%', height: '100%',alignItems: 'center',top:'0',left:'0'}}>
+                        {message.answered ? '' : <button className='answer-message-btn ' onClick={togglePopup}>Mesajı Cevapla</button>}
+
                       </div>
                     </td>
                   </tr>
@@ -62,6 +69,20 @@ const Admin_mesajlar = () => {
           </div>
         </div>
       </div>
+      {popupOpen && (
+          <ReplyMessagePopup
+              popupCloser={(b) => {
+                if (b === false) setPopupOpen(b);
+              }}
+              id="1"
+              processReady={(b)=>{
+                if(b===true){
+                  toggleProcessPopup();
+                }
+              }}
+          />
+      )}
+
       {isProcessPopupOpen && (
           <ProcessPopup
               onClose={(b) => {
