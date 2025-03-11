@@ -95,7 +95,6 @@
     font-size: 20px;
     text-align: center;
     transition: .6s;
-
 }
 
 .tumunu-gor-btn-admin:hover{
@@ -199,7 +198,6 @@
 }
 
 .admin-search-inp{
-    width: 600px;
     padding-left: 1%;
     border-radius: 10px;
     font-size: 18px;

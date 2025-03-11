@@ -84,7 +84,7 @@ const Admin_users = () => {
             <p>Kullanıcı Listesi</p>
             <input
               type="text"
-              className="admin-search-inp"
+              className="admin-search-inp col-3"
               placeholder="Ara..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}

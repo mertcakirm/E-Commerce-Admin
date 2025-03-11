@@ -26,7 +26,7 @@ const Admin_kampanyalar =()=> {
                             <div className="col-12 row mb-5" style={{rowGap:'30px',height:'fit-content'}}>
                                 <h3 className="col-6">Kampanya Listesi</h3>
                                 <div className="col-6 row justify-content-end">
-                                    <button onClick={togglePopup} className='tumunu-gor-btn-admin col-6'>Kampanya Ekle</button>
+                                    <button onClick={togglePopup} className='tumunu-gor-btn-admin col-4'>Kampanya Ekle</button>
                                 </div>
                             </div>
 

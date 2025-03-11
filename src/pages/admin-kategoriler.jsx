@@ -82,7 +82,7 @@ const Admin_kategoriler = () => {
             <input
               type="text"
               placeholder="Ara..."
-              className="admin-search-inp col-6"
+              className="admin-search-inp col-3"
               value={searchTerm}
               onChange={handleSearch}
             />

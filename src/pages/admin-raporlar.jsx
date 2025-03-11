@@ -58,8 +58,8 @@ const Admin_raporlar = () => {
               </table>
 
             <div className="row col-12 px-3 justify-content-between">
-              <button className="tumunu-gor-btn-admin col-2" onClick={() => setCurrentPage(currentPage - 1)}>Geri</button>
-              <button className="tumunu-gor-btn-admin col-2" onClick={() => setCurrentPage(currentPage + 1)}>İleri</button>
+              <button className="tumunu-gor-btn-admin col-1" onClick={() => setCurrentPage(currentPage - 1)}>Geri</button>
+              <button className="tumunu-gor-btn-admin col-1" onClick={() => setCurrentPage(currentPage + 1)}>İleri</button>
             </div>
         </div>
       </div>

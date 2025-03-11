@@ -89,7 +89,7 @@ const Admin_sayfalar = () => {
             <div className="row">
               <div className="row justify-content-between">
                 <div className="col-6 alt-basliklar-admin">Slider İçerikleri</div>
-                <button className="tumunu-gor-btn-admin col-3" onClick={openModal2}>Slider Ekle</button>
+                <button className="tumunu-gor-btn-admin col-2" onClick={openModal2}>Slider Ekle</button>
               </div>
                 <div className="col-lg-8 row sayfa-icerikleri-overflow" style={{padding:'2% 1%'}}>
                   {sliderData && sliderData.length > 0 ? (
@@ -147,7 +147,7 @@ const Admin_sayfalar = () => {
 
               <div className="row justify-content-between">
                 <div className="col-6 alt-basliklar-admin">Kategori Kartları</div>
-                <button className="tumunu-gor-btn-admin col-3" onClick={openModal}>Kategori Kartı Ekle</button>
+                <button className="tumunu-gor-btn-admin col-2" onClick={openModal}>Kategori Kartı Ekle</button>
               </div>
 
                 {cartData && cartData.length > 0 ? (
