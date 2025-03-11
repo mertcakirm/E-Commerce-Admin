@@ -54,14 +54,14 @@ const Admin_aktif_siparis = () => {
                     </td>
                     <td>
                       <p>Şuanki sipariş durumu: <span className='green'>{order.status}</span></p>
-                      <select style={{marginRight: '5px', height: '35px'}} name="siparis-durumu-admin" id="siparis-durumu-admin">
+                      <select style={{marginRight: '5px'}} name="siparis-durumu-admin" id="siparis-durumu-admin">
                         <option value="">Seçim Yapın</option>
                         <option value="Onaylandı">Onaylandı</option>
                         <option value="Hazırlanıyor">Hazırlanıyor</option>
                         <option value="Yolda">Yolda</option>
                         <option value="Teslim edildi">Teslim edildi</option>
                       </select>
-                      <button className='siparis-durumu-btn' onClick={toggleProcessPopup}>Güncelle</button>
+                      <button className='answer-message-btn' onClick={toggleProcessPopup}>Güncelle</button>
                     </td>
                   </tr>
               ))}

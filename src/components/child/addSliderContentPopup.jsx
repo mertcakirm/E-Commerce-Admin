@@ -97,12 +97,12 @@ const AddSliderContentPopup = ({ popupCloser }) => {
                         &times;
                     </button>
                 </div>
-                <div className="form-group row row-gap-4 justify-content-around align-items-center mt-4">
+                <div className="form-group row row-gap-4 justify-content-center column-gap-1 align-items-center mt-4">
                     <input
                         type="text"
                         name="topTitle"
-                        className="popup-inp col-5"
-                        placeholder="Kampanya Başlığı"
+                        className="popup-inp col-12"
+                        placeholder="Kampanya Üst Başlığı"
                         value={popUpData.topTitle}
                         onChange={handleChange}
                         required
@@ -110,8 +110,8 @@ const AddSliderContentPopup = ({ popupCloser }) => {
                     <input
                         type="text"
                         name="middleTitle"
-                        className="popup-inp col-5"
-                        placeholder="Kampanya Orta Başlık"
+                        className="popup-inp col-12"
+                        placeholder="Kampanya Orta Başlığı"
                         value={popUpData.middleTitle}
                         onChange={handleChange}
                         required
@@ -119,16 +119,15 @@ const AddSliderContentPopup = ({ popupCloser }) => {
                     <input
                         type="text"
                         name="underTitle"
-                        className="popup-inp col-5"
-                        placeholder="Kampanya Alt Başlık"
+                        className="popup-inp col-12"
+                        placeholder="Kampanya Alt Başlığı"
                         value={popUpData.underTitle}
                         onChange={handleChange}
                         required
                     />
                     <select
-                        className="col-5"
+                        className="col-12"
                         id="redirectAddress"
-                        style={{ height: "30px" }}
                         name="redirectAddress"
                         value={popUpData.redirectAddress}
                         onChange={handleChange}

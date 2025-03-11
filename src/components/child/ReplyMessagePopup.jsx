@@ -19,7 +19,7 @@ const ReplyMessagePopup = ({ popupCloser,id,processReady}) => {
                     </button>
                 </div>
                 <div className="form-group row row-gap-4  justify-content-around align-items-center mt-4">
-                    <textarea className="col-12 popup-inp" style={{height:'200px' ,resize:'none'}} placeholder="Mesaj cevabını yazınız..."></textarea>
+                    <textarea className="col-12 popup-inp" style={{height:'200px' ,resize:'none'}}  placeholder="Mesaj cevabını yazınız..." ></textarea>
 
 
                     <div className="row justify-content-between align-items-center">

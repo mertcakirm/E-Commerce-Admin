@@ -9,7 +9,7 @@ const AddCartPopup = ({ popupCloser }) => {
         cartImage: "",
         cartName: "",
         cartCategory: "",
-        cartSize: "Tam"
+        cartSize: ""
     });
 
     const notificationRef = useRef(null);
@@ -107,7 +107,7 @@ const AddCartPopup = ({ popupCloser }) => {
                 </div>
                 <div className='row mt-3' style={{ rowGap: '30px' }}>
                     <input
-                        className='col-12'
+                        className='col-12 popup-inp'
                         type="text"
                         placeholder="Kart Adı"
                         name="cartName"
@@ -137,6 +137,7 @@ const AddCartPopup = ({ popupCloser }) => {
                         value={cartData.cartSize}
                         onChange={handleInputChange}
                     >
+                        <option value="">Boyut Seçin</option>
                         <option value="Tam">Full</option>
                         <option value="Yarım">Yarım</option>
                         <option value="1/3">1/3</option>
