@@ -608,7 +608,7 @@ outline: none;
 }
 
 .table {
-    --bs-table-striped-bg: rgb(205, 231, 255) !important;
+    --bs-table-striped-bg: rgba(200, 224, 248, 0.2) !important;
 }
 
 .drop-zone {

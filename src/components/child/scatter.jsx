@@ -1,12 +1,9 @@
-import React from "react";
 import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend } from "chart.js";
 
-// Gerekli bileşenleri kaydet
 ChartJS.register(BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend);
 
 const BarChart = ({type,title}) => {
-    // Grafik verisi
     const data = {
         labels: ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs","Haziran","Temmuz","Ağustos","Eylül","Ekim","Kasım","Aralık"],
         datasets: [
@@ -20,7 +17,6 @@ const BarChart = ({type,title}) => {
         ],
     };
 
-    // Grafik seçenekleri
     const options = {
         responsive: true,
         plugins: {
@@ -34,13 +30,13 @@ const BarChart = ({type,title}) => {
         scales: {
             x: {
                 grid: {
-                    display: false, // X ekseni çizgilerini kaldır
+                    display: false,
                 },
             },
             y: {
                 beginAtZero: true,
                 grid: {
-                    display: true, // Y ekseni çizgilerini göster
+                    display: true,
                 },
             },
         },

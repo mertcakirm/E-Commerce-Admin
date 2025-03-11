@@ -1,5 +1,5 @@
 import '../pages/admin-css/admin-sidebar.css';
-import logo from '../assets/mob_logo.png';
+import logo from '../assets/white_logo.png';
 import { useNavigate } from 'react-router-dom';
 const Admin_sidebar=()=> {
   
