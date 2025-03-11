@@ -2,11 +2,13 @@ import { useState } from 'react';
 import Admin_sidebar from '../components/admin-sidebar.jsx';
 import './admin-css/admin-genel.css';
 import ProcessPopup from "../components/child/processPopup.jsx";
+import LastOrdersPopup from "../components/child/LastOrdersPopup.jsx";
 
 const Admin_aktif_siparis = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
   const [isProcessPopupOpen, setProcessIsPopupOpen] = useState(false);
+  const [isLastOrdersPopupOpen, setLastOrdersIsPopupOpen] = useState(false);
   const [orders, setOrders] = useState([
     { id: 1, name: 'Furkan Geren', address: 'Şehitler Tepesi Mah. 3686 sokak Salkım evleri sitesi ablok kat 4 no 10', phone: '05237236273', payment: true, status: 'Hazırlanıyor' },
     { id: 2, name: 'Furkan Geren', address: 'Şehitler Tepesi Mah. 3686 sokak Salkım evleri sitesi ablok kat 4 no 10', phone: '05237236273', payment: true, status: 'Hazırlanıyor' },
@@ -25,12 +27,19 @@ const Admin_aktif_siparis = () => {
   const toggleProcessPopup = () => {
     setProcessIsPopupOpen(!isProcessPopupOpen);
   };
+
+  const toggleLastOrdersPopup = () => {
+    setLastOrdersIsPopupOpen(!isLastOrdersPopupOpen);
+  };
   return (
     <div>
       <Admin_sidebar />
       <div className="admin-sag-container">
         <div className="row admin-genel-row">
-          <div className="col-12 alt-basliklar-admin">Aktif Sipariş Listesi</div>
+            <div className="col-12 row justify-content-between align-items-center">
+              <p className="alt-basliklar-admin col-6">Aktif Sipariş Listesi</p>
+              <button className="tumunu-gor-btn-admin col-2" onClick={toggleLastOrdersPopup}>Geçmiş Siparişler</button>
+            </div>
           <div className="table-responsive">
             <table className="table mt-3 table-striped">
               <thead>
@@ -52,16 +61,16 @@ const Admin_aktif_siparis = () => {
                     <td>{order.phone}</td>
                     <td><span className='green' style={{fontWeight: '600'}}>{order.payment ? 'Evet' : 'Hayır'}</span>
                     </td>
-                    <td>
-                      <p>Şuanki sipariş durumu: <span className='green'>{order.status}</span></p>
-                      <select style={{marginRight: '5px'}} name="siparis-durumu-admin" id="siparis-durumu-admin">
+                    <td style={{width:'400px'}} className="row justify-content-center align-items-center">
+                      <p className="col-12">Şuanki sipariş durumu: <span className='green'>{order.status}</span></p>
+                      <select className="col-6" style={{marginRight: '5px'}} name="siparis-durumu-admin" id="siparis-durumu-admin">
                         <option value="">Seçim Yapın</option>
                         <option value="Onaylandı">Onaylandı</option>
                         <option value="Hazırlanıyor">Hazırlanıyor</option>
                         <option value="Yolda">Yolda</option>
                         <option value="Teslim edildi">Teslim edildi</option>
                       </select>
-                      <button className='answer-message-btn' onClick={toggleProcessPopup}>Güncelle</button>
+                      <button className='answer-message-btn col-5' onClick={toggleProcessPopup}>Güncelle</button>
                     </td>
                   </tr>
               ))}
@@ -85,6 +94,14 @@ const Admin_aktif_siparis = () => {
               id="1"
           />
       )}
+      {isLastOrdersPopupOpen && (
+          <LastOrdersPopup
+              popupCloser={(b) => {
+                if (b === false) setLastOrdersIsPopupOpen(b);
+              }}
+          />
+      )}
+
     </div>
   );
 }
