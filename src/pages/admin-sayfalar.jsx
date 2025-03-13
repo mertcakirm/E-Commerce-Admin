@@ -10,6 +10,8 @@ import {
 import {NotificationCard, showNotification} from "../components/notification.jsx";
 import AddCartPopup from "../components/child/addCartPopup.jsx";
 import AddSliderContentPopup from "../components/child/addSliderContentPopup.jsx";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const Admin_sayfalar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -64,6 +66,7 @@ const Admin_sayfalar = () => {
 
 
   useEffect(() => {
+    AOS.init({ duration: 500 });
     fetchData();
   }, []);
 
@@ -83,7 +86,7 @@ const Admin_sayfalar = () => {
   return (
     <div>
       <Admin_sidebar />
-      <div className="admin-sag-container">
+      <div className="admin-sag-container" data-aos="fade-in">
         <div className="row admin-genel-row">
           <div className="col-12">
             <div className="row">

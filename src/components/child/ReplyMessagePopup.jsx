@@ -1,4 +1,6 @@
-
+import AOS from "aos";
+import "aos/dist/aos.css";
+import {useEffect} from "react";
 const ReplyMessagePopup = ({ popupCloser,id,processReady}) => {
 
 
@@ -9,9 +11,14 @@ const ReplyMessagePopup = ({ popupCloser,id,processReady}) => {
 
     };
 
+    useEffect(() => {
+        AOS.init({ duration: 500 });
+    }, []);
+
+
     return (
         <div className="popup-overlay">
-            <div className="popup-content" style={{ width: "600px" }}>
+            <div className="popup-content" data-aos="zoom-in" style={{ width: "600px" }}>
                 <div className="popup-header">
                     <h2>Mesaj Gönder</h2>
                     <button className="popup-close-btn" onClick={() => popupCloser(false)}>

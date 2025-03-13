@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import Admin_sidebar from '../components/admin-sidebar.jsx';
 import './admin-css/admin-genel.css';
 import ProcessPopup from "../components/child/processPopup.jsx";
 import LastOrdersPopup from "../components/child/LastOrdersPopup.jsx";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const Admin_aktif_siparis = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -15,7 +17,7 @@ const Admin_aktif_siparis = () => {
     { id: 3, name: 'Furkan Geren', address: 'Şehitler Tepesi Mah. 3686 sokak Salkım evleri sitesi ablok kat 4 no 10', phone: '05237236273', payment: true, status: 'Hazırlanıyor' },
     { id: 4, name: 'Furkan Geren', address: 'Şehitler Tepesi Mah. 3686 sokak Salkım evleri sitesi ablok kat 4 no 10', phone: '05237236273', payment: false, status: 'Hazırlanıyor' },
     { id: 5, name: 'Furkan Geren', address: 'Şehitler Tepesi Mah. 3686 sokak Salkım evleri sitesi ablok kat 4 no 10', phone: '05237236273', payment: true, status: 'Hazırlanıyor' },
-    { id: 5, name: 'Furkan Geren', address: 'Şehitler Tepesi Mah. 3686 sokak Salkım evleri sitesi ablok kat 4 no 10', phone: '05237236273', payment: true, status: 'Hazırlanıyor' }
+    { id: 6, name: 'Furkan Geren', address: 'Şehitler Tepesi Mah. 3686 sokak Salkım evleri sitesi ablok kat 4 no 10', phone: '05237236273', payment: true, status: 'Hazırlanıyor' }
   ]);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -31,10 +33,15 @@ const Admin_aktif_siparis = () => {
   const toggleLastOrdersPopup = () => {
     setLastOrdersIsPopupOpen(!isLastOrdersPopupOpen);
   };
+
+  useEffect(() => {
+    AOS.init({ duration: 500 });
+  }, []);
+
   return (
     <div>
       <Admin_sidebar />
-      <div className="admin-sag-container">
+      <div className="admin-sag-container" data-aos="fade-in">
         <div className="row admin-genel-row">
             <div className="col-12 row justify-content-between align-items-center">
               <p className="alt-basliklar-admin col-6">Aktif Sipariş Listesi</p>

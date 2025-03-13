@@ -1,4 +1,6 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const AddOfferPopup = ({ popupCloser }) => {
     const [popUpData, setPopUpData] = useState({
@@ -47,9 +49,13 @@ const AddOfferPopup = ({ popupCloser }) => {
         popupCloser(false);
     };
 
+    useEffect(() => {
+        AOS.init({ duration: 500 });
+    }, []);
+
     return (
         <div className="popup-overlay">
-            <div className="popup-content" style={{ width: "600px" }}>
+            <div className="popup-content" data-aos="zoom-in" style={{ width: "600px" }}>
                 <div className="popup-header">
                     <h2>Kampanya Ekle</h2>
                     <button className="popup-close-btn" onClick={() => popupCloser(false)}>

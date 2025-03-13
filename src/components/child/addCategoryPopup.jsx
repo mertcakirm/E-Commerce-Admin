@@ -1,5 +1,7 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { addCategory } from "../../pages/api/kategoriapi.js";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const convertImageToBase64 = (file) => {
     return new Promise((resolve, reject) => {
@@ -26,6 +28,10 @@ const AddCategoryPopup = ({ popupCloser, reloadPageCat }) => {
             setNewCategoryType(value);
         }
     };
+
+    useEffect(() => {
+        AOS.init({ duration: 500 });
+    }, []);
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -75,7 +81,7 @@ const AddCategoryPopup = ({ popupCloser, reloadPageCat }) => {
 
     return (
         <div className="popup-overlay">
-            <div className="popup-content" style={{ width: "600px" }}>
+            <div className="popup-content" data-aos="zoom-in" style={{ width: "600px" }}>
                 <div className="popup-header">
                     <h2>Kategori Ekle</h2>
                     <button className="popup-close-btn" onClick={() => popupCloser(false)}>&times;</button>

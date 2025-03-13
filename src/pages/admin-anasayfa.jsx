@@ -4,7 +4,8 @@ import PieChart from "../components/child/chart.jsx";
 import BarChart from "../components/child/scatter.jsx";
 import {useEffect, useState} from "react";
 import {formatLocalDate} from "../components/child/LocalDateFormat.js";
-
+import AOS from "aos";
+import "aos/dist/aos.css";
 const Admin_anasayfa=()=> {
   const [time, setTime] = useState("?");
   const productsData = [
@@ -50,6 +51,7 @@ const Admin_anasayfa=()=> {
       const split = localTime.split(":");
       setTime(split[0] + ":" + split[1]);
     }, 1000);
+    AOS.init({ duration: 500 });
 
     return () => clearInterval(timer);
   }, []);
@@ -62,7 +64,7 @@ const Admin_anasayfa=()=> {
       <div>
         <Admin_sidebar />
         <div className="admin-sag-container">
-            <div className="row admin-genel-row">
+            <div className="row admin-genel-row" data-aos="fade-up">
 
               <div className="col-lg-6 justify-content-center col-12 m-0 row">
                 <div className="row site-icerik-shadow" style={{height:'fit-content',padding:'50px 0px 100px 30px'}} >

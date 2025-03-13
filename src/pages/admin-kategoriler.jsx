@@ -3,9 +3,9 @@ import Admin_sidebar from '../components/admin-sidebar.jsx';
 import { fetchCategories, addCategory, deleteCategory } from './api/kategoriapi';
 import {NotificationCard, showNotification} from "../components/notification.jsx";
 import LoadingComp from "../components/child/Loading.jsx";
-import AddProductPopup from "../components/child/AddProductPopup.jsx";
 import AddCategoryPopup from "../components/child/addCategoryPopup.jsx";
-
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 
 const Admin_kategoriler = () => {
@@ -29,6 +29,7 @@ const Admin_kategoriler = () => {
   };
 
   useEffect(() => {
+    AOS.init({ duration: 500 });
     getCategories();
 
   }, []);
@@ -77,7 +78,7 @@ const Admin_kategoriler = () => {
     <div>
       <Admin_sidebar />
       <div className="admin-sag-container">
-        <div className="row px-4 justify-content-between align-items-center row-gap-3 admin-genel-row">
+        <div className="row px-4 justify-content-between align-items-center row-gap-3 admin-genel-row" data-aos="fade-in">
           <div className="col-12  alt-basliklar-admin">Kategori Listesi</div>
             <input
               type="text"

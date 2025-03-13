@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { addSlider } from "../../pages/api/sayfalarapi.js";
 import { categoryDropdown } from "../../pages/api/kategoriapi.js";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const AddSliderContentPopup = ({ popupCloser }) => {
     const [sliderImage, setSliderImage] = useState(""); // Resim dosyasını string olarak tutacak
@@ -73,6 +75,7 @@ const AddSliderContentPopup = ({ popupCloser }) => {
     };
 
     useEffect(() => {
+        AOS.init({ duration: 500 });
         fetchCategory();
     }, []);
 
@@ -87,7 +90,7 @@ const AddSliderContentPopup = ({ popupCloser }) => {
 
     return (
         <div className="popup-overlay">
-            <div className="popup-content" style={{ width: "600px" }}>
+            <div className="popup-content" data-aos="zoom-in" style={{ width: "600px" }}>
                 <div className="popup-header">
                     <h2>Slider Ekle</h2>
                     <button

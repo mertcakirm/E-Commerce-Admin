@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import {useEffect, useState} from 'react'
 import Admin_sidebar from '../components/admin-sidebar.jsx';
 import './admin-css/admin-genel.css'
 import AddOfferPopUp from "../components/child/AddOfferPopUp.jsx";
 import ProcessPopup from "../components/child/processPopup.jsx";
-
+import AOS from "aos";
+import "aos/dist/aos.css";
 const Admin_kampanyalar =()=> {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [isProcessPopupOpen, setProcessIsPopupOpen] = useState(false);
@@ -15,12 +16,14 @@ const Admin_kampanyalar =()=> {
     const toggleProcessPopup = () => {
         setProcessIsPopupOpen(!isProcessPopupOpen);
     };
-
+    useEffect(() => {
+        AOS.init({ duration: 500 });
+    }, []);
     return (
       <div>
         <Admin_sidebar />
           <div className="admin-sag-container">
-                 <div className="row pt-5">
+                 <div className="row pt-5" data-aos="fade-in">
                     <div className="col-12">
                         <div className="row">
                             <div className="col-12 row mb-5" style={{rowGap:'30px',height:'fit-content'}}>
@@ -58,29 +61,30 @@ const Admin_kampanyalar =()=> {
                             </div>
 
 
-                            {isPopupOpen && (
-                                <AddOfferPopUp
-                                    popupCloser={(b) => {
-                                        if (b === false) setIsPopupOpen(b);
-                                    }}
-                                />
-                            )}
 
-                            {isProcessPopupOpen && (
-                                <ProcessPopup
-                                    onClose={(b) => {
-                                        if (b === false) setProcessIsPopupOpen(b);
-                                    }}
-                                    text="Kampanya öğesini silmek istediğinize emin misiniz?"
-                                    acceptedText="Silme işlemi onaylandı"
-                                    type="offer_delete"
-                                    id="1"
-                                />
-                            )}
                         </div>
                     </div>
                 </div>
           </div>
+          {isPopupOpen && (
+              <AddOfferPopUp
+                  popupCloser={(b) => {
+                      if (b === false) setIsPopupOpen(b);
+                  }}
+              />
+          )}
+
+          {isProcessPopupOpen && (
+              <ProcessPopup
+                  onClose={(b) => {
+                      if (b === false) setProcessIsPopupOpen(b);
+                  }}
+                  text="Kampanya öğesini silmek istediğinize emin misiniz?"
+                  acceptedText="Silme işlemi onaylandı"
+                  type="offer_delete"
+                  id="1"
+              />
+          )}
       </div>
     )
 }

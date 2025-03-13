@@ -8,6 +8,8 @@ import {
 import {NotificationCard, showNotification} from "../components/notification.jsx";
 import AddProductPopup from "../components/child/AddProductPopup.jsx";
 import LoadingComp from "../components/child/Loading.jsx";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const Admin_product = () => {
   const [products, setProducts] = useState([]);
@@ -22,7 +24,9 @@ const Admin_product = () => {
   const [reloadPage,setReloadPage]=useState(false);
   const productsPerPage = 10;
 
-
+  useEffect(() => {
+    AOS.init({ duration: 500 });
+  }, []);
 
   const fetchData = async () => {
       const data = await fetchProducts(pageNum);
@@ -117,7 +121,7 @@ const Admin_product = () => {
     <div>
       <Admin_sidebar />
       <div className="admin-sag-container">
-        <div className="row admin-genel-row">
+        <div className="row admin-genel-row" data-aos="fade-in">
           <div className="col-12 justify-content-between row alt-basliklar-admin">
             <p className="col-12">Ürün Listesi</p>
             <input

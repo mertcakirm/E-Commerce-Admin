@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import {useEffect, useState} from 'react'
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/mob_logo.png';
 import './admin-css/admin-login.css';
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const Admin_login = () => {
   const [email, setEmail] = useState('');
@@ -36,13 +38,16 @@ const Admin_login = () => {
       setErrorMessage("Giriş başarısız: Şifre Yanlış.");
     }
   };
+  useEffect(() => {
+    AOS.init({ duration: 500 });
+  }, []);
 
   return (
     <div className='admin-bg'>
       <div className="container">
         <div className="row">
           <div className="col-12">
-            <form className='form-admin' onSubmit={handleSubmit}>
+            <div className='form-admin' data-aos="fade-up">
               <img src={logo} className='logo2' alt="logo" />
               {errorMessage && (
                 <div className="alert alert-danger" role="alert">
@@ -67,8 +72,8 @@ const Admin_login = () => {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-              <button className='giris-yap-btn' type="submit">Giriş Yap</button>
-            </form>
+              <button onClick={handleSubmit} className='giris-yap-btn'>Giriş Yap</button>
+            </div>
           </div>
         </div>
       </div>

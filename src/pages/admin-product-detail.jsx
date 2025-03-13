@@ -5,6 +5,8 @@ import './admin-css/admin-genel.css';
 import { deleteProductImage, fetchProductDetail,updateProduct } from './api/product-detailapi';
 import {NotificationCard, showNotification} from "../components/notification.jsx";
 import LoadingComp from "../components/child/Loading.jsx";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const Admin_product_detail = () => {
     const [product, setProduct] = useState(null);
@@ -18,6 +20,10 @@ const Admin_product_detail = () => {
     const notificationRef=useRef(null)
     const location = useLocation();
     const urlpop = location.pathname.split('/').pop();
+
+    useEffect(() => {
+        AOS.init({ duration: 500 });
+    }, []);
 
     useEffect(() => {
             fetchProductDetail(urlpop)
@@ -97,7 +103,7 @@ const Admin_product_detail = () => {
         <div>
             <Admin_sidebar />
             <div className="admin-sag-container">
-                <div className="row admin-genel-row">
+                <div className="row admin-genel-row" data-aos="fade-in">
                     <div className="site-icerik-shadow col-12 row urun-detay-row">
                         <div className="col-lg-5">
                             <input 

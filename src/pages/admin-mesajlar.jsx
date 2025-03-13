@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useEffect,useState } from 'react';
 import Admin_sidebar from '../components/admin-sidebar.jsx';
 import './admin-css/admin-genel.css';
 import ReplyMessagePopup from "../components/child/ReplyMessagePopup.jsx";
 import ProcessPopup from "../components/child/processPopup.jsx";
-
+import AOS from "aos";
+import "aos/dist/aos.css";
 const Admin_mesajlar = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
@@ -27,12 +28,14 @@ const Admin_mesajlar = () => {
   const togglePopup = () => {
     setPopupOpen(!popupOpen);
   };
-
+  useEffect(() => {
+    AOS.init({ duration: 500 });
+  }, []);
   return (
     <div>
       <Admin_sidebar />
       <div className="admin-sag-container">
-        <div className="row admin-genel-row">
+        <div className="row admin-genel-row" data-aos="fade-in">
           <div className="col-12 alt-basliklar-admin">Mesaj Listesi</div>
           <div className="table-responsive">
             <table className="table table-striped">

@@ -1,9 +1,17 @@
+import AOS from "aos";
+import "aos/dist/aos.css";
+import {useEffect} from "react";
+
 const LastOrdersPopup = ({popupCloser}) => {
+
+    useEffect(() => {
+        AOS.init({ duration: 500 });
+    }, []);
 
 
     return (
         <div className="popup-overlay">
-            <div className="popup-content" style={{ width: "1200px" ,maxHeight: "800px" }}>
+            <div className="popup-content"  data-aos="zoom-in" style={{ width: "1200px" ,maxHeight: "800px" }}>
                 <div className="popup-header">
                     <h2>Geçmiş Siparişler Listesi</h2>
                     <button className="popup-close-btn" onClick={() => popupCloser(false)}>

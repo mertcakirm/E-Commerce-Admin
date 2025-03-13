@@ -1,6 +1,10 @@
 import '../pages/admin-css/admin-sidebar.css';
 import logo from '../assets/white_logo.png';
 import { useNavigate } from 'react-router-dom';
+import {useEffect} from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
+
 const Admin_sidebar=()=> {
   
   const navigate = useNavigate();
@@ -10,10 +14,12 @@ const Admin_sidebar=()=> {
     navigate('/');
   };
   const url = window.location.pathname.split("/").filter(Boolean).pop();
-
+  useEffect(() => {
+    AOS.init({ duration: 500 });
+  }, []);
     return (
       <div>
-        <div className="admin-sidebar-parent">
+        <div className="admin-sidebar-parent" data-aos="fade-in">
           <div className='admin-sidebar-logo-part'>
             <img src={logo} className='img-fluid logo' alt="" />
           </div>

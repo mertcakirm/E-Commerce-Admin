@@ -3,6 +3,8 @@ import Admin_sidebar from "../components/admin-sidebar.jsx";
 import "./admin-css/admin-genel.css";
 import { getAllUsers, toggleUserActivity as toggleUserActivityAPI } from "./api/userapi";
 import {NotificationCard, showNotification} from "../components/notification.jsx";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const Admin_users = () => {
   const [usersData, setUsersData] = useState([]);
@@ -12,6 +14,9 @@ const Admin_users = () => {
   const usersPerPage = 10;
   const notificationRef=useRef(null)
 
+  useEffect(() => {
+    AOS.init({ duration: 500 });
+  }, []);
 
   const getUser = async () => {
     try {
@@ -78,7 +83,7 @@ const Admin_users = () => {
   return (
     <div>
       <Admin_sidebar />
-      <div className="admin-sag-container">
+      <div className="admin-sag-container" data-aos="fade-in">
         <div className="row admin-genel-row">
           <div className="col-12 alt-basliklar-admin">
             <p>Kullanıcı Listesi</p>

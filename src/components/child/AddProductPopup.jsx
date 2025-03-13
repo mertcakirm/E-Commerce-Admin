@@ -1,7 +1,8 @@
 import {useEffect, useState} from "react";
 import {categoryDropdown} from "../../pages/api/kategoriapi.js";
 import {addProduct} from "../../pages/api/productapi.js";
-import {showNotification} from "../notification.jsx";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const AddProductPopup = ({ popupCloser, reload }) => {
     const [productData, setProductData] = useState({
@@ -31,8 +32,11 @@ const AddProductPopup = ({ popupCloser, reload }) => {
     };
 
     useEffect(() => {
+        AOS.init({ duration: 500 });
+
         getDropdown();
     }, []);
+
 
     const convertImageToBase64 = (file) => {
         return new Promise((resolve, reject) => {
@@ -142,7 +146,7 @@ const AddProductPopup = ({ popupCloser, reload }) => {
 
     return (
         <div className="popup-overlay">
-            <div className="popup-content" style={{ width: "1200px" }}>
+            <div className="popup-content" data-aos="zoom-in" style={{ width: "1200px" }}>
                 <div className="popup-header">
                     <div></div>
                     <button className="popup-close-btn" onClick={() => popupCloser(false)}>

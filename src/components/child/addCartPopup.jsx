@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { categoryDropdown } from "../../pages/api/kategoriapi.js";
 import { addCart } from "../../pages/api/sayfalarapi.js";
 import { NotificationCard, showNotification } from "../notification.jsx";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const AddCartPopup = ({ popupCloser }) => {
     const [categories, setCategories] = useState([]);
@@ -20,6 +22,8 @@ const AddCartPopup = ({ popupCloser }) => {
             const data = await categoryDropdown();
             setCategories(data || []);
         };
+        AOS.init({ duration: 500 });
+
         fetchCategory();
     }, []);
 
@@ -98,9 +102,12 @@ const AddCartPopup = ({ popupCloser }) => {
         }
     };
 
+
+
+
     return (
-        <div className="modal-overlay">
-            <div className="modal-content">
+        <div className="modal-overlay" >
+            <div className="modal-content" data-aos="zoom-in">
                 <div className="model-header">
                     <h3>Kategori Kartı Ekle</h3>
                     <button className="popup-close-btn" onClick={() => popupCloser(false)}>&times;</button>
