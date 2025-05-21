@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
-import { categoryDropdown } from "../../pages/api/kategoriapi.js";
-import { addCart } from "../../pages/api/sayfalarapi.js";
-import { NotificationCard, showNotification } from "../notification.jsx";
+import {useEffect, useRef, useState} from 'react';
+import {categoryDropdown} from "../../pages/api/kategoriapi.js";
+import {addCart} from "../../pages/api/sayfalarapi.js";
+import {NotificationCard, showNotification} from "../notification.jsx";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
-const AddCartPopup = ({ popupCloser }) => {
+const AddCartPopup = ({popupCloser}) => {
     const [categories, setCategories] = useState([]);
     const [cartData, setCartData] = useState({
         cartImage: "",
@@ -22,13 +22,13 @@ const AddCartPopup = ({ popupCloser }) => {
             const data = await categoryDropdown();
             setCategories(data || []);
         };
-        AOS.init({ duration: 500 });
+        AOS.init({duration: 500});
 
         fetchCategory();
     }, []);
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
         setCartData(prevState => ({
             ...prevState,
             [name]: value,
@@ -82,7 +82,7 @@ const AddCartPopup = ({ popupCloser }) => {
         const cartCategoryDTO = {
             cartName: cartData.cartName,
             viewType: cartData.cartSize,
-            image: { bytes: cartData.cartImage },
+            image: {bytes: cartData.cartImage},
             category: cartData.cartCategory,
         };
 
@@ -103,16 +103,14 @@ const AddCartPopup = ({ popupCloser }) => {
     };
 
 
-
-
     return (
-        <div className="modal-overlay" >
+        <div className="modal-overlay">
             <div className="modal-content" data-aos="zoom-in">
                 <div className="model-header">
                     <h3>Kategori Kartı Ekle</h3>
                     <button className="popup-close-btn" onClick={() => popupCloser(false)}>&times;</button>
                 </div>
-                <div className='row mt-3' style={{ rowGap: '30px' }}>
+                <div className='row mt-3' style={{rowGap: '30px'}}>
                     <input
                         className='col-12 popup-inp'
                         type="text"
@@ -164,7 +162,8 @@ const AddCartPopup = ({ popupCloser }) => {
                                 fill="purple"
                                 viewBox="0 0 24 24"
                             >
-                                <path d="M14 9l-2.519 4-2.481-1.96-5 6.96h16l-6-9zm8-5v16h-20v-16h20zm2-2h-24v20h24v-20zm-20 6c0-1.104.896-2 2-2s2 .896 2 2c0 1.105-.896 2-2 2s-2-.895-2-2z" />
+                                <path
+                                    d="M14 9l-2.519 4-2.481-1.96-5 6.96h16l-6-9zm8-5v16h-20v-16h20zm2-2h-24v20h24v-20zm-20 6c0-1.104.896-2 2-2s2 .896 2 2c0 1.105-.896 2-2 2s-2-.895-2-2z"/>
                             </svg>
                             {cartData.cartImage ? "Görsel yüklendi" : " Kampanya görselini buraya sürükleyin veya yükleyin"}
                         </p>
@@ -180,7 +179,7 @@ const AddCartPopup = ({ popupCloser }) => {
                     <button onClick={handleCartSubmit} className='tumunu-gor-btn-admin'>Kaydet</button>
                 </div>
             </div>
-            <NotificationCard ref={notificationRef} message="" />
+            <NotificationCard ref={notificationRef} message=""/>
         </div>
     );
 };

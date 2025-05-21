@@ -1,7 +1,8 @@
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {useEffect} from "react";
-const ReplyMessagePopup = ({ popupCloser,id,processReady}) => {
+
+const ReplyMessagePopup = ({popupCloser, id, processReady}) => {
 
 
     const handleSubmit = (e) => {
@@ -12,13 +13,13 @@ const ReplyMessagePopup = ({ popupCloser,id,processReady}) => {
     };
 
     useEffect(() => {
-        AOS.init({ duration: 500 });
+        AOS.init({duration: 500});
     }, []);
 
 
     return (
         <div className="popup-overlay">
-            <div className="popup-content" data-aos="zoom-in" style={{ width: "600px" }}>
+            <div className="popup-content" data-aos="zoom-in" style={{width: "600px"}}>
                 <div className="popup-header">
                     <h2>Mesaj Gönder</h2>
                     <button className="popup-close-btn" onClick={() => popupCloser(false)}>
@@ -26,7 +27,8 @@ const ReplyMessagePopup = ({ popupCloser,id,processReady}) => {
                     </button>
                 </div>
                 <div className="form-group row row-gap-4  justify-content-around align-items-center mt-4">
-                    <textarea className="col-12 popup-inp" style={{height:'200px' ,resize:'none'}}  placeholder="Mesaj cevabını yazınız..." ></textarea>
+                    <textarea className="col-12 popup-inp" style={{height: '200px', resize: 'none'}}
+                              placeholder="Mesaj cevabını yazınız..."></textarea>
 
 
                     <div className="row justify-content-between align-items-center">

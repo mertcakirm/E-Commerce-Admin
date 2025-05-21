@@ -1,7 +1,7 @@
 import React from 'react';
 import './css/NotificationCard.css';
 
-const NotificationCard = React.forwardRef(({ message }, ref) => {
+const NotificationCard = React.forwardRef(({message}, ref) => {
     return (
         <div className="notification-card" ref={ref}>
             {message}
@@ -29,4 +29,4 @@ const showNotification = (ref, message) => {
     }
 };
 
-export { NotificationCard, showNotification };
+export {NotificationCard, showNotification};

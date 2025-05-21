@@ -15,7 +15,7 @@ export const deleteProductImage = (id) => {
     })
         .then(response => response.json())
         .catch(error => {
-            console.log('Error deleting image:',error);
+            console.log('Error deleting image:', error);
         });
 };
 

@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
-import { addSlider } from "../../pages/api/sayfalarapi.js";
-import { categoryDropdown } from "../../pages/api/kategoriapi.js";
+import {useEffect, useState} from "react";
+import {addSlider} from "../../pages/api/sayfalarapi.js";
+import {categoryDropdown} from "../../pages/api/kategoriapi.js";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
-const AddSliderContentPopup = ({ popupCloser }) => {
+const AddSliderContentPopup = ({popupCloser}) => {
     const [sliderImage, setSliderImage] = useState(""); // Resim dosyasını string olarak tutacak
     const [dragging, setDragging] = useState(false);
     const [categories, setCategories] = useState([]);
@@ -18,8 +18,8 @@ const AddSliderContentPopup = ({ popupCloser }) => {
     const [imageFile, setImageFile] = useState(null);
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setPopUpData({ ...popUpData, [name]: value });
+        const {name, value} = e.target;
+        setPopUpData({...popUpData, [name]: value});
     };
 
     const convertImageToBase64 = (file) => {
@@ -42,7 +42,7 @@ const AddSliderContentPopup = ({ popupCloser }) => {
             setImageFile(file);
             const base64 = await convertImageToBase64(file); // Resmi base64 formatına çevir
             setSliderImage(base64); // Base64'i state'e kaydet
-            setPopUpData({ ...popUpData, image: file.name });
+            setPopUpData({...popUpData, image: file.name});
         }
     };
 
@@ -53,7 +53,7 @@ const AddSliderContentPopup = ({ popupCloser }) => {
         if (file) {
             const base64 = await convertImageToBase64(file); // Resmi base64 formatına çevir
             setSliderImage(base64); // Base64'i state'e kaydet
-            setPopUpData({ ...popUpData, image: file.name });
+            setPopUpData({...popUpData, image: file.name});
         }
     };
 
@@ -67,7 +67,7 @@ const AddSliderContentPopup = ({ popupCloser }) => {
     };
 
     const sliderDTO = {
-        image: { bytes: sliderImage },
+        image: {bytes: sliderImage},
         topTitle: popUpData.topTitle,
         middleTitle: popUpData.middleTitle,
         underTitle: popUpData.underTitle,
@@ -75,7 +75,7 @@ const AddSliderContentPopup = ({ popupCloser }) => {
     };
 
     useEffect(() => {
-        AOS.init({ duration: 500 });
+        AOS.init({duration: 500});
         fetchCategory();
     }, []);
 
@@ -90,7 +90,7 @@ const AddSliderContentPopup = ({ popupCloser }) => {
 
     return (
         <div className="popup-overlay">
-            <div className="popup-content" data-aos="zoom-in" style={{ width: "600px" }}>
+            <div className="popup-content" data-aos="zoom-in" style={{width: "600px"}}>
                 <div className="popup-header">
                     <h2>Slider Ekle</h2>
                     <button
@@ -161,7 +161,8 @@ const AddSliderContentPopup = ({ popupCloser }) => {
                                 fill="purple"
                                 viewBox="0 0 24 24"
                             >
-                                <path d="M14 9l-2.519 4-2.481-1.96-5 6.96h16l-6-9zm8-5v16h-20v-16h20zm2-2h-24v20h24v-20zm-20 6c0-1.104.896-2 2-2s2 .896 2 2c0 1.105-.896 2-2 2s-2-.895-2-2z" />
+                                <path
+                                    d="M14 9l-2.519 4-2.481-1.96-5 6.96h16l-6-9zm8-5v16h-20v-16h20zm2-2h-24v20h24v-20zm-20 6c0-1.104.896-2 2-2s2 .896 2 2c0 1.105-.896 2-2 2s-2-.895-2-2z"/>
                             </svg>
                             {imageFile ? imageFile.name : " Kampanya görselini buraya sürükleyin veya yükleyin"}
                         </p>

@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import { addCategory } from "../../pages/api/kategoriapi.js";
+import {addCategory} from "../../pages/api/kategoriapi.js";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -12,14 +12,14 @@ const convertImageToBase64 = (file) => {
     });
 };
 
-const AddCategoryPopup = ({ popupCloser, reloadPageCat }) => {
+const AddCategoryPopup = ({popupCloser, reloadPageCat}) => {
     const [newCategoryName, setNewCategoryName] = useState("");
     const [newCategoryType, setNewCategoryType] = useState("");
     const [newCategoryImage, setNewCategoryImage] = useState(null);
     const [dragging, setDragging] = useState(false);
 
     const handleChange = (event) => {
-        const { name, value, files } = event.target;
+        const {name, value, files} = event.target;
         if (name === "image" && files.length > 0) {
             setNewCategoryImage(files[0]);
         } else if (name === "name") {
@@ -30,7 +30,7 @@ const AddCategoryPopup = ({ popupCloser, reloadPageCat }) => {
     };
 
     useEffect(() => {
-        AOS.init({ duration: 500 });
+        AOS.init({duration: 500});
     }, []);
 
     const handleImageChange = (e) => {
@@ -65,7 +65,7 @@ const AddCategoryPopup = ({ popupCloser, reloadPageCat }) => {
         const base64new = base64Image.split(",")[1];
 
         const categoryDTO = {
-            image: { bytes: base64new },
+            image: {bytes: base64new},
             typeName: newCategoryType,
             categoryName: newCategoryName,
         };
@@ -81,7 +81,7 @@ const AddCategoryPopup = ({ popupCloser, reloadPageCat }) => {
 
     return (
         <div className="popup-overlay">
-            <div className="popup-content" data-aos="zoom-in" style={{ width: "600px" }}>
+            <div className="popup-content" data-aos="zoom-in" style={{width: "600px"}}>
                 <div className="popup-header">
                     <h2>Kategori Ekle</h2>
                     <button className="popup-close-btn" onClick={() => popupCloser(false)}>&times;</button>
@@ -93,7 +93,7 @@ const AddCategoryPopup = ({ popupCloser, reloadPageCat }) => {
                         name="name"
                         placeholder="Kategori Adı"
                         className="col-5 popup-inp"
-                        style={{ height: "40px" }}
+                        style={{height: "40px"}}
                         value={newCategoryName}
                         onChange={handleChange}
                         required
@@ -102,7 +102,7 @@ const AddCategoryPopup = ({ popupCloser, reloadPageCat }) => {
                         type="text"
                         id="type"
                         className="col-5 popup-inp"
-                        style={{ height: "40px" }}
+                        style={{height: "40px"}}
                         placeholder="Kategori Türü"
                         name="type"
                         value={newCategoryType}
@@ -121,8 +121,10 @@ const AddCategoryPopup = ({ popupCloser, reloadPageCat }) => {
                             <p>{newCategoryImage.name}</p>
                         ) : (
                             <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="purple" viewBox="0 0 24 24">
-                                    <path d="M14 9l-2.519 4-2.481-1.96-5 6.96h16l-6-9zm8-5v16h-20v-16h20zm2-2h-24v20h24v-20zm-20 6c0-1.104.896-2 2-2s2 .896 2 2c0 1.105-.896 2-2 2s-2-.895-2-2z"/>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="purple"
+                                     viewBox="0 0 24 24">
+                                    <path
+                                        d="M14 9l-2.519 4-2.481-1.96-5 6.96h16l-6-9zm8-5v16h-20v-16h20zm2-2h-24v20h24v-20zm-20 6c0-1.104.896-2 2-2s2 .896 2 2c0 1.105-.896 2-2 2s-2-.895-2-2z"/>
                                 </svg>
                                 <p>Kategori görselini sürükleyin veya seçmek için tıklayın</p>
                             </div>

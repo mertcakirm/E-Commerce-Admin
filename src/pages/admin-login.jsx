@@ -1,84 +1,84 @@
 import {useEffect, useState} from 'react'
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import logo from '../assets/mob_logo.png';
 import './admin-css/admin-login.css';
 import AOS from "aos";
 import "aos/dist/aos.css";
 
 const Admin_login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
-  const navigate = useNavigate();
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+    const navigate = useNavigate();
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-    const loginDTO = {
-      email: email,
-      password: password
+        const loginDTO = {
+            email: email,
+            password: password
+        };
+        try {
+            const response = await fetch('http://localhost:8084/api/auth/admin/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(loginDTO),
+                credentials: 'include'
+            });
+            if (response.ok) {
+                console.log([...response.headers.entries()]);
+                navigate('/genel')
+            } else {
+                setErrorMessage("Giriş başarısız: Geçersiz kullanıcı adı veya parola.");
+            }
+
+        } catch (error) {
+            console.error("There was an error!", error);
+            setErrorMessage("Giriş başarısız: Şifre Yanlış.");
+        }
     };
-    try {
-      const response = await fetch('http://localhost:8084/api/auth/admin/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(loginDTO),
-        credentials: 'include'
-      });
-        if (response.ok) {
-          console.log([...response.headers.entries()]);
-          navigate('/genel')
-      } else {
-        setErrorMessage("Giriş başarısız: Geçersiz kullanıcı adı veya parola.");
-      }
+    useEffect(() => {
+        AOS.init({duration: 500});
+    }, []);
 
-    } catch (error) {
-      console.error("There was an error!", error);
-      setErrorMessage("Giriş başarısız: Şifre Yanlış.");
-    }
-  };
-  useEffect(() => {
-    AOS.init({ duration: 500 });
-  }, []);
-
-  return (
-    <div className='admin-bg'>
-      <div className="container">
-        <div className="row">
-          <div className="col-12">
-            <div className='form-admin' data-aos="fade-up">
-              <img src={logo} className='logo2' alt="logo" />
-              {errorMessage && (
-                <div className="alert alert-danger" role="alert">
-                  {errorMessage}
+    return (
+        <div className='admin-bg'>
+            <div className="container">
+                <div className="row">
+                    <div className="col-12">
+                        <div className='form-admin' data-aos="fade-up">
+                            <img src={logo} className='logo2' alt="logo"/>
+                            {errorMessage && (
+                                <div className="alert alert-danger" role="alert">
+                                    {errorMessage}
+                                </div>
+                            )}
+                            <div className="form-item">
+                                <label htmlFor="admin-username">Admin Adı</label>
+                                <input
+                                    type="text"
+                                    id='admin-username'
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                />
+                            </div>
+                            <div className="form-item">
+                                <label htmlFor="admin-password">Parola</label>
+                                <input
+                                    type="password"
+                                    id='admin-password'
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                />
+                            </div>
+                            <button onClick={handleSubmit} className='giris-yap-btn'>Giriş Yap</button>
+                        </div>
+                    </div>
                 </div>
-              )}
-              <div className="form-item">
-                <label htmlFor="admin-username">Admin Adı</label>
-                <input 
-                  type="text" 
-                  id='admin-username' 
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-              <div className="form-item">
-                <label htmlFor="admin-password">Parola</label>
-                <input 
-                  type="password" 
-                  id='admin-password' 
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-              <button onClick={handleSubmit} className='giris-yap-btn'>Giriş Yap</button>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default Admin_login;

@@ -1,9 +1,9 @@
 import {Doughnut} from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import {Chart as ChartJS, ArcElement, Tooltip, Legend} from "chart.js";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const PieChart = ({type,title}) => {
+const PieChart = ({type, title}) => {
     const data = {
         labels: ["Pantolon", "T-Shirt", "Şort", "Ceket", "Ayakkabı"],
         datasets: [
@@ -31,15 +31,15 @@ const PieChart = ({type,title}) => {
     };
 
     return (
-        <div style={{ width: "250px", height: "250px", margin: "0 auto",position: "relative" }}>
+        <div style={{width: "250px", height: "250px", margin: "0 auto", position: "relative"}}>
             <h3 className="text-center mb-3">{title}</h3>
-            <Doughnut data={data} options={options} />
+            <Doughnut data={data} options={options}/>
             <div
                 style={{
                     position: "absolute",
-                    textAlign:'center',
-                    width:"100%",
-                    top:"65%",
+                    textAlign: 'center',
+                    width: "100%",
+                    top: "65%",
                     fontSize: "18px",
                     fontWeight: "bold",
                 }}

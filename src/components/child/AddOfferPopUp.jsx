@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
-const AddOfferPopup = ({ popupCloser }) => {
+const AddOfferPopup = ({popupCloser}) => {
     const [popUpData, setPopUpData] = useState({
         Image: "",
         Title: "",
@@ -13,15 +13,15 @@ const AddOfferPopup = ({ popupCloser }) => {
     const [dragging, setDragging] = useState(false);
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setPopUpData({ ...popUpData, [name]: value });
+        const {name, value} = e.target;
+        setPopUpData({...popUpData, [name]: value});
     };
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
             setImageFile(file);
-            setPopUpData({ ...popUpData, Image: file.name });
+            setPopUpData({...popUpData, Image: file.name});
         }
     };
 
@@ -40,7 +40,7 @@ const AddOfferPopup = ({ popupCloser }) => {
         const file = e.dataTransfer.files[0];
         if (file) {
             setImageFile(file);
-            setPopUpData({ ...popUpData, Image: file.name });
+            setPopUpData({...popUpData, Image: file.name});
         }
     };
 
@@ -50,12 +50,12 @@ const AddOfferPopup = ({ popupCloser }) => {
     };
 
     useEffect(() => {
-        AOS.init({ duration: 500 });
+        AOS.init({duration: 500});
     }, []);
 
     return (
         <div className="popup-overlay">
-            <div className="popup-content" data-aos="zoom-in" style={{ width: "600px" }}>
+            <div className="popup-content" data-aos="zoom-in" style={{width: "600px"}}>
                 <div className="popup-header">
                     <h2>Kampanya Ekle</h2>
                     <button className="popup-close-btn" onClick={() => popupCloser(false)}>
@@ -77,7 +77,7 @@ const AddOfferPopup = ({ popupCloser }) => {
                         className="col-5"
                         value={popUpData.Address}
                         onChange={handleChange}
-                        style={{ height: "50px", color: "black" }}
+                        style={{height: "50px", color: "black"}}
                     >
                         <option value="">Kampanya Kategorisi Seçin</option>
                         <option value="1">Admin</option>
@@ -91,7 +91,13 @@ const AddOfferPopup = ({ popupCloser }) => {
                         onDragLeave={handleDragLeave}
                         onDrop={handleDrop}
                     >
-                        <p><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="purple" viewBox="0 0 24 24"><path d="M14 9l-2.519 4-2.481-1.96-5 6.96h16l-6-9zm8-5v16h-20v-16h20zm2-2h-24v20h24v-20zm-20 6c0-1.104.896-2 2-2s2 .896 2 2c0 1.105-.896 2-2 2s-2-.895-2-2z"/></svg>{imageFile ? imageFile.name : " Kampanya görselini buraya sürükleyin veya yükleyin"}</p>
+                        <p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="purple"
+                                 viewBox="0 0 24 24">
+                                <path
+                                    d="M14 9l-2.519 4-2.481-1.96-5 6.96h16l-6-9zm8-5v16h-20v-16h20zm2-2h-24v20h24v-20zm-20 6c0-1.104.896-2 2-2s2 .896 2 2c0 1.105-.896 2-2 2s-2-.895-2-2z"/>
+                            </svg>
+                            {imageFile ? imageFile.name : " Kampanya görselini buraya sürükleyin veya yükleyin"}</p>
                         <input
                             type="file"
                             name="Image"

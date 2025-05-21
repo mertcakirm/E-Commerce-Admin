@@ -4,7 +4,7 @@ import {addProduct} from "../../pages/api/productapi.js";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
-const AddProductPopup = ({ popupCloser, reload }) => {
+const AddProductPopup = ({popupCloser, reload}) => {
     const [productData, setProductData] = useState({
         productName: "",
         productCategory: "",
@@ -19,7 +19,7 @@ const AddProductPopup = ({ popupCloser, reload }) => {
     const [categories, setCategories] = useState([]);
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
         setProductData((prev) => ({
             ...prev,
             [name]: name === "productPrice" || name === "purchasePrice" ? parseFloat(value) || 0.0 : value,
@@ -32,7 +32,7 @@ const AddProductPopup = ({ popupCloser, reload }) => {
     };
 
     useEffect(() => {
-        AOS.init({ duration: 500 });
+        AOS.init({duration: 500});
 
         getDropdown();
     }, []);
@@ -117,7 +117,7 @@ const AddProductPopup = ({ popupCloser, reload }) => {
             for (const image of images) {
                 if (image instanceof File || image instanceof Blob) {
                     const base64String = await convertImageToBase64(image);
-                    imageBase64Array.push({ bytes: base64String });
+                    imageBase64Array.push({bytes: base64String});
                 } else {
                     console.error("Hatalı dosya tipi: ", image);
                 }
@@ -146,7 +146,7 @@ const AddProductPopup = ({ popupCloser, reload }) => {
 
     return (
         <div className="popup-overlay">
-            <div className="popup-content" data-aos="zoom-in" style={{ width: "1200px" }}>
+            <div className="popup-content" data-aos="zoom-in" style={{width: "1200px"}}>
                 <div className="popup-header">
                     <div></div>
                     <button className="popup-close-btn" onClick={() => popupCloser(false)}>
@@ -163,8 +163,10 @@ const AddProductPopup = ({ popupCloser, reload }) => {
                                 onDrop={handleDrop}
                             >
                                 <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="purple" viewBox="0 0 24 24">
-                                        <path d="M14 9l-2.519 4-2.481-1.96-5 6.96h16l-6-9zm8-5v16h-20v-16h20zm2-2h-24v20h24v-20zm-20 6c0-1.104.896-2 2-2s2 .896 2 2c0 1.105-.896 2-2 2s-2-.895-2-2z"/>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="purple"
+                                         viewBox="0 0 24 24">
+                                        <path
+                                            d="M14 9l-2.519 4-2.481-1.96-5 6.96h16l-6-9zm8-5v16h-20v-16h20zm2-2h-24v20h24v-20zm-20 6c0-1.104.896-2 2-2s2 .896 2 2c0 1.105-.896 2-2 2s-2-.895-2-2z"/>
                                     </svg>
                                     <p>Ürün görsellerini sürükleyin veya seçmek için tıklayın</p>
                                 </div>
