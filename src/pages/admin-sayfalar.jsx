@@ -1,13 +1,11 @@
-import {useState, useEffect, useRef} from 'react';
-import Admin_sidebar from '../components/admin-sidebar.jsx';
+import {useState, useEffect} from 'react';
 import './admin-css/admin-genel.css';
 import {
     fetchSliderData,
     deleteSlider,
     fetchCartData,
     deleteCart,
-} from './api/sayfalarapi';
-import {NotificationCard, showNotification} from "../components/notification.jsx";
+} from '../API/sayfalarapi';
 import AddCartPopup from "../components/child/addCartPopup.jsx";
 import AddSliderContentPopup from "../components/child/addSliderContentPopup.jsx";
 import AOS from "aos";
@@ -16,11 +14,10 @@ import "aos/dist/aos.css";
 const Admin_sayfalar = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalOpen2, setIsModalOpen2] = useState(false);
-
     const [sliderData, setSliderData] = useState([]);
     const [cartData, setCartData] = useState([]);
     const [loading, setLoading] = useState(false);
-    const notificationRef = useRef(null)
+    const [refresh, setRefresh] = useState(false);
 
     const openModal = () => setIsModalOpen(true);
     const openModal2 = () => setIsModalOpen2(true);
@@ -29,24 +26,22 @@ const Admin_sayfalar = () => {
     const deleteSliderHandler = async (id) => {
         try {
             await deleteSlider(id);
-            showNotification(notificationRef, 'Slider başarıyla silindi!');
             setSliderData(sliderData.filter(slider => slider.id !== id));
+            setRefresh(!refresh);
         } catch (error) {
             console.error("Request error: ", error);
             alert("An error occurred while deleting the slider.");
         }
-        window.setTimeout(() => window.location.reload(), 500);
     };
 
     const deleteCartHandler = async (id) => {
         try {
             await deleteCart(id);
-            showNotification(notificationRef, 'Kategori kartı başarıyla silidni!');
             setCartData(cartData.filter(cart => cart.id !== id));
+            setRefresh(!refresh);
         } catch (error) {
             console.error("Request error: ", error);
         }
-        window.setTimeout(() => window.location.reload(), 500);
     };
 
     const fetchData = async () => {
@@ -68,6 +63,10 @@ const Admin_sayfalar = () => {
         fetchData();
     }, []);
 
+    useEffect(() => {
+        fetchData();
+    }, [refresh]);
+
     if (loading) {
         return (
             <div
@@ -83,7 +82,6 @@ const Admin_sayfalar = () => {
 
     return (
         <div>
-            <Admin_sidebar/>
             <div className="admin-sag-container" data-aos="fade-in">
                 <div className="row admin-genel-row">
                     <div className="col-12">
@@ -190,7 +188,6 @@ const Admin_sayfalar = () => {
                         setIsModalOpen2(b);
                     }}/>
             )}
-            <NotificationCard ref={notificationRef} message=""/>
         </div>
     )
 }

@@ -1,8 +1,6 @@
-import {useState, useEffect, useRef} from "react";
-import Admin_sidebar from "../components/admin-sidebar.jsx";
+import {useState, useEffect} from "react";
 import "./admin-css/admin-genel.css";
-import {getAllUsers, toggleUserActivity as toggleUserActivityAPI} from "./api/userapi";
-import {NotificationCard, showNotification} from "../components/notification.jsx";
+import {getAllUsers, toggleUserActivity as toggleUserActivityAPI} from "../API/userapi";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -12,7 +10,6 @@ const Admin_users = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [loading, setLoading] = useState(false);
     const usersPerPage = 10;
-    const notificationRef = useRef(null)
 
     useEffect(() => {
         AOS.init({duration: 500});
@@ -49,11 +46,9 @@ const Admin_users = () => {
                             user.id === userId ? {...user, active: !user.active} : user
                         )
                     );
-                    showNotification(notificationRef, 'Kullanıcı durumu güncellendi!');
 
                 } else {
                     console.error("Failed to change user activity");
-                    showNotification(notificationRef, 'Hata! Kullanıcı durumu güncellenemedi!');
 
                 }
 
@@ -61,7 +56,6 @@ const Admin_users = () => {
             .catch(
                 (error) => {
                     console.error(error)
-                    showNotification(notificationRef, 'Hata! Kullanıcı durumu güncellenemedi!');
                 }
             );
     };
@@ -81,7 +75,6 @@ const Admin_users = () => {
 
     return (
         <div>
-            <Admin_sidebar/>
             <div className="admin-sag-container" data-aos="fade-in">
                 <div className="row admin-genel-row">
                     <div className="col-12 alt-basliklar-admin">
@@ -153,7 +146,6 @@ const Admin_users = () => {
                     </div>
                 </div>
             </div>
-            <NotificationCard ref={notificationRef} message=""/>
 
         </div>
     );

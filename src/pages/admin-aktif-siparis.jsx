@@ -1,5 +1,4 @@
 import {useEffect, useState} from 'react';
-import Admin_sidebar from '../components/admin-sidebar.jsx';
 import './admin-css/admin-genel.css';
 import ProcessPopup from "../components/child/processPopup.jsx";
 import LastOrdersPopup from "../components/child/LastOrdersPopup.jsx";
@@ -82,7 +81,6 @@ const Admin_aktif_siparis = () => {
 
     return (
         <div>
-            <Admin_sidebar/>
             <div className="admin-sag-container" data-aos="fade-in">
                 <div className="row admin-genel-row">
                     <div className="col-12 row justify-content-between align-items-center">

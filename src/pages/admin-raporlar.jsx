@@ -1,5 +1,4 @@
 import {useEffect, useState} from 'react';
-import Admin_sidebar from '../components/admin-sidebar.jsx';
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -162,7 +161,6 @@ const Admin_raporlar = () => {
 
     return (
         <div>
-            <Admin_sidebar/>
             <div className="admin-sag-container">
                 <div className="row px-5 admin-genel-row" data-aos="fade-in">
                     <div className="col-12 alt-basliklar-admin mb-5">FİNANSAL RAPORLAR</div>

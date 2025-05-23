@@ -1,4 +1,3 @@
-import Admin_sidebar from '../components/admin-sidebar.jsx';
 import './admin-css/admin-genel.css';
 import PieChart from "../components/child/chart.jsx";
 import BarChart from "../components/child/scatter.jsx";
@@ -223,7 +222,6 @@ const Admin_anasayfa = () => {
 
     return (
         <div>
-            <Admin_sidebar/>
             <div className="admin-sag-container">
                 <div className="row admin-genel-row" data-aos="fade-up">
 

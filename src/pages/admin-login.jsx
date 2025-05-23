@@ -10,9 +10,8 @@ const Admin_login = () => {
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
-    const handleSubmit = async (e) => {
-        e.preventDefault();
 
+    const handleSubmit = async (e) => {
         const loginDTO = {
             email: email,
             password: password

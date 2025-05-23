@@ -1,7 +1,5 @@
-import {useState, useEffect, useRef} from 'react';
-import Admin_sidebar from '../components/admin-sidebar.jsx';
-import {fetchCategories, addCategory, deleteCategory} from './api/kategoriapi';
-import {NotificationCard, showNotification} from "../components/notification.jsx";
+import {useState, useEffect} from 'react';
+import {fetchCategories, deleteCategory} from '../API/kategoriapi';
 import LoadingComp from "../components/child/Loading.jsx";
 import AddCategoryPopup from "../components/child/addCategoryPopup.jsx";
 import AOS from "aos";
@@ -16,7 +14,6 @@ const Admin_kategoriler = () => {
     const [showPopup, setShowPopup] = useState(false);
     const [loading, setloading] = useState(true);
     const [reloadPage, setReloadPage] = useState(false);
-    const notificationRef = useRef(null)
 
     const getCategories = async () => {
         try {
@@ -60,7 +57,6 @@ const Admin_kategoriler = () => {
             await deleteCategory(categoryId);
             console.log('Category deleted:', categoryId);
             const refreshedData = await fetchCategories();
-            showNotification(notificationRef, 'Kategori başarıyla silindi!');
             setCategoriesData(refreshedData);
         } catch (error) {
             console.error('Error deleting category:', error);
@@ -74,7 +70,6 @@ const Admin_kategoriler = () => {
 
     return (
         <div>
-            <Admin_sidebar/>
             <div className="admin-sag-container">
                 <div className="row px-4 justify-content-between align-items-center row-gap-3 admin-genel-row"
                      data-aos="fade-in">
@@ -166,7 +161,6 @@ const Admin_kategoriler = () => {
                     }}
                 />
             )}
-            <NotificationCard ref={notificationRef} message=""/>
 
         </div>
     );

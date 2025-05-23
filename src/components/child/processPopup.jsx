@@ -1,5 +1,5 @@
 import './css/accepted.css';
-import {deleteProduct} from "../../pages/api/productapi.js";
+import {deleteProduct} from "../../API/productapi.js";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {useEffect} from "react";

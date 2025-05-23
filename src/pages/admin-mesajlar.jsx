@@ -1,5 +1,4 @@
 import {useEffect, useState} from 'react';
-import Admin_sidebar from '../components/admin-sidebar.jsx';
 import './admin-css/admin-genel.css';
 import ReplyMessagePopup from "../components/child/ReplyMessagePopup.jsx";
 import ProcessPopup from "../components/child/processPopup.jsx";
@@ -59,7 +58,6 @@ const Admin_mesajlar = () => {
     }, []);
     return (
         <div>
-            <Admin_sidebar/>
             <div className="admin-sag-container">
                 <div className="row admin-genel-row" data-aos="fade-in">
                     <div className="col-12 alt-basliklar-admin">Mesaj Listesi</div>

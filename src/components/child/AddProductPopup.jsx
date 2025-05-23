@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
-import {categoryDropdown} from "../../pages/api/kategoriapi.js";
-import {addProduct} from "../../pages/api/productapi.js";
+import {categoryDropdown} from "../../API/kategoriapi.js";
+import {addProduct} from "../../API/productapi.js";
 import AOS from "aos";
 import "aos/dist/aos.css";
 

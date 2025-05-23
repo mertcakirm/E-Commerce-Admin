@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
-import {addSlider} from "../../pages/api/sayfalarapi.js";
-import {categoryDropdown} from "../../pages/api/kategoriapi.js";
+import {addSlider} from "../../API/sayfalarapi.js";
+import {categoryDropdown} from "../../API/kategoriapi.js";
 import AOS from "aos";
 import "aos/dist/aos.css";
 

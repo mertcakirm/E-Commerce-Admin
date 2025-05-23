@@ -1,11 +1,9 @@
-import {useState, useEffect, useRef} from "react";
-import Admin_sidebar from "../components/admin-sidebar.jsx";
+import {useState, useEffect} from "react";
 import {
     deleteProduct,
     fetchProducts,
     updateDiscount,
-} from "./api/productapi";
-import {NotificationCard, showNotification} from "../components/notification.jsx";
+} from "../API/productapi";
 import AddProductPopup from "../components/child/AddProductPopup.jsx";
 import LoadingComp from "../components/child/Loading.jsx";
 import AOS from "aos";
@@ -20,7 +18,6 @@ const Admin_product = () => {
     const [pageNum, setPageNum] = useState(1);
     const [loading, setloading] = useState(true);
     const [currentPage, setCurrentPage] = useState(0);
-    const notificationRef = useRef(null);
     const [reloadPage, setReloadPage] = useState(false);
     const productsPerPage = 10;
 
@@ -81,7 +78,6 @@ const Admin_product = () => {
         setProducts(
             products.filter((product) => product.productCode !== productCode)
         );
-        showNotification(notificationRef, 'Ürün başarıyla silindi!');
 
     };
 
@@ -91,7 +87,6 @@ const Admin_product = () => {
             console.error("Invalid discount value");
             return;
         }
-        showNotification(notificationRef, 'İndirim uygulandı!');
 
         await updateDiscount(discountRate, selectedProductCode);
         setProducts(
@@ -117,7 +112,6 @@ const Admin_product = () => {
 
     return (
         <div>
-            <Admin_sidebar/>
             <div className="admin-sag-container">
                 <div className="row admin-genel-row" data-aos="fade-in">
                     <div className="col-12 justify-content-between row alt-basliklar-admin">
@@ -275,7 +269,6 @@ const Admin_product = () => {
                     </div>
                 </div>
             </div>
-            <NotificationCard ref={notificationRef} message=""/>
             {showPopup && (
                 <AddProductPopup
                     popupCloser={(b) => {

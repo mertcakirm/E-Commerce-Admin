@@ -1,7 +1,6 @@
-import {useEffect, useRef, useState} from 'react';
-import {categoryDropdown} from "../../pages/api/kategoriapi.js";
-import {addCart} from "../../pages/api/sayfalarapi.js";
-import {NotificationCard, showNotification} from "../notification.jsx";
+import {useEffect, useState} from 'react';
+import {categoryDropdown} from "../../API/kategoriapi.js";
+import {addCart} from "../../API/sayfalarapi.js";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -14,7 +13,6 @@ const AddCartPopup = ({popupCloser}) => {
         cartSize: ""
     });
 
-    const notificationRef = useRef(null);
     const [dragging, setDragging] = useState(false);
 
     useEffect(() => {
@@ -88,7 +86,6 @@ const AddCartPopup = ({popupCloser}) => {
 
         try {
             await addCart(cartCategoryDTO);
-            showNotification(notificationRef, 'Kategori kartı başarıyla eklendi!');
             setCartData({
                 cartImage: "",
                 cartName: "",
@@ -98,7 +95,6 @@ const AddCartPopup = ({popupCloser}) => {
             popupCloser(false);
         } catch (error) {
             console.error("Request error: ", error);
-            showNotification(notificationRef, 'Kategori kartı eklenemedi!');
         }
     };
 
@@ -179,7 +175,6 @@ const AddCartPopup = ({popupCloser}) => {
                     <button onClick={handleCartSubmit} className='tumunu-gor-btn-admin'>Kaydet</button>
                 </div>
             </div>
-            <NotificationCard ref={notificationRef} message=""/>
         </div>
     );
 };

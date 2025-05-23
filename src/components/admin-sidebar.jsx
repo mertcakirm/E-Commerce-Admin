@@ -1,12 +1,11 @@
 import '../pages/admin-css/admin-sidebar.css';
 import logo from '../assets/white_logo.png';
-import {useNavigate} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import {useEffect} from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
 const Admin_sidebar = () => {
-
     const navigate = useNavigate();
 
     const cikisyap = () => {
@@ -24,7 +23,7 @@ const Admin_sidebar = () => {
                     <img src={logo} className='img-fluid logo' alt=""/>
                 </div>
                 <div className='admin-sidebar-links'>
-                    <a className={`admin-sidebar-link ${url === "genel" ? "active-link" : ""}`} href="/genel">
+                    <Link className={`admin-sidebar-link ${url === "genel" ? "active-link" : ""}`} to="/genel">
                         <div className="links-row align-items-center">
                             <svg clipRule="evenodd" fill="white" width="40" height="40" fillRule="evenodd"
                                  strokeLinejoin="round" strokeMiterlimit="2" viewBox="0 0 27 27"
@@ -36,8 +35,8 @@ const Admin_sidebar = () => {
                             <div className="admin-sidebar-link-text p-0">Dashboard</div>
                         </div>
 
-                    </a>
-                    <a className={`admin-sidebar-link ${url === "urunler" ? "active-link" : ""}`} href="/urunler">
+                    </Link>
+                    <Link className={`admin-sidebar-link ${url === "urunler" ? "active-link" : ""}`} to="/urunler">
                         <div className="links-row align-items-center">
                             <svg width="40" height="40" viewBox="0 0 27 27" fill="white"
                                  xmlns="http://www.w3.org/2000/svg" fillRule="evenodd" clipRule="evenodd">
@@ -46,9 +45,9 @@ const Admin_sidebar = () => {
                             </svg>
                             <div className="admin-sidebar-link-text ">Ürünler</div>
                         </div>
-                    </a>
-                    <a className={`admin-sidebar-link ${url === "aktif-siparisler" ? "active-link" : ""}`}
-                       href="/aktif-siparisler">
+                    </Link>
+                    <Link className={`admin-sidebar-link ${url === "aktif-siparisler" ? "active-link" : ""}`}
+                       to="/aktif-siparisler">
                         <div className="links-row align-items-center">
                             <svg width="40" height="40" viewBox="0 0 27 27" fill="white"
                                  xmlns="http://www.w3.org/2000/svg" fillRule="evenodd" clipRule="evenodd">
@@ -57,10 +56,10 @@ const Admin_sidebar = () => {
                             </svg>
                             <div className="admin-sidebar-link-text  p-0">Aktif Siparişler</div>
                         </div>
-                    </a>
+                    </Link>
 
-                    <a className={`admin-sidebar-link ${url === "kategoriler" ? "active-link" : ""}`}
-                       href="/kategoriler">
+                    <Link className={`admin-sidebar-link ${url === "kategoriler" ? "active-link" : ""}`}
+                       to="/kategoriler">
                         <div className="links-row align-items-center">
                             <svg width="40" height="40" fill="white" viewBox="0 0 24 24" clipRule="evenodd"
                                  fillRule="evenodd" strokeLinejoin="round" strokeMiterlimit="2"
@@ -72,9 +71,9 @@ const Admin_sidebar = () => {
                             <div className="admin-sidebar-link-text ">Kategoriler</div>
                         </div>
 
-                    </a>
-                    <a className={`admin-sidebar-link ${url === "kullanicilar" ? "active-link" : ""}`}
-                       href="/kullanicilar">
+                    </Link>
+                    <Link className={`admin-sidebar-link ${url === "kullanicilar" ? "active-link" : ""}`}
+                       to="/kullanicilar">
                         <div className="links-row align-items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="white"
                                  viewBox="0 0 27 27">
@@ -83,9 +82,9 @@ const Admin_sidebar = () => {
                             </svg>
                             <div className="admin-sidebar-link-text  p-0">Kullanıcılar</div>
                         </div>
-                    </a>
-                    <a className={`admin-sidebar-link ${url === "kampanyalar" ? "active-link" : ""}`}
-                       href="/kampanyalar">
+                    </Link>
+                    <Link className={`admin-sidebar-link ${url === "kampanyalar" ? "active-link" : ""}`}
+                       to="/kampanyalar">
                         <div className="links-row align-items-center">
                             <svg width="40" height="40" fill="white" viewBox="0 0 27 27"
                                  xmlns="http://www.w3.org/2000/svg" fillRule="evenodd" clipRule="evenodd">
@@ -94,8 +93,8 @@ const Admin_sidebar = () => {
                             </svg>
                             <div className="admin-sidebar-link-text  p-0">Kampanyalar</div>
                         </div>
-                    </a>
-                    <a className={`admin-sidebar-link ${url === "sayfalar" ? "active-link" : ""}`} href="/sayfalar">
+                    </Link>
+                    <Link className={`admin-sidebar-link ${url === "sayfalar" ? "active-link" : ""}`} to="/sayfalar">
                         <div className="links-row align-items-center">
                             <svg clipRule="evenodd" fillRule="evenodd" width="40" height="40" fill="white"
                                  viewBox="0 0 27 27" strokeLinejoin="round" strokeMiterlimit="2"
@@ -106,9 +105,9 @@ const Admin_sidebar = () => {
                             </svg>
                             <div className="admin-sidebar-link-text  p-0">Sayfa İçerikleri</div>
                         </div>
-                    </a>
+                    </Link>
 
-                    <a className={`admin-sidebar-link ${url === "raporlar" ? "active-link" : ""}`} href="/raporlar">
+                    <Link className={`admin-sidebar-link ${url === "raporlar" ? "active-link" : ""}`} to="/raporlar">
                         <div className="links-row align-items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="white"
                                  viewBox="0 0 27 27">
@@ -117,9 +116,9 @@ const Admin_sidebar = () => {
                             </svg>
                             <div className="admin-sidebar-link-text  p-0">Raporlar</div>
                         </div>
-                    </a>
+                    </Link>
 
-                    <a className={`admin-sidebar-link ${url === "mesajlar" ? "active-link" : ""}`} href="/mesajlar">
+                    <Link className={`admin-sidebar-link ${url === "mesajlar" ? "active-link" : ""}`} to="/mesajlar">
                         <div className="links-row align-items-center">
                             <svg width="40" height="40" fill="white" viewBox="0 0 27 27"
                                  xmlns="http://www.w3.org/2000/svg" fillRule="evenodd" clipRule="evenodd">
@@ -128,7 +127,7 @@ const Admin_sidebar = () => {
                             </svg>
                             <div className="admin-sidebar-link-text  p-0">Mesajlar</div>
                         </div>
-                    </a>
+                    </Link>
                 </div>
                 <button className='admin-sidebar-logout' onClick={cikisyap}>
                     <svg fill='white' xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24">

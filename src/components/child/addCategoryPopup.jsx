@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {addCategory} from "../../pages/api/kategoriapi.js";
+import {addCategory} from "../../API/kategoriapi.js";
 import AOS from "aos";
 import "aos/dist/aos.css";
 

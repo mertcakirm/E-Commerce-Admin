@@ -1,5 +1,4 @@
 import {useEffect, useState} from 'react'
-import Admin_sidebar from '../components/admin-sidebar.jsx';
 import './admin-css/admin-genel.css'
 import AddOfferPopUp from "../components/child/AddOfferPopUp.jsx";
 import ProcessPopup from "../components/child/processPopup.jsx";
@@ -22,7 +21,6 @@ const Admin_kampanyalar = () => {
     }, []);
     return (
         <div>
-            <Admin_sidebar/>
             <div className="admin-sag-container">
                 <div className="row pt-5" data-aos="fade-in">
                     <div className="col-12">
