@@ -4,6 +4,7 @@ import ProcessPopup from "../components/child/processPopup.jsx";
 import LastOrdersPopup from "../components/child/LastOrdersPopup.jsx";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import Pagination from "../components/child/pagination.jsx";
 
 const Admin_aktif_siparis = () => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -64,9 +65,6 @@ const Admin_aktif_siparis = () => {
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentOrders = orders.slice(indexOfFirstItem, indexOfLastItem);
 
-//  const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
-//  const totalPages = Math.ceil(orders.length / itemsPerPage);
     const toggleProcessPopup = () => {
         setProcessIsPopupOpen(!isProcessPopupOpen);
     };
@@ -132,14 +130,9 @@ const Admin_aktif_siparis = () => {
                             </tbody>
                         </table>
                     </div>
-                    <div className="row col-12 px-3 justify-content-between">
-                        <button className="tumunu-gor-btn-admin col-1"
-                                onClick={() => setCurrentPage(currentPage - 1)}>Geri
-                        </button>
-                        <button className="tumunu-gor-btn-admin col-1"
-                                onClick={() => setCurrentPage(currentPage + 1)}>İleri
-                        </button>
-                    </div>
+
+                    <Pagination pageNum={currentPage} setPageNum={setCurrentPage} lastPage="5"/>
+
                 </div>
             </div>
             {isProcessPopupOpen && (

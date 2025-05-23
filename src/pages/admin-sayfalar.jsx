@@ -11,6 +11,7 @@ import AddSliderContentPopup from "../components/child/addSliderContentPopup.jsx
 import AOS from "aos";
 import "aos/dist/aos.css";
 import LoadingComp from "../components/child/Loading.jsx";
+import {toast} from "react-toastify";
 
 const Admin_sayfalar = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -29,9 +30,10 @@ const Admin_sayfalar = () => {
             await deleteSlider(id);
             setSliderData(sliderData.filter(slider => slider.id !== id));
             setRefresh(!refresh);
+            toast.success("Slider başarıyla silindi!")
         } catch (error) {
             console.error("Request error: ", error);
-            alert("An error occurred while deleting the slider.");
+            toast.error("Slider silinirken hata oluştu lütfen daha sonra tekrar deneyin!")
         }
     };
 
@@ -40,8 +42,10 @@ const Admin_sayfalar = () => {
             await deleteCart(id);
             setCartData(cartData.filter(cart => cart.id !== id));
             setRefresh(!refresh);
+            toast.success("Kart başarıyla silindi!")
         } catch (error) {
             console.error("Request error: ", error);
+            toast.error("Kart silinirken hata oluştu lütfen daha sonra tekrar deneyin!")
         }
     };
 
@@ -57,7 +61,6 @@ const Admin_sayfalar = () => {
             setLoading(false)
         }
     };
-
 
     useEffect(() => {
         AOS.init({duration: 500});
@@ -124,7 +127,7 @@ const Admin_sayfalar = () => {
                                         </div>
                                     ))
                                 ) : (
-                                    <div>Kart Bulunamadı</div>
+                                    <div>Slider Bulunamadı.</div>
                                 )}
 
                             </div>
@@ -159,7 +162,7 @@ const Admin_sayfalar = () => {
                                     </div>
                                 )
                             ) : (
-                                <div>Kart Bulunamadı</div>
+                                <div>Kart Bulunamadı.</div>
                             )}
                         </div>
                     </div>

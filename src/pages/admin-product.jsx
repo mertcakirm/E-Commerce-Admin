@@ -9,6 +9,7 @@ import LoadingComp from "../components/child/Loading.jsx";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {toast} from "react-toastify";
+import Pagination from "../components/child/pagination.jsx";
 
 const Admin_product = () => {
     const [products, setProducts] = useState([]);
@@ -18,13 +19,7 @@ const Admin_product = () => {
     const [discountValue, setDiscountValue] = useState("");
     const [pageNum, setPageNum] = useState(1);
     const [loading, setloading] = useState(true);
-    const [currentPage, setCurrentPage] = useState(0);
     const [reloadPage, setReloadPage] = useState(false);
-    const productsPerPage = 10;
-
-    useEffect(() => {
-        AOS.init({duration: 500});
-    }, []);
 
     const fetchData = async () => {
         const data = await fetchProducts(pageNum);
@@ -32,41 +27,9 @@ const Admin_product = () => {
         setProducts(data.content);
     };
 
-    useEffect(() => {
-        fetchData();
-    }, [pageNum, reloadPage]);
-
-
-    const filteredProducts = () => {
-        const newProduct1 = products.filter((product) => {
-            const productNameLower = product.productName?.toLowerCase() || "";
-            const categoryName = product.category?.name?.toLowerCase() || "";
-            const productCode = product.productCode?.toLowerCase() || "";
-            const productId = product.id?.toString() || "";
-
-            return (
-                productNameLower.includes(searchTerm.toLowerCase()) ||
-                categoryName.includes(searchTerm.toLowerCase()) ||
-                productCode.includes(searchTerm.toLowerCase()) ||
-                productId.includes(searchTerm)
-            );
-        });
-        return newProduct1;
-    };
-
-    const currentProducts = () => {
-        //return filteredProducts();
-        const newProduct = filteredProducts().slice(
-            (currentPage - 1) * productsPerPage,
-            currentPage * productsPerPage
-        );
-        return newProduct;
-    }
-
     const handleSearch = (event) => {
         setSearchTerm(event.target.value);
-        setCurrentPage(1);
-        setPageNum(0);
+        setPageNum(1);
         setProducts([]);
     };
 
@@ -121,6 +84,14 @@ const Admin_product = () => {
 
     };
 
+    useEffect(() => {
+        AOS.init({duration: 500});
+    }, []);
+    useEffect(() => {
+        fetchData();
+    }, [pageNum, reloadPage]);
+
+
     if (loading) {
         <LoadingComp/>
     }
@@ -158,7 +129,7 @@ const Admin_product = () => {
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {currentProducts().map((product) => (
+                                {products.map((product) => (
                                     <tr key={product.productCode}>
                                         <th scope="row">{product.productCode}</th>
                                         <td>
@@ -273,14 +244,7 @@ const Admin_product = () => {
                                 </tbody>
                             </table>
                         </div>
-                        <div className="row col-12 px-3 justify-content-between">
-                            <button className="tumunu-gor-btn-admin col-1"
-                                    onClick={() => setPageNum(pageNum - 1)}>Geri
-                            </button>
-                            <button className="tumunu-gor-btn-admin col-1"
-                                    onClick={() => setPageNum(pageNum + 1)}>İleri
-                            </button>
-                        </div>
+                        <Pagination pageNum={pageNum} setPageNum={setPageNum} lastPage="5"/>
                     </div>
                 </div>
             </div>

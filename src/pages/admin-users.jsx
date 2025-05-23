@@ -5,6 +5,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import {toast} from "react-toastify";
 import LoadingComp from "../components/child/Loading.jsx";
+import Pagination from "../components/child/pagination.jsx";
 
 const Admin_users = () => {
     const [usersData, setUsersData] = useState([]);
@@ -134,14 +135,8 @@ const Admin_users = () => {
                                 </tbody>
 
                             </table>
-                            <div className="row col-12 px-3 justify-content-between">
-                                <button className="tumunu-gor-btn-admin col-1"
-                                        onClick={() => setCurrentPage(currentPage - 1)}>Geri
-                                </button>
-                                <button className="tumunu-gor-btn-admin col-1"
-                                        onClick={() => setCurrentPage(currentPage + 1)}>İleri
-                                </button>
-                            </div>
+                            <Pagination pageNum={currentPage} setPageNum={setCurrentPage} lastPage="5"/>
+
                         </div>
                     </div>
                 </div>

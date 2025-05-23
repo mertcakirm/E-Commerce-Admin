@@ -1,0 +1,102 @@
+.my-notes-process-flex{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    padding: 10px;
+    column-gap: 10px;
+    z-index: 100;
+}
+
+.my-notes-process-see{
+    border-radius: 5px;
+    color: #FFFFFF;
+    border: 1px solid #FFFFFF;
+    padding: 5px 10px;
+    background: #03346EFF;
+    transition: .4s;
+    z-index: 101!important;
+    display: block;
+}
+
+.my-notes-process-bin{
+    border-radius: 5px;
+    border: 1px solid #FFFFFF;
+    background: #03346EFF;
+    padding: 0 10px;
+    transition: .4s;
+    z-index: 101!important;
+    color: #FFFFFF;
+}
+
+.my-notes-process-bin:hover{
+    transform: scale(1.05);
+    transition: .4s;
+}
+
+
+.my-notes-process-see:hover{
+    transform: scale(1.05);
+    transition: .4s;
+}
+
+.folder-row{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    column-gap: 50px;
+    row-gap: 50px;
+    padding: 30px;
+    flex-wrap: wrap;
+
+}
+
+.add-folder-btn{
+    position: absolute;
+    top: 50px;
+    bottom: unset;
+    right: 2%;
+    width: fit-content!important;
+    border-radius: 10px;
+    border: 1px solid #FFFFFF;
+    padding: 10px 20px;
+    transition: .4s;
+}
+
+.add-folder-btn:hover{
+    transition: .4s;
+    transform: scale(1.1);
+}
+
+
+
+
+.folder-card{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 10px;
+    background: transparent;
+    border: none;
+    transition: .4s;
+}
+
+.folder-card:hover{
+    transform: scale(1.1);
+    transition: .4s;
+}
+
+.folder-name{
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.color-swatch:hover {
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
+}
+
+
+
+

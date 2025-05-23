@@ -5,12 +5,12 @@ import AddCategoryPopup from "../components/child/addCategoryPopup.jsx";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {toast} from "react-toastify";
+import Pagination from "../components/child/pagination.jsx";
 
 
 const Admin_kategoriler = () => {
     const [categoriesData, setCategoriesData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const categoriesPerPage = 5;
     const [searchTerm, setSearchTerm] = useState("");
     const [showPopup, setShowPopup] = useState(false);
     const [loading, setloading] = useState(true);
@@ -41,14 +41,6 @@ const Admin_kategoriler = () => {
         setSearchTerm(event.target.value);
     };
 
-    const filteredCategories = categoriesData.filter((category) =>
-        category.categoryName.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-
-    const indexOfLastCategory = currentPage * categoriesPerPage;
-    const indexOfFirstCategory = indexOfLastCategory - categoriesPerPage;
-    const currentCategories = filteredCategories.slice(indexOfFirstCategory, indexOfLastCategory);
-
     const togglePopup = () => {
         setShowPopup(!showPopup);
     };
@@ -64,7 +56,6 @@ const Admin_kategoriler = () => {
             toast.error("Kategori silinemedi lütfen daha sonra tekrar deneyin!")
         }
     };
-
 
     if (loading) {
         <LoadingComp/>
@@ -96,7 +87,7 @@ const Admin_kategoriler = () => {
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {currentCategories.map(category => (
+                                {categoriesData.map(category => (
                                     <tr key={category.id}>
                                         <th scope="row">{category.id}</th>
                                         <td>
@@ -135,16 +126,8 @@ const Admin_kategoriler = () => {
                                 ))}
                                 </tbody>
                             </table>
-                            <div className="row col-12 justify-content-center">
-                                <div className="row col-12 px-3 justify-content-between">
-                                    <button className="tumunu-gor-btn-admin col-1"
-                                            onClick={() => setCurrentPage(currentPage - 1)}>Geri
-                                    </button>
-                                    <button className="tumunu-gor-btn-admin col-1"
-                                            onClick={() => setCurrentPage(currentPage + 1)}>İleri
-                                    </button>
-                                </div>
-                            </div>
+                            <Pagination pageNum={currentPage} setPageNum={setCurrentPage} lastPage="5"/>
+
                         </div>
                     </div>
                 </div>

@@ -5,6 +5,7 @@ import './admin-css/admin-login.css';
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {toast} from "react-toastify";
+import {Login} from "../API/authapi.js";
 
 const Admin_login = () => {
     const [email, setEmail] = useState('');
@@ -17,21 +18,13 @@ const Admin_login = () => {
             password: password
         };
         try {
-            const response = await fetch('http://localhost:8084/api/auth/admin/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(loginDTO),
-                credentials: 'include'
-            });
+            const response = await Login(loginDTO);
             if (response.ok) {
                 console.log([...response.headers.entries()]);
                 navigate('/genel')
             } else {
                 toast.error("Giriş başarısız: Geçersiz kullanıcı adı veya parola.")
             }
-
         } catch (error) {
             console.error("There was an error!", error);
             toast.error("Giriş başarısız: Şifre Yanlış.")

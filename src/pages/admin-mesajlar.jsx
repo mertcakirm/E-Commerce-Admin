@@ -4,6 +4,7 @@ import ReplyMessagePopup from "../components/child/ReplyMessagePopup.jsx";
 import ProcessPopup from "../components/child/processPopup.jsx";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import Pagination from "../components/child/pagination.jsx";
 
 const Admin_mesajlar = () => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -99,14 +100,8 @@ const Admin_mesajlar = () => {
                             ))}
                             </tbody>
                         </table>
-                        <div className="row col-12 px-3 justify-content-between">
-                            <button className="tumunu-gor-btn-admin col-1"
-                                    onClick={() => setCurrentPage(currentPage - 1)}>Geri
-                            </button>
-                            <button className="tumunu-gor-btn-admin col-1"
-                                    onClick={() => setCurrentPage(currentPage + 1)}>İleri
-                            </button>
-                        </div>
+                        <Pagination pageNum={currentPage} setPageNum={setCurrentPage} lastPage="5"/>
+
                     </div>
                 </div>
             </div>

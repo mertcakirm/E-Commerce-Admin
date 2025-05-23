@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import AOS from "aos";
 import "aos/dist/aos.css";
+import Pagination from "../components/child/pagination.jsx";
 
 const Admin_raporlar = () => {
     const reports = [
@@ -201,15 +202,8 @@ const Admin_raporlar = () => {
                         ))}
                         </tbody>
                     </table>
+                    <Pagination pageNum={currentPage} setPageNum={setCurrentPage} lastPage="5"/>
 
-                    <div className="row col-12 px-3 justify-content-between">
-                        <button className="tumunu-gor-btn-admin col-1"
-                                onClick={() => setCurrentPage(currentPage - 1)}>Geri
-                        </button>
-                        <button className="tumunu-gor-btn-admin col-1"
-                                onClick={() => setCurrentPage(currentPage + 1)}>İleri
-                        </button>
-                    </div>
                 </div>
             </div>
         </div>
