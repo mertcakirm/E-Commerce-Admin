@@ -8,6 +8,7 @@ import AddProductPopup from "../components/child/AddProductPopup.jsx";
 import LoadingComp from "../components/child/Loading.jsx";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import {toast} from "react-toastify";
 
 const Admin_product = () => {
     const [products, setProducts] = useState([]);
@@ -74,36 +75,50 @@ const Admin_product = () => {
     };
 
     const handleDelete = (productCode) => {
-        deleteProduct(productCode);
-        setProducts(
-            products.filter((product) => product.productCode !== productCode)
-        );
+        try {
+            deleteProduct(productCode);
+            setProducts(
+                products.filter((product) => product.productCode !== productCode)
+            );
+            toast.success("Ürün başarıyla silindi!");
+        }catch (error) {
+            console.log(error);
+            toast.error("Ürün silinemedi lütfen daha sonra tekrar deneyin!");
+        }
+
 
     };
 
     const applyDiscount = async () => {
-        const discountRate = parseInt(discountValue);
-        if (isNaN(discountRate) || discountRate < 0) {
-            console.error("Invalid discount value");
-            return;
+        try {
+            const discountRate = parseInt(discountValue);
+            if (isNaN(discountRate) || discountRate < 0) {
+                console.error("Invalid discount value");
+                return;
+            }
+
+            await updateDiscount(discountRate, selectedProductCode);
+            setProducts(
+                products.map((product) =>
+                    product.productCode === selectedProductCode
+                        ? {
+                            ...product,
+                            discountRate: discountRate,
+                            priceWithDiscount:
+                                product.priceWithOutDiscount -
+                                product.priceWithOutDiscount * (discountRate / 100),
+                        }
+                        : product
+                )
+            );
+            setDiscountValue("");
+            setSelectedProductCode(null);
+            toast.success("İndirim başarıyla uygulandı!")
+        }catch (error) {
+            console.log(error);
+            toast.error("İndirim uygulanamadı lütfen daha sonra tekrar deneyin!")
         }
 
-        await updateDiscount(discountRate, selectedProductCode);
-        setProducts(
-            products.map((product) =>
-                product.productCode === selectedProductCode
-                    ? {
-                        ...product,
-                        discountRate: discountRate,
-                        priceWithDiscount:
-                            product.priceWithOutDiscount -
-                            product.priceWithOutDiscount * (discountRate / 100),
-                    }
-                    : product
-            )
-        );
-        setDiscountValue("");
-        setSelectedProductCode(null);
     };
 
     if (loading) {

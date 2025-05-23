@@ -10,6 +10,7 @@ import AddCartPopup from "../components/child/addCartPopup.jsx";
 import AddSliderContentPopup from "../components/child/addSliderContentPopup.jsx";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import LoadingComp from "../components/child/Loading.jsx";
 
 const Admin_sayfalar = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -68,16 +69,7 @@ const Admin_sayfalar = () => {
     }, [refresh]);
 
     if (loading) {
-        return (
-            <div
-                className="d-flex justify-content-center"
-                style={{height: "100vh", alignItems: "center"}}
-            >
-                <div className="spinner-border" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                </div>
-            </div>
-        );
+        <LoadingComp/>
     }
 
     return (

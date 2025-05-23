@@ -3,6 +3,8 @@ import "./admin-css/admin-genel.css";
 import {getAllUsers, toggleUserActivity as toggleUserActivityAPI} from "../API/userapi";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import {toast} from "react-toastify";
+import LoadingComp from "../components/child/Loading.jsx";
 
 const Admin_users = () => {
     const [usersData, setUsersData] = useState([]);
@@ -19,7 +21,6 @@ const Admin_users = () => {
         try {
             const data = await getAllUsers(currentPage, usersPerPage);
             setUsersData(data.content || []);
-
             setLoading(false);
         } catch (error) {
             console.error(error);
@@ -38,39 +39,38 @@ const Admin_users = () => {
     );
 
     const toggleUserActivity = (userId) => {
-        toggleUserActivityAPI(userId)
-            .then((data) => {
-                if (data.ok) {
-                    setUsersData((prevData) =>
-                        prevData.map((user) =>
-                            user.id === userId ? {...user, active: !user.active} : user
-                        )
-                    );
+        try {
+            toggleUserActivityAPI(userId)
+                .then((data) => {
+                    if (data.ok) {
+                        setUsersData((prevData) =>
+                            prevData.map((user) =>
+                                user.id === userId ? {...user, active: !user.active} : user
+                            )
+                        );
+                        toast.success("Kullanıcı durumu başarıyla değiştirildi!")
+                    } else {
+                        console.error("Failed to change user activity");
+                        toast.error("Kullanıcı durumu değiştirilemedi lütfen daha sonra tekrar deneyin!")
 
-                } else {
-                    console.error("Failed to change user activity");
+                    }
 
-                }
+                })
+                .catch(
+                    (error) => {
+                        console.error(error)
+                        toast.error("Kullanıcı durumu değiştirilemedi lütfen daha sonra tekrar deneyin!")
+                    }
+                );
+        }catch (error) {
+            console.error(error);
+            toast.error("Kullanıcı durumu değiştirilemedi lütfen daha sonra tekrar deneyin!")
+        }
 
-            })
-            .catch(
-                (error) => {
-                    console.error(error)
-                }
-            );
     };
 
     if (loading) {
-        return (
-            <div
-                className="d-flex justify-content-center"
-                style={{height: "100vh", alignItems: "center"}}
-            >
-                <div className="spinner-border" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                </div>
-            </div>
-        );
+        <LoadingComp />
     }
 
     return (
