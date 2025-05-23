@@ -11,6 +11,7 @@ import Admin_kampanyalar from './pages/admin-kampanyalar';
 import Admin_login from './pages/admin-login';
 import {getCookie} from "./components/cookie/cookie.js";
 import Admin_sidebar from "./components/admin-sidebar.jsx";
+import {ToastContainer} from "react-toastify";
 
 const ProtectedRoute = ({element}) => {
     const session = getCookie("SESSIONID");
@@ -34,6 +35,7 @@ const Layout = ({children}) => {
 function App() {
     return (
         <BrowserRouter>
+            <ToastContainer theme="colored" closeOnClick position="bottom-right" autoClose={3000} />
             <Layout>
                 <Routes>
                     <Route path="/" element={<Admin_login />} />

@@ -3,6 +3,7 @@ import {deleteProduct} from "../../API/productapi.js";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {useEffect} from "react";
+import {toast} from "react-toastify";
 
 const ProcessPopup = ({type, text, id, onClose, acceptedText}) => {
     const handleDelete = async () => {
@@ -10,21 +11,26 @@ const ProcessPopup = ({type, text, id, onClose, acceptedText}) => {
         document.querySelector(".accepted-content-popup").style.display = 'flex';
         document.querySelector(".checked-content-popup").style.display = 'none';
 
-
-        switch (type) {
-            case "product_delete":
-                console.log("test")
-                break;
-            case "category_delete":
-                console.log("test");
-                break;
-            case "offer_delete":
-                deleteProduct(id);
-                break;
-            default:
-                console.error("Unknown type");
-                return;
+        try {
+            switch (type) {
+                case "product_delete":
+                    console.log("test")
+                    break;
+                case "category_delete":
+                    console.log("test");
+                    break;
+                case "offer_delete":
+                    deleteProduct(id);
+                    break;
+                default:
+                    console.error("Unknown type");
+                    return;
+            }
+        }catch (error){
+            console.error(error);
+            toast.error("İşlem Gerçekleştirilemedi. Lütfen daha sonra tekrar deneyin!")
         }
+
 
     };
 

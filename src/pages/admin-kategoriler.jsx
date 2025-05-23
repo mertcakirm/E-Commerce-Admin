@@ -4,6 +4,7 @@ import LoadingComp from "../components/child/Loading.jsx";
 import AddCategoryPopup from "../components/child/addCategoryPopup.jsx";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import {toast} from "react-toastify";
 
 
 const Admin_kategoriler = () => {
@@ -56,10 +57,11 @@ const Admin_kategoriler = () => {
         try {
             await deleteCategory(categoryId);
             console.log('Category deleted:', categoryId);
-            const refreshedData = await fetchCategories();
-            setCategoriesData(refreshedData);
+            toast.success("Kategori başarıyla silindi!")
+            setReloadPage(!reloadPage);
         } catch (error) {
             console.error('Error deleting category:', error);
+            toast.error("Kategori silinemedi lütfen daha sonra tekrar deneyin!")
         }
     };
 

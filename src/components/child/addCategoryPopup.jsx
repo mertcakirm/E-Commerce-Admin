@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import {addCategory} from "../../API/kategoriapi.js";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import {toast} from "react-toastify";
 
 const convertImageToBase64 = (file) => {
     return new Promise((resolve, reject) => {
@@ -60,22 +61,21 @@ const AddCategoryPopup = ({popupCloser, reloadPageCat}) => {
             alert("Lütfen bir resim seçin.");
             return;
         }
-
         const base64Image = await convertImageToBase64(newCategoryImage);
         const base64new = base64Image.split(",")[1];
-
         const categoryDTO = {
             image: {bytes: base64new},
             typeName: newCategoryType,
             categoryName: newCategoryName,
         };
-
         try {
             await addCategory(categoryDTO);
             popupCloser(false);
             reloadPageCat(true);
+            toast.success("Kategori başarıyla eklendi!")
         } catch (error) {
             console.error("Error adding category:", error);
+            toast.error("Kategori eklenemedi lütfen daha sonra tekrar deneyin!")
         }
     };
 

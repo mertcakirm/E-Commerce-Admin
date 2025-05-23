@@ -3,6 +3,7 @@ import {categoryDropdown} from "../../API/kategoriapi.js";
 import {addCart} from "../../API/sayfalarapi.js";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import {toast} from "react-toastify";
 
 const AddCartPopup = ({popupCloser}) => {
     const [categories, setCategories] = useState([]);
@@ -92,9 +93,12 @@ const AddCartPopup = ({popupCloser}) => {
                 cartCategory: "",
                 cartSize: "Tam"
             });
+            toast.success("Kart başarıyla oluşturuldu!")
             popupCloser(false);
         } catch (error) {
             console.error("Request error: ", error);
+            toast.error("Kart oluşturulamadı lütfen daha sonra tekrar deneyin!")
+
         }
     };
 

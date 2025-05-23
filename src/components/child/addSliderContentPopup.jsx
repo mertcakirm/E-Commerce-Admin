@@ -3,6 +3,7 @@ import {addSlider} from "../../API/sayfalarapi.js";
 import {categoryDropdown} from "../../API/kategoriapi.js";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import {toast} from "react-toastify";
 
 const AddSliderContentPopup = ({popupCloser}) => {
     const [sliderImage, setSliderImage] = useState(""); // Resim dosyasını string olarak tutacak
@@ -83,8 +84,10 @@ const AddSliderContentPopup = ({popupCloser}) => {
         e.preventDefault();
         try {
             await addSlider(sliderDTO);
+            toast.success("Slider başarıyla eklendi!")
         } catch (error) {
             console.error("Request error: ", error);
+            toast.error("Slider eklenemedi lütfen daha sonra tekrar deneyin!")
         }
     };
 

@@ -4,14 +4,14 @@ import logo from '../assets/mob_logo.png';
 import './admin-css/admin-login.css';
 import AOS from "aos";
 import "aos/dist/aos.css";
+import {toast} from "react-toastify";
 
 const Admin_login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async () => {
         const loginDTO = {
             email: email,
             password: password
@@ -29,12 +29,12 @@ const Admin_login = () => {
                 console.log([...response.headers.entries()]);
                 navigate('/genel')
             } else {
-                setErrorMessage("Giriş başarısız: Geçersiz kullanıcı adı veya parola.");
+                toast.error("Giriş başarısız: Geçersiz kullanıcı adı veya parola.")
             }
 
         } catch (error) {
             console.error("There was an error!", error);
-            setErrorMessage("Giriş başarısız: Şifre Yanlış.");
+            toast.error("Giriş başarısız: Şifre Yanlış.")
         }
     };
     useEffect(() => {
@@ -48,11 +48,6 @@ const Admin_login = () => {
                     <div className="col-12">
                         <div className='form-admin' data-aos="fade-up">
                             <img src={logo} className='logo2' alt="logo"/>
-                            {errorMessage && (
-                                <div className="alert alert-danger" role="alert">
-                                    {errorMessage}
-                                </div>
-                            )}
                             <div className="form-item">
                                 <label htmlFor="admin-username">Admin Adı</label>
                                 <input

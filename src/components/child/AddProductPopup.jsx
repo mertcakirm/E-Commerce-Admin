@@ -3,6 +3,7 @@ import {categoryDropdown} from "../../API/kategoriapi.js";
 import {addProduct} from "../../API/productapi.js";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import {toast} from "react-toastify";
 
 const AddProductPopup = ({popupCloser, reload}) => {
     const [productData, setProductData] = useState({
@@ -124,11 +125,13 @@ const AddProductPopup = ({popupCloser, reload}) => {
             }
 
             productDTO.images = imageBase64Array;
+            await addProduct(productDTO);
+            toast.success("Ürün Başarıyla oluşturuldu!")
         } catch {
             console.log("Resim hatalı");
+            toast.error("Ürün eklenemedi lütfen daha sonra tekrar deneyin!")
         }
 
-        await addProduct(productDTO);
         popupCloser(false);
 
         setProductData({
