@@ -11,7 +11,7 @@ const Admin_anasayfa = () => {
     const productsData = [
         {
             id: 1,
-            name: "Mob Wear Şort",
+            name: "T-Shirt",
             Kategori: "Üst Giyim",
             stok: 19,
             harcama: "30000",
@@ -21,7 +21,7 @@ const Admin_anasayfa = () => {
         },
         {
             id: 2,
-            name: "Mob Wear Şort",
+            name: "T-Shirt",
             Kategori: "Üst Giyim",
             stok: 19,
             harcama: "30000",
@@ -31,7 +31,7 @@ const Admin_anasayfa = () => {
         },
         {
             id: 3,
-            name: "Mob Wear Şort",
+            name: "T-Shirt",
             Kategori: "Üst Giyim",
             stok: 19,
             harcama: "30000",
@@ -41,7 +41,7 @@ const Admin_anasayfa = () => {
         },
         {
             id: 4,
-            name: "Mob Wear Şort",
+            name: "T-Shirt",
             Kategori: "Üst Giyim",
             stok: 19,
             harcama: "30000",
@@ -51,7 +51,7 @@ const Admin_anasayfa = () => {
         },
         {
             id: 5,
-            name: "Mob Wear Şort",
+            name: "T-Shirt",
             Kategori: "Üst Giyim",
             stok: 19,
             harcama: "30000",
@@ -61,7 +61,7 @@ const Admin_anasayfa = () => {
         },
         {
             id: 6,
-            name: "Mob Wear Şort",
+            name: "T-Shirt",
             Kategori: "Üst Giyim",
             stok: 19,
             harcama: "30000",
@@ -81,7 +81,7 @@ const Admin_anasayfa = () => {
         },
         {
             id: 8,
-            name: "Mob Wear Şort",
+            name: "T-Shirt",
             Kategori: "Üst Giyim",
             stok: 64,
             harcama: "30000",
@@ -91,7 +91,7 @@ const Admin_anasayfa = () => {
         },
         {
             id: 9,
-            name: "Mob Wear Şort",
+            name: "T-Shirt",
             Kategori: "Üst Giyim",
             stok: 64,
             harcama: "30000",
@@ -101,7 +101,7 @@ const Admin_anasayfa = () => {
         },
         {
             id: 10,
-            name: "Mob Wear Şort",
+            name: "T-Shirt",
             Kategori: "Üst Giyim",
             stok: 64,
             harcama: "30000",
@@ -111,7 +111,7 @@ const Admin_anasayfa = () => {
         },
         {
             id: 11,
-            name: "Mob Wear Şort",
+            name: "T-Shirt",
             Kategori: "Üst Giyim",
             stok: 64,
             harcama: "30000",
@@ -121,7 +121,7 @@ const Admin_anasayfa = () => {
         },
         {
             id: 12,
-            name: "Mob Wear Şort",
+            name: "T-Shirt",
             Kategori: "Üst Giyim",
             stok: 64,
             harcama: "30000",
@@ -131,7 +131,7 @@ const Admin_anasayfa = () => {
         },
         {
             id: 13,
-            name: "Mob Wear Şort",
+            name: "T-Shirt",
             Kategori: "Üst Giyim",
             stok: 64,
             harcama: "30000",
@@ -141,7 +141,7 @@ const Admin_anasayfa = () => {
         },
         {
             id: 14,
-            name: "Mob Wear Şort",
+            name: "T-Shirt",
             Kategori: "Üst Giyim",
             stok: 64,
             harcama: "30000",
@@ -151,7 +151,7 @@ const Admin_anasayfa = () => {
         },
         {
             id: 15,
-            name: "Mob Wear Şort",
+            name: "T-Shirt",
             Kategori: "Üst Giyim",
             stok: 64,
             harcama: "30000",
@@ -161,7 +161,7 @@ const Admin_anasayfa = () => {
         },
         {
             id: 16,
-            name: "Mob Wear Şort",
+            name: "T-Shirt",
             Kategori: "Üst Giyim",
             stok: 64,
             harcama: "30000",
@@ -171,7 +171,7 @@ const Admin_anasayfa = () => {
         },
         {
             id: 17,
-            name: "Mob Wear Şort",
+            name: "T-Shirt",
             Kategori: "Üst Giyim",
             stok: 64,
             harcama: "30000",
@@ -181,7 +181,7 @@ const Admin_anasayfa = () => {
         },
         {
             id: 18,
-            name: "Mob Wear Şort",
+            name: "T-Shirt",
             Kategori: "Üst Giyim",
             stok: 64,
             harcama: "30000",
