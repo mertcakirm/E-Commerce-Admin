@@ -1,4 +1,4 @@
-import './other/css/Sidebar.css';
+import './Other/css/Sidebar.css';
 import logo from '../assets/white_logo.png';
 import {Link, useNavigate} from 'react-router-dom';
 import {useEffect} from "react";

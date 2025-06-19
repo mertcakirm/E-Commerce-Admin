@@ -1,6 +1,6 @@
 import './css/General.css';
-import PieChart from "../components/other/Chart.jsx";
-import BarChart from "../components/other/Scatter.jsx";
+import PieChart from "../components/Other/Chart.jsx";
+import BarChart from "../components/Other/Scatter.jsx";
 import {useEffect, useState} from "react";
 import {formatLocalDate} from "../Helpers/Helper.js";
 import AOS from "aos";

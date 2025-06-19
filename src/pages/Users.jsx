@@ -6,9 +6,9 @@ import {
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {toast} from "react-toastify";
-import LoadingComp from "../components/other/Loading.jsx";
-import Pagination from "../components/other/Pagination.jsx";
-import ProcessPopup from "../components/PopUps/processPopup.jsx"; // ✨ EKLENDİ
+import LoadingComp from "../components/Other/Loading.jsx";
+import Pagination from "../components/Other/Pagination.jsx";
+import ProcessPopup from "../components/Popups/processPopup.jsx"; // ✨ EKLENDİ
 
 const Users = () => {
     const [usersData, setUsersData] = useState([]);

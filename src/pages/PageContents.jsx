@@ -4,13 +4,13 @@ import {
     GetSliderDataRequest,
     GetCartDataRequest
 } from '../API/PageContentsApi.js';
-import AddCartPopup from "../components/PopUps/AddCartPopup.jsx";
-import AddSliderContentPopup from "../components/PopUps/AddSliderContentPopup.jsx";
+import AddCartPopup from "../components/Popups/AddCartPopup.jsx";
+import AddSliderContentPopup from "../components/Popups/AddSliderContentPopup.jsx";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import LoadingComp from "../components/other/Loading.jsx";
+import LoadingComp from "../components/Other/Loading.jsx";
 import {toast} from "react-toastify";
-import ProcessPopup from "../components/PopUps/processPopup.jsx"; // ✨ EKLENDİ
+import ProcessPopup from "../components/Popups/processPopup.jsx"; // ✨ EKLENDİ
 
 const PageContents = () => {
     const [cartPopup, setCartPopup] = useState(false);

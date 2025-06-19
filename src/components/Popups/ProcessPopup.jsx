@@ -1,4 +1,4 @@
-import '../other/css/accepted.css';
+import '../Other/css/Accepted.css';
 import {
     DeleteProductRequest,
     UpdateDiscountRequest,

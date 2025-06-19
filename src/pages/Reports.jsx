@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
 import AOS from "aos";
 import "aos/dist/aos.css";
-import Pagination from "../components/other/Pagination.jsx";
+import Pagination from "../components/Other/Pagination.jsx";
 
 const Reports = () => {
     const reports = [

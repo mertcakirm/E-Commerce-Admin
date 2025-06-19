@@ -1,10 +1,10 @@
 import {useEffect, useState} from 'react';
 import './css/General.css';
-import ProcessPopup from "../components/PopUps/ProcessPopup.jsx";
-import LastOrdersPopup from "../components/PopUps/LastOrdersPopup.jsx";
+import ProcessPopup from "../components/Popups/ProcessPopup.jsx";
+import LastOrdersPopup from "../components/Popups/LastOrdersPopup.jsx";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import Pagination from "../components/other/Pagination.jsx";
+import Pagination from "../components/Other/Pagination.jsx";
 
 const ActiveOrders = () => {
     const [currentPage, setCurrentPage] = useState(1);

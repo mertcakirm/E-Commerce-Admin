@@ -138,7 +138,6 @@ const AddCartPopup = ({popupCloser}) => {
                         <option value="Yarım">Yarım</option>
                         <option value="1/3">1/3</option>
                     </select>
-
                     <div
                         className={`drop-zone col-12 ${dragging ? "dragging" : ""}`}
                         onDragOver={handleDragOver}
@@ -166,7 +165,6 @@ const AddCartPopup = ({popupCloser}) => {
                             required
                         />
                     </div>
-
                     <button onClick={handleCartSubmit} className='tumunu-gor-btn-admin'>Kaydet</button>
                 </div>
             </div>

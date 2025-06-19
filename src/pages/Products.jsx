@@ -2,13 +2,13 @@ import {useState, useEffect} from "react";
 import {
     GetProductsRequest,
 } from "../API/ProductApi.js";
-import AddProductPopup from "../components/PopUps/AddProductPopup.jsx";
-import LoadingComp from "../components/other/Loading.jsx";
+import AddProductPopup from "../components/Popups/AddProductPopup.jsx";
+import LoadingComp from "../components/Other/Loading.jsx";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {toast} from "react-toastify";
-import Pagination from "../components/other/Pagination.jsx";
-import ProcessPopup from "../components/PopUps/ProcessPopup.jsx";
+import Pagination from "../components/Other/Pagination.jsx";
+import ProcessPopup from "../components/Popups/ProcessPopup.jsx";
 
 const Products = () => {
     const [products, setProducts] = useState([]);

@@ -2,13 +2,13 @@ import {useState, useEffect} from 'react';
 import {
     GetCategoriesRequest,
 } from '../API/CategoriesApi.js';
-import LoadingComp from "../components/other/Loading.jsx";
-import AddCategoryPopup from "../components/PopUps/AddCategoryPopup.jsx";
+import LoadingComp from "../components/Other/Loading.jsx";
+import AddCategoryPopup from "../components/Popups/AddCategoryPopup.jsx";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {toast} from "react-toastify";
-import Pagination from "../components/other/Pagination.jsx";
-import ProcessPopup from "../components/PopUps/ProcessPopup.jsx";
+import Pagination from "../components/Other/Pagination.jsx";
+import ProcessPopup from "../components/Popups/ProcessPopup.jsx";
 
 
 const Categories = () => {
