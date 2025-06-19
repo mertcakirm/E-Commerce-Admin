@@ -1,7 +1,6 @@
 import {useState, useEffect} from 'react';
 import {
     GetCategoriesRequest,
-    deleteCategoryRequest,
 } from '../API/CategoriesApi.js';
 import LoadingComp from "../components/other/Loading.jsx";
 import AddCategoryPopup from "../components/PopUps/AddCategoryPopup.jsx";
@@ -9,6 +8,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import {toast} from "react-toastify";
 import Pagination from "../components/other/Pagination.jsx";
+import ProcessPopup from "../components/PopUps/ProcessPopup.jsx";
 
 
 const Categories = () => {
@@ -17,7 +17,22 @@ const Categories = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [showPopup, setShowPopup] = useState(false);
     const [loading, setloading] = useState(true);
-    const [reloadPage, setReloadPage] = useState(false);
+    const [refresh, setRefresh] = useState(false);
+    const [processConfig, setProcessConfig] = useState({
+        isOpen: false,
+        text: "",
+        type: "",
+        id: null,
+    });
+
+    const toggleProcess = ({ text, type, id }) => {
+        setProcessConfig({
+            isOpen: true,
+            text,
+            type,
+            id,
+        });
+    };
 
     const getCategories = async () => {
         try {
@@ -26,6 +41,7 @@ const Categories = () => {
             setloading(false)
         } catch (error) {
             console.error('Error fetching categories data:', error);
+            toast.error("Kategoriler alınamadı.");
         }
     };
 
@@ -38,26 +54,10 @@ const Categories = () => {
     useEffect(() => {
         getCategories();
 
-    }, [reloadPage]);
+    }, [refresh]);
 
     const handleSearch = (event) => {
         setSearchTerm(event.target.value);
-    };
-
-    const togglePopup = () => {
-        setShowPopup(!showPopup);
-    };
-
-    const handleDelete = async (categoryId) => {
-        try {
-            await deleteCategoryRequest(categoryId);
-            console.log('Category deleted:', categoryId);
-            toast.success("Kategori başarıyla silindi!")
-            setReloadPage(!reloadPage);
-        } catch (error) {
-            console.error('Error deleting category:', error);
-            toast.error("Kategori silinemedi lütfen daha sonra tekrar deneyin!")
-        }
     };
 
     if (loading) {
@@ -77,7 +77,7 @@ const Categories = () => {
                         value={searchTerm}
                         onChange={handleSearch}
                     />
-                    <button className='tumunu-gor-btn-admin col-2' onClick={togglePopup}>Kategori Ekle</button>
+                    <button className='tumunu-gor-btn-admin col-2' onClick={()=>setShowPopup(true)}>Kategori Ekle</button>
                     <div className="col-12 mt-5">
                         <div className="table-responsive">
                             <table className="table">
@@ -113,8 +113,16 @@ const Categories = () => {
                               <path d="m11.25 6c.398 0 .75.352.75.75 0 .414-.336.75-.75.75-1.505 0-7.75 0-7.75 0v12h17v-8.75c0-.414.336-.75.75-.75s.75.336.75.75v9.25c0 .621-.522 1-1 1h-18c-.48 0-1-.379-1-1v-13c0-.481.38-1 1-1zm-2.011 6.526c-1.045 3.003-1.238 3.45-1.238 3.84 0 .441.385.626.627.626.272 0 1.108-.301 3.829-1.249zm.888-.889 3.22 3.22 8.408-8.4c.163-.163.245-.377.245-.592 0-.213-.082-.427-.245-.591-.58-.578-1.458-1.457-2.039-2.036-.163-.163-.377-.245-.591-.245-.213 0-.428.082-.592.245z" fillRule="nonzero" />
                             </svg>
                           </a> */}
-                                                <button className="user-sil-btn"
-                                                        onClick={() => handleDelete(category.id)}>
+                                                <button
+                                                    className="user-sil-btn"
+                                                    onClick={() =>
+                                                        toggleProcess({
+                                                            text: "Bu kategoriyi silmek istediğinize emin misiniz?",
+                                                            type: "category_delete",
+                                                            id: category.id,
+                                                        })
+                                                    }
+                                                >
                                                     <svg clipRule="evenodd" fillRule="evenodd" width="30" height="30"
                                                          fill="white" strokeLinejoin="round" strokeMiterlimit="2"
                                                          viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -144,8 +152,20 @@ const Categories = () => {
                     }}
                     reloadPageCat={(a) => {
                         if (a === true) {
-                            setReloadPage(a)
+                            setRefresh(a)
                         }
+                    }}
+                />
+            )}
+
+            {processConfig.isOpen && (
+                <ProcessPopup
+                    text={processConfig.text}
+                    type={processConfig.type}
+                    id={processConfig.id}
+                    onClose={() => {
+                        setProcessConfig((prev) => ({ ...prev, isOpen: false }));
+                        setRefresh((prev) => !prev);
                     }}
                 />
             )}

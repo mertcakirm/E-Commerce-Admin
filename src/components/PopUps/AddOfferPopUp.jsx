@@ -44,8 +44,7 @@ const AddOfferPopup = ({popupCloser}) => {
         }
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = () => {
         popupCloser(false);
     };
 

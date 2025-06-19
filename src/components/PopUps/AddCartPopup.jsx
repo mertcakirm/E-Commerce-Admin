@@ -1,9 +1,10 @@
 import {useEffect, useState} from 'react';
-import {categoryDropdownRequest} from "../../API/CategoriesApi.js";
 import {AddCartRequest} from "../../API/PageContentsApi.js";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {toast} from "react-toastify";
+import {GetCategoryDropdownRequest} from "../../API/CategoriesApi.js";
+import {convertImageToBase64} from "../../Helpers/Helper.js";
 
 const AddCartPopup = ({popupCloser}) => {
     const [categories, setCategories] = useState([]);
@@ -18,7 +19,7 @@ const AddCartPopup = ({popupCloser}) => {
 
     useEffect(() => {
         const fetchCategory = async () => {
-            const data = await categoryDropdownRequest();
+            const data = await GetCategoryDropdownRequest();
             setCategories(data || []);
         };
         AOS.init({duration: 500});
@@ -32,15 +33,6 @@ const AddCartPopup = ({popupCloser}) => {
             ...prevState,
             [name]: value,
         }));
-    };
-
-    const convertImageToBase64 = (file) => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onloadend = () => resolve(reader.result.split(",")[1]);
-            reader.onerror = () => reject(new Error("Dosya okuma hatası"));
-            reader.readAsDataURL(file);
-        });
     };
 
     const handleCartFileChange = async (e) => {

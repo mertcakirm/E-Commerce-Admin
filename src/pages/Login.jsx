@@ -1,66 +1,70 @@
-import {useEffect, useState} from 'react'
-import {useNavigate} from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import logo from '../assets/mob_logo.png';
 import './css/Login.css';
-import AOS from "aos";
-import "aos/dist/aos.css";
-import {toast} from "react-toastify";
-import {LoginRequest} from "../API/AuthApi.js";
-
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+import { toast } from 'react-toastify';
+import { LoginRequest } from '../API/AuthApi.js';
 
 const Login = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [user, setUser] = useState({ email: '', password: '' });
     const navigate = useNavigate();
 
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setUser((prev) => ({ ...prev, [name]: value }));
+    };
+
     const handleSubmit = async () => {
-        const loginDTO = {
-            email: email,
-            password: password
-        };
         try {
-            const response = await LoginRequest(loginDTO);
+            const response = await LoginRequest(user);
             if (response.ok) {
                 console.log([...response.headers.entries()]);
-                navigate('/genel')
+                navigate('/genel');
             } else {
-                toast.error("Giriş başarısız: Geçersiz kullanıcı adı veya parola.")
+                toast.error('Giriş başarısız: Geçersiz kullanıcı adı veya parola.');
             }
         } catch (error) {
-            console.error("There was an error!", error);
-            toast.error("Giriş başarısız: Şifre Yanlış.")
+            console.error('There was an error!', error);
+            toast.error('Giriş başarısız: Şifre yanlış.');
         }
     };
+
     useEffect(() => {
-        AOS.init({duration: 500});
+        AOS.init({ duration: 500 });
     }, []);
 
     return (
         <div className='admin-bg'>
-            <div className="container">
-                <div className="row">
-                    <div className="col-12">
-                        <div className='form-admin' data-aos="fade-up">
-                            <img src={logo} className='logo2' alt="logo"/>
-                            <div className="form-item">
-                                <label htmlFor="admin-username">Admin Adı</label>
+            <div className='container'>
+                <div className='row'>
+                    <div className='col-12'>
+                        <div className='form-admin' data-aos='fade-up'>
+                            <img src={logo} className='logo2' alt='logo' />
+                            <div className='form-item'>
+                                <label htmlFor='admin-username'>Admin Adı</label>
                                 <input
-                                    type="text"
+                                    type='text'
                                     id='admin-username'
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
+                                    name='email'
+                                    value={user.email}
+                                    onChange={handleChange}
                                 />
                             </div>
-                            <div className="form-item">
-                                <label htmlFor="admin-password">Parola</label>
+                            <div className='form-item'>
+                                <label htmlFor='admin-password'>Parola</label>
                                 <input
-                                    type="password"
+                                    type='password'
                                     id='admin-password'
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
+                                    name='password'
+                                    value={user.password}
+                                    onChange={handleChange}
                                 />
                             </div>
-                            <button onClick={handleSubmit} className='giris-yap-btn'>Giriş Yap</button>
+                            <button onClick={handleSubmit} className='giris-yap-btn'>
+                                Giriş Yap
+                            </button>
                         </div>
                     </div>
                 </div>

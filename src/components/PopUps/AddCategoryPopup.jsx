@@ -1,17 +1,9 @@
 import {useEffect, useState} from "react";
-import {addCategoryRequest} from "../../API/CategoriesApi.js";
+import {AddCategoryRequest} from "../../API/CategoriesApi.js";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {toast} from "react-toastify";
-
-const convertImageToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-    });
-};
+import {convertImageToBase64} from "../../Helpers/Helper.js";
 
 const AddCategoryPopup = ({popupCloser, reloadPageCat}) => {
     const [newCategoryName, setNewCategoryName] = useState("");
@@ -69,7 +61,7 @@ const AddCategoryPopup = ({popupCloser, reloadPageCat}) => {
             categoryName: newCategoryName,
         };
         try {
-            await addCategoryRequest(categoryDTO);
+            await AddCategoryRequest(categoryDTO);
             popupCloser(false);
             reloadPageCat(true);
             toast.success("Kategori başarıyla eklendi!")

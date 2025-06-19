@@ -1,15 +1,16 @@
-import './other/css/admin-sidebar.css';
+import './other/css/Sidebar.css';
 import logo from '../assets/white_logo.png';
 import {Link, useNavigate} from 'react-router-dom';
 import {useEffect} from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import {deleteCookie} from "./cookie/Cookie.js";
 
 const Sidebar = () => {
     const navigate = useNavigate();
 
-    const cikisyap = () => {
-        localStorage.removeItem("token");
+    const LogOut = async () => {
+        await deleteCookie("SESSIONID")
         navigate('/');
     };
     const url = window.location.pathname.split("/").filter(Boolean).pop();
@@ -129,7 +130,7 @@ const Sidebar = () => {
                         </div>
                     </Link>
                 </div>
-                <button className='admin-sidebar-logout' onClick={cikisyap}>
+                <button className='admin-sidebar-logout' onClick={LogOut}>
                     <svg fill='white' xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24">
                         <path d="M16 10v-5l8 7-8 7v-5h-8v-4h8zm-16-8v20h14v-2h-12v-16h12v-2h-14z"/>
                     </svg>

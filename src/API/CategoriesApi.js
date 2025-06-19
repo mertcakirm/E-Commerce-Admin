@@ -5,18 +5,18 @@ export const GetCategoriesRequest = async () => {
 
 };
 
-export const addCategoryRequest = async (categoryDTO) => {
+export const AddCategoryRequest = async (categoryDTO) => {
     return await api.post(`category/add`, JSON.stringify(categoryDTO));
 };
 
 
 
-export const deleteCategoryRequest = async (categoryId) => {
+export const DeleteCategoryRequest = async (categoryId) => {
     return await api.delete(`admin/category/delete?categoryId=${categoryId}`);
 
 };
 
-export const categoryDropdownRequest = async () => {
+export const GetCategoryDropdownRequest = async () => {
     const response = await api.get(`category/get/all`);
     return response;
 };

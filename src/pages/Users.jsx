@@ -1,17 +1,29 @@
 import {useState, useEffect} from "react";
 import "./css/General.css";
-import {getAllUsers, toggleUserActivity as toggleUserActivityAPI} from "../API/UserApi.js";
+import {
+    GetAllUsersRequest,
+} from "../API/UserApi.js";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {toast} from "react-toastify";
 import LoadingComp from "../components/other/Loading.jsx";
 import Pagination from "../components/other/Pagination.jsx";
+import ProcessPopup from "../components/PopUps/processPopup.jsx"; // ✨ EKLENDİ
 
 const Users = () => {
     const [usersData, setUsersData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [searchQuery, setSearchQuery] = useState("");
     const [loading, setLoading] = useState(false);
+    const [refresh, setRefresh] = useState(false);
+
+    const [processConfig, setProcessConfig] = useState({
+        isOpen: false,
+        text: "",
+        type: "",
+        id: null,
+    });
+
     const usersPerPage = 10;
 
     useEffect(() => {
@@ -19,19 +31,21 @@ const Users = () => {
     }, []);
 
     const getUser = async () => {
+        setLoading(false);
         try {
-            const data = await getAllUsers(currentPage, usersPerPage);
+            const data = await GetAllUsersRequest(currentPage, usersPerPage);
             setUsersData(data.content || []);
-            setLoading(false);
         } catch (error) {
             console.error(error);
+            toast.error("Kullanıcılar alınamadı!");
+        } finally {
+            setLoading(false);
         }
     };
 
     useEffect(() => {
         getUser();
-
-    }, [currentPage]);
+    }, [currentPage,refresh]);
 
     const filteredUsers = usersData.filter(
         (user) =>
@@ -39,40 +53,16 @@ const Users = () => {
             user.phoneNumber.includes(searchQuery)
     );
 
-    const toggleUserActivity = (userId) => {
-        try {
-            toggleUserActivityAPI(userId)
-                .then((data) => {
-                    if (data.ok) {
-                        setUsersData((prevData) =>
-                            prevData.map((user) =>
-                                user.id === userId ? {...user, active: !user.active} : user
-                            )
-                        );
-                        toast.success("Kullanıcı durumu başarıyla değiştirildi!")
-                    } else {
-                        console.error("Failed to change user activity");
-                        toast.error("Kullanıcı durumu değiştirilemedi lütfen daha sonra tekrar deneyin!")
-
-                    }
-
-                })
-                .catch(
-                    (error) => {
-                        console.error(error)
-                        toast.error("Kullanıcı durumu değiştirilemedi lütfen daha sonra tekrar deneyin!")
-                    }
-                );
-        }catch (error) {
-            console.error(error);
-            toast.error("Kullanıcı durumu değiştirilemedi lütfen daha sonra tekrar deneyin!")
-        }
-
+    const toggleProcess = ({text, type, id}) => {
+        setProcessConfig({
+            isOpen: true,
+            text,
+            type,
+            id,
+        });
     };
 
-    if (loading) {
-        <LoadingComp />
-    }
+    if (loading) return <LoadingComp/>;
 
     return (
         <div>
@@ -93,20 +83,20 @@ const Users = () => {
                             <table className="table">
                                 <thead>
                                 <tr>
-                                    <th scope="col">ID</th>
-                                    <th scope="col">Ad Soyad</th>
-                                    <th scope="col">Telefon</th>
-                                    <th scope="col">Toplam Harcama</th>
-                                    <th scope="col">Toplam Sipariş</th>
-                                    <th scope="col">Aktiflik Durumu</th>
-                                    <th scope="col">İşlem</th>
+                                    <th>ID</th>
+                                    <th>Ad Soyad</th>
+                                    <th>Telefon</th>
+                                    <th>Toplam Harcama</th>
+                                    <th>Toplam Sipariş</th>
+                                    <th>Aktiflik Durumu</th>
+                                    <th>İşlem</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {filteredUsers.length > 0 ? (
                                     filteredUsers.map((user) => (
                                         <tr key={user.id}>
-                                            <th scope="row">{user.id}</th>
+                                            <td>{user.id}</td>
                                             <td>{user.nameSurname}</td>
                                             <td>{user.phoneNumber}</td>
                                             <td>{user.totalSpent}</td>
@@ -117,7 +107,13 @@ const Users = () => {
                                                     <button
                                                         className="user-sil-btn"
                                                         style={{background: "#000", fontWeight: "600"}}
-                                                        onClick={() => toggleUserActivity(user.id)}
+                                                        onClick={() =>
+                                                            toggleProcess({
+                                                                text: `Bu kullanıcıyı ${user.active ? "pasif" : "aktif"} yapmak istiyor musunuz?`,
+                                                                type: "toggle_user",
+                                                                id: user.id
+                                                            })
+                                                        }
                                                     >
                                                         {user.active ? "Pasif Yap" : "Aktif Yap"}
                                                     </button>
@@ -133,15 +129,24 @@ const Users = () => {
                                     </tr>
                                 )}
                                 </tbody>
-
                             </table>
                             <Pagination pageNum={currentPage} setPageNum={setCurrentPage} lastPage="5"/>
-
                         </div>
                     </div>
                 </div>
             </div>
 
+            {processConfig.isOpen && (
+                <ProcessPopup
+                    text={processConfig.text}
+                    type={processConfig.type}
+                    id={processConfig.id}
+                    onClose={() => {
+                        setRefresh(true)
+                        setProcessConfig((prev) => ({...prev, isOpen: false}));
+                    }}
+                />
+            )}
         </div>
     );
 };

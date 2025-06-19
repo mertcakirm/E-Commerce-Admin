@@ -7,6 +7,9 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import {useEffect} from "react";
 import {toast} from "react-toastify";
+import {DeleteCategoryRequest} from "../../API/CategoriesApi.js";
+import {DeleteCartRequest, DeleteSliderRequest} from "../../API/PageContentsApi.js";
+import {ToggleUserActivityRequest} from "../../API/UserApi.js";
 
 const ProcessPopup = ({ type, text, id, onClose, discount }) => {
 
@@ -27,6 +30,27 @@ const ProcessPopup = ({ type, text, id, onClose, discount }) => {
                 case "product_delete": {
                     await DeleteProductRequest(id);
                     toast.success("Ürün başarıyla silindi!");
+                    break;
+                }
+                case "category_delete": {
+                    DeleteCategoryRequest(id);
+                    toast.success("Kategori başarıyla silindi!");
+                    break;
+                }
+                case "slider_delete": {
+                    await DeleteSliderRequest(id);
+                    toast.success("Slider silindi.");
+                    break;
+                }
+                case "cart_delete": {
+                    await DeleteCartRequest(id);
+                    toast.success("Kategori kartı silindi.");
+                    break;
+                }
+                case "toggle_user": {
+                    const result = await ToggleUserActivityRequest(id);
+                    if (!result.ok) throw new Error("Aktiflik durumu güncellenemedi.");
+                    toast.success("Kullanıcı aktiflik durumu değiştirildi!");
                     break;
                 }
 

@@ -104,53 +104,8 @@ const Reports = () => {
                 totalSales: '1500'
             }
         },
-        {month: '06/2024',
-            data: {
-                bankTransfer: '12000₺',
-                creditCard: '13000₺',
-                totalPayment: '25000₺',
-                netProfit: '5000₺',
-                totalSales: '1500'
-            }
-        },
-        {month: '06/2024',
-            data: {
-                bankTransfer: '12000₺',
-                creditCard: '13000₺',
-                totalPayment: '25000₺',
-                netProfit: '5000₺',
-                totalSales: '1500'
-            }
-        },
-        {month: '06/2024',
-            data: {
-                bankTransfer: '12000₺',
-                creditCard: '13000₺',
-                totalPayment: '25000₺',
-                netProfit: '5000₺',
-                totalSales: '1500'
-            }
-        },
-        {month: '06/2024',
-            data: {
-                bankTransfer: '12000₺',
-                creditCard: '13000₺',
-                totalPayment: '25000₺',
-                netProfit: '5000₺',
-                totalSales: '1500'
-            }
-        },
-        {month: '06/2024',
-            data: {
-                bankTransfer: '12000₺',
-                creditCard: '13000₺',
-                totalPayment: '25000₺',
-                netProfit: '5000₺',
-                totalSales: '1500'
-            }
-        },
-    ];
 
+    ];
     const itemsPerPage = 15;
     const [currentPage, setCurrentPage] = useState(1);
 
@@ -203,7 +158,6 @@ const Reports = () => {
                         </tbody>
                     </table>
                     <Pagination pageNum={currentPage} setPageNum={setCurrentPage} lastPage="5"/>
-
                 </div>
             </div>
         </div>

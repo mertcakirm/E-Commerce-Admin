@@ -2,7 +2,7 @@ import './css/General.css';
 import PieChart from "../components/other/Chart.jsx";
 import BarChart from "../components/other/Scatter.jsx";
 import {useEffect, useState} from "react";
-import {formatLocalDate} from "../components/other/LocalDateFormat.js";
+import {formatLocalDate} from "../Helpers/Helper.js";
 import AOS from "aos";
 import "aos/dist/aos.css";
 

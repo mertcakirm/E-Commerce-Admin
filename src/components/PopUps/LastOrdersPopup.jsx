@@ -8,7 +8,6 @@ const LastOrdersPopup = ({popupCloser}) => {
         AOS.init({duration: 500});
     }, []);
 
-
     return (
         <div className="popup-overlay">
             <div className="popup-content" data-aos="zoom-in" style={{width: "1200px", maxHeight: "800px"}}>

@@ -11,3 +11,15 @@ export function formatLocalDate(date, wTime = true) {
         `${day}/${month}/${year}` + (wTime === true ? ` ${hours}:${minutes}` : "")
     );
 }
+
+export const convertImageToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            const base64 = reader.result.split(",")[1];
+            resolve(base64);
+        };
+        reader.onerror = () => reject(new Error("Dosya okuma hatası"));
+        reader.readAsDataURL(file);
+    });
+};

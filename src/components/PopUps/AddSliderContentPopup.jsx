@@ -1,9 +1,10 @@
 import {useEffect, useState} from "react";
 import {AddSliderRequest} from "../../API/PageContentsApi.js";
-import {categoryDropdownRequest} from "../../API/CategoriesApi.js";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {toast} from "react-toastify";
+import {GetCategoryDropdownRequest} from "../../API/CategoriesApi.js";
+import {convertImageToBase64} from "../../Helpers/Helper.js";
 
 const AddSliderContentPopup = ({popupCloser}) => {
     const [sliderImage, setSliderImage] = useState("");
@@ -23,17 +24,8 @@ const AddSliderContentPopup = ({popupCloser}) => {
         setPopUpData({...popUpData, [name]: value});
     };
 
-    const convertImageToBase64 = (file) => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onloadend = () => resolve(reader.result.split(",")[1]);
-            reader.onerror = () => reject(new Error("File read error"));
-            reader.readAsDataURL(file);
-        });
-    };
-
     const fetchCategory = async () => {
-        const data = await categoryDropdownRequest();
+        const data = await GetCategoryDropdownRequest();
         setCategories(data || []);
     };
 
@@ -41,8 +33,8 @@ const AddSliderContentPopup = ({popupCloser}) => {
         const file = e.target.files[0];
         if (file) {
             setImageFile(file);
-            const base64 = await convertImageToBase64(file); // Resmi base64 formatına çevir
-            setSliderImage(base64); // Base64'i state'e kaydet
+            const base64 = await convertImageToBase64(file);
+            setSliderImage(base64);
             setPopUpData({...popUpData, image: file.name});
         }
     };
@@ -52,8 +44,8 @@ const AddSliderContentPopup = ({popupCloser}) => {
         setDragging(false);
         const file = e.dataTransfer.files[0];
         if (file) {
-            const base64 = await convertImageToBase64(file); // Resmi base64 formatına çevir
-            setSliderImage(base64); // Base64'i state'e kaydet
+            const base64 = await convertImageToBase64(file);
+            setSliderImage(base64);
             setPopUpData({...popUpData, image: file.name});
         }
     };

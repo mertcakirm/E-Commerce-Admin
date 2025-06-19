@@ -1,9 +1,10 @@
 import {useEffect, useState} from "react";
-import {categoryDropdownRequest} from "../../API/CategoriesApi.js";
 import {AddProductRequest} from "../../API/ProductApi.js";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {toast} from "react-toastify";
+import {GetCategoryDropdownRequest} from "../../API/CategoriesApi.js";
+import {convertImageToBase64} from "../../Helpers/Helper.js";
 
 const AddProductPopup = ({popupCloser, reload}) => {
     const [productData, setProductData] = useState({
@@ -28,7 +29,7 @@ const AddProductPopup = ({popupCloser, reload}) => {
     };
 
     const getDropdown = async () => {
-        const categoriesObj = await categoryDropdownRequest();
+        const categoriesObj = await GetCategoryDropdownRequest();
         setCategories(categoriesObj);
     };
 
@@ -38,15 +39,6 @@ const AddProductPopup = ({popupCloser, reload}) => {
         getDropdown();
     }, []);
 
-
-    const convertImageToBase64 = (file) => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onloadend = () => resolve(reader.result.split(",")[1]);
-            reader.onerror = () => reject(new Error("Dosya okuma hatası"));
-            reader.readAsDataURL(file);
-        });
-    };
 
     const handleImageUpload = (event) => {
         const files = Array.from(event.target.files);

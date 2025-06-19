@@ -3,19 +3,15 @@ import "aos/dist/aos.css";
 import {useEffect} from "react";
 
 const ReplyMessagePopup = ({popupCloser, id, processReady}) => {
-
-
     const handleSubmit = (e) => {
         e.preventDefault();
         popupCloser(false);
         processReady(true)
-
     };
 
     useEffect(() => {
         AOS.init({duration: 500});
     }, []);
-
 
     return (
         <div className="popup-overlay">
