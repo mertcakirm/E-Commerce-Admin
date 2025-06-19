@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
+import {LoginRequest} from "../API/AuthApi.js";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import {toast} from "react-toastify";
 import logo from '../assets/mob_logo.png';
-import './css/Login.css';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
-import { toast } from 'react-toastify';
-import { LoginRequest } from '../API/AuthApi.js';
+import './css/Login.css'
 
 const Login = () => {
     const [user, setUser] = useState({ email: '', password: '' });
@@ -31,6 +31,12 @@ const Login = () => {
         }
     };
 
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            handleSubmit();
+        }
+    };
+
     useEffect(() => {
         AOS.init({ duration: 500 });
     }, []);
@@ -50,6 +56,7 @@ const Login = () => {
                                     name='email'
                                     value={user.email}
                                     onChange={handleChange}
+                                    onKeyDown={handleKeyDown}
                                 />
                             </div>
                             <div className='form-item'>
@@ -60,6 +67,7 @@ const Login = () => {
                                     name='password'
                                     value={user.password}
                                     onChange={handleChange}
+                                    onKeyDown={handleKeyDown}
                                 />
                             </div>
                             <button onClick={handleSubmit} className='giris-yap-btn'>
