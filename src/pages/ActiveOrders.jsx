@@ -1,12 +1,12 @@
 import {useEffect, useState} from 'react';
-import './admin-css/admin-genel.css';
-import ProcessPopup from "../components/child/processPopup.jsx";
-import LastOrdersPopup from "../components/child/LastOrdersPopup.jsx";
+import './css/General.css';
+import ProcessPopup from "../components/PopUps/ProcessPopup.jsx";
+import LastOrdersPopup from "../components/PopUps/LastOrdersPopup.jsx";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import Pagination from "../components/child/pagination.jsx";
+import Pagination from "../components/other/Pagination.jsx";
 
-const Admin_aktif_siparis = () => {
+const ActiveOrders = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(10);
     const [isProcessPopupOpen, setProcessIsPopupOpen] = useState(false);
@@ -158,4 +158,4 @@ const Admin_aktif_siparis = () => {
     );
 }
 
-export default Admin_aktif_siparis;
+export default ActiveOrders;

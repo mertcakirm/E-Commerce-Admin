@@ -1,11 +1,11 @@
-import '../pages/admin-css/admin-sidebar.css';
+import './other/css/admin-sidebar.css';
 import logo from '../assets/white_logo.png';
 import {Link, useNavigate} from 'react-router-dom';
 import {useEffect} from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
-const Admin_sidebar = () => {
+const Sidebar = () => {
     const navigate = useNavigate();
 
     const cikisyap = () => {
@@ -141,4 +141,4 @@ const Admin_sidebar = () => {
 }
 
 
-export default Admin_sidebar;
+export default Sidebar;

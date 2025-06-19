@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
-import {categoryDropdown} from "../../API/kategoriapi.js";
-import {addProduct} from "../../API/productapi.js";
+import {categoryDropdownRequest} from "../../API/CategoriesApi.js";
+import {AddProductRequest} from "../../API/ProductApi.js";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {toast} from "react-toastify";
@@ -28,7 +28,7 @@ const AddProductPopup = ({popupCloser, reload}) => {
     };
 
     const getDropdown = async () => {
-        const categoriesObj = await categoryDropdown();
+        const categoriesObj = await categoryDropdownRequest();
         setCategories(categoriesObj);
     };
 
@@ -125,7 +125,7 @@ const AddProductPopup = ({popupCloser, reload}) => {
             }
 
             productDTO.images = imageBase64Array;
-            await addProduct(productDTO);
+            await AddProductRequest(productDTO);
             toast.success("Ürün Başarıyla oluşturuldu!")
         } catch {
             console.log("Resim hatalı");

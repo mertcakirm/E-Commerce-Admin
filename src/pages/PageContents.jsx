@@ -1,33 +1,27 @@
 import {useState, useEffect} from 'react';
-import './admin-css/admin-genel.css';
-import {
-    fetchSliderData,
-    deleteSlider,
-    fetchCartData,
-    deleteCart,
-} from '../API/sayfalarapi';
-import AddCartPopup from "../components/child/addCartPopup.jsx";
-import AddSliderContentPopup from "../components/child/addSliderContentPopup.jsx";
+import './css/General.css';
+import { DeleteSliderRequest, DeleteCartRequest, GetSliderDataRequest, GetCartDataRequest,
+} from '../API/PageContentsApi.js';
+import AddCartPopup from "../components/PopUps/AddCartPopup.jsx";
+import AddSliderContentPopup from "../components/PopUps/AddSliderContentPopup.jsx";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import LoadingComp from "../components/child/Loading.jsx";
+import LoadingComp from "../components/other/Loading.jsx";
 import {toast} from "react-toastify";
 
-const Admin_sayfalar = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isModalOpen2, setIsModalOpen2] = useState(false);
+const PageContents = () => {
+    const [cartPopup, setCartPopup] = useState(false);
+    const [sliderPopup, setSliderPopup] = useState(false);
     const [sliderData, setSliderData] = useState([]);
     const [cartData, setCartData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [refresh, setRefresh] = useState(false);
 
-    const openModal = () => setIsModalOpen(true);
-    const openModal2 = () => setIsModalOpen2(true);
 
 
-    const deleteSliderHandler = async (id) => {
+    const DeleteSlider = async (id) => {
         try {
-            await deleteSlider(id);
+            await DeleteSliderRequest(id);
             setSliderData(sliderData.filter(slider => slider.id !== id));
             setRefresh(!refresh);
             toast.success("Slider başarıyla silindi!")
@@ -37,9 +31,9 @@ const Admin_sayfalar = () => {
         }
     };
 
-    const deleteCartHandler = async (id) => {
+    const DeleteCart = async (id) => {
         try {
-            await deleteCart(id);
+            await DeleteCartRequest(id);
             setCartData(cartData.filter(cart => cart.id !== id));
             setRefresh(!refresh);
             toast.success("Kart başarıyla silindi!")
@@ -51,9 +45,9 @@ const Admin_sayfalar = () => {
 
     const fetchData = async () => {
         try {
-            const sliders = await fetchSliderData();
+            const sliders = await GetSliderDataRequest();
             setSliderData(sliders || []);
-            const carts = await fetchCartData();
+            const carts = await GetCartDataRequest();
             setCartData(carts || []);
             setLoading(false);
         } catch (error) {
@@ -83,7 +77,7 @@ const Admin_sayfalar = () => {
                         <div className="row">
                             <div className="row justify-content-between">
                                 <div className="col-6 alt-basliklar-admin">Slider İçerikleri</div>
-                                <button className="tumunu-gor-btn-admin col-2" onClick={openModal2}>Slider Ekle</button>
+                                <button className="tumunu-gor-btn-admin col-2" onClick={()=>setSliderPopup(true)}>Slider Ekle</button>
                             </div>
                             <div className="col-lg-8 row sayfa-icerikleri-overflow" style={{padding: '2% 1%'}}>
                                 {sliderData && sliderData.length > 0 ? (
@@ -106,7 +100,7 @@ const Admin_sayfalar = () => {
                                             <div className="col-lg-1">
                                                 <button
                                                     className="slider-edit-sil-btn"
-                                                    onClick={() => deleteSliderHandler(slider.id)}
+                                                    onClick={() => DeleteSlider(slider.id)}
                                                 >
                                                     <svg
                                                         clipRule="evenodd"
@@ -141,7 +135,7 @@ const Admin_sayfalar = () => {
 
                             <div className="row justify-content-between">
                                 <div className="col-6 alt-basliklar-admin">Kategori Kartları</div>
-                                <button className="tumunu-gor-btn-admin col-2" onClick={openModal}>Kategori Kartı Ekle
+                                <button className="tumunu-gor-btn-admin col-2" onClick={()=>setCartPopup(true)}>Kategori Kartı Ekle
                                 </button>
                             </div>
 
@@ -155,7 +149,7 @@ const Admin_sayfalar = () => {
                                             <p>Kategori : {cart.category}</p>
                                             <p>Boyut : {cart.viewType}</p>
                                             <button type="button" style={{width: '100%'}}
-                                                    onClick={() => deleteCartHandler(cart.id)}
+                                                    onClick={() => DeleteCart(cart.id)}
                                                     className='tumunu-gor-btn-admin'>Sil
                                             </button>
                                         </div>
@@ -169,18 +163,18 @@ const Admin_sayfalar = () => {
                 </div>
             </div>
 
-            {isModalOpen && (
+            {cartPopup && (
                 <AddCartPopup
                     popupCloser={(b) => {
                         if (b === false) ;
-                        setIsModalOpen(b);
+                        setCartPopup(b);
                     }}/>
             )}
-            {isModalOpen2 && (
+            {sliderPopup && (
                 <AddSliderContentPopup
                     popupCloser={(b) => {
                         if (b === false) ;
-                        setIsModalOpen2(b);
+                        setSliderPopup(b);
                     }}/>
             )}
         </div>
@@ -188,4 +182,4 @@ const Admin_sayfalar = () => {
 }
 
 
-export default Admin_sayfalar;
+export default PageContents;

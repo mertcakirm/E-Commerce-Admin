@@ -1,13 +1,14 @@
 import {useEffect, useState} from 'react'
 import {useNavigate} from 'react-router-dom';
 import logo from '../assets/mob_logo.png';
-import './admin-css/admin-login.css';
+import './css/Login.css';
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {toast} from "react-toastify";
-import {Login} from "../API/authapi.js";
+import {LoginRequest} from "../API/AuthApi.js";
 
-const Admin_login = () => {
+
+const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
@@ -18,7 +19,7 @@ const Admin_login = () => {
             password: password
         };
         try {
-            const response = await Login(loginDTO);
+            const response = await LoginRequest(loginDTO);
             if (response.ok) {
                 console.log([...response.headers.entries()]);
                 navigate('/genel')
@@ -68,4 +69,4 @@ const Admin_login = () => {
     );
 };
 
-export default Admin_login;
+export default Login;

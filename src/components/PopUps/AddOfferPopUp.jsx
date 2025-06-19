@@ -110,7 +110,7 @@ const AddOfferPopup = ({popupCloser}) => {
 
                     <div className="row justify-content-between align-items-center">
                         <button onClick={handleSubmit} className="tumunu-gor-btn-admin col-12">
-                            Kaydet
+                            Kampanya Oluştur
                         </button>
                     </div>
                 </div>

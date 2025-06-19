@@ -1,12 +1,12 @@
 import {useEffect, useState} from "react";
-import {addSlider} from "../../API/sayfalarapi.js";
-import {categoryDropdown} from "../../API/kategoriapi.js";
+import {AddSliderRequest} from "../../API/PageContentsApi.js";
+import {categoryDropdownRequest} from "../../API/CategoriesApi.js";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {toast} from "react-toastify";
 
 const AddSliderContentPopup = ({popupCloser}) => {
-    const [sliderImage, setSliderImage] = useState(""); // Resim dosyasını string olarak tutacak
+    const [sliderImage, setSliderImage] = useState("");
     const [dragging, setDragging] = useState(false);
     const [categories, setCategories] = useState([]);
     const [popUpData, setPopUpData] = useState({
@@ -33,7 +33,7 @@ const AddSliderContentPopup = ({popupCloser}) => {
     };
 
     const fetchCategory = async () => {
-        const data = await categoryDropdown();
+        const data = await categoryDropdownRequest();
         setCategories(data || []);
     };
 
@@ -80,10 +80,9 @@ const AddSliderContentPopup = ({popupCloser}) => {
         fetchCategory();
     }, []);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleSubmit = async () => {
         try {
-            await addSlider(sliderDTO);
+            await AddSliderRequest(sliderDTO);
             toast.success("Slider başarıyla eklendi!")
         } catch (error) {
             console.error("Request error: ", error);

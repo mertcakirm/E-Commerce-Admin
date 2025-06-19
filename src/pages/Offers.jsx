@@ -1,11 +1,11 @@
 import {useEffect, useState} from 'react'
-import './admin-css/admin-genel.css'
-import AddOfferPopUp from "../components/child/AddOfferPopUp.jsx";
-import ProcessPopup from "../components/child/processPopup.jsx";
+import './css/General.css'
+import AddOfferPopUp from "../components/PopUps/AddOfferPopUp.jsx";
+import ProcessPopup from "../components/PopUps/ProcessPopup.jsx";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
-const Admin_kampanyalar = () => {
+const Offers = () => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [isProcessPopupOpen, setProcessIsPopupOpen] = useState(false);
 
@@ -94,4 +94,4 @@ const Admin_kampanyalar = () => {
 }
 
 
-export default Admin_kampanyalar;
+export default Offers;

@@ -1,6 +1,6 @@
-import api from "./api.js";
+import api from "./Api.js";
 
-export const Login = async (loginDTO) =>{
+export const LoginRequest = async (loginDTO) =>{
     const response = await api.post("auth/admin/login", JSON.stringify(loginDTO));
     return response;
 }

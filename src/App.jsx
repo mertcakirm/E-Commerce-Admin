@@ -1,17 +1,17 @@
 import {BrowserRouter, Routes, Route, Navigate, useLocation} from 'react-router-dom';
-import Admin_anasayfa from './pages/admin-anasayfa';
-import Admin_product from './pages/admin-product';
-import Admin_users from './pages/admin-users';
-import Admin_raporlar from './pages/admin-raporlar';
-import Admin_sayfalar from './pages/admin-sayfalar';
-import Admin_kategoriler from './pages/admin-kategoriler';
-import Admin_aktif_siparis from './pages/admin-aktif-siparis';
-import Admin_mesajlar from './pages/admin-mesajlar';
-import Admin_kampanyalar from './pages/admin-kampanyalar';
-import Admin_login from './pages/admin-login';
-import {getCookie} from "./components/cookie/cookie.js";
-import Admin_sidebar from "./components/admin-sidebar.jsx";
+import Dashboard from './pages/Dashboard.jsx';
+import Products from './pages/Products.jsx';
+import Users from './pages/Users.jsx';
+import Reports from "./pages/Reports.jsx";
+import PageContents from './pages/PageContents.jsx';
+import Categories from './pages/Categories.jsx';
+import ActiveOrders from './pages/ActiveOrders.jsx';
+import Messages from './pages/Messages.jsx';
+import Offers from './pages/Offers.jsx';
+import Login from './pages/Login.jsx';
+import Sidebar from "./components/Sidebar.jsx";
 import {ToastContainer} from "react-toastify";
+import {getCookie} from "./components/cookie/Cookie.js";
 
 const ProtectedRoute = ({element}) => {
     const session = getCookie("SESSIONID");
@@ -24,7 +24,7 @@ const Layout = ({children}) => {
 
     return (
         <>
-            {!isLoginPage && <Admin_sidebar />}
+            {!isLoginPage && <Sidebar />}
             <div className={!isLoginPage ? "admin-page-content" : ""}>
                 {children}
             </div>
@@ -38,16 +38,16 @@ function App() {
             <ToastContainer theme="colored" closeOnClick position="bottom-right" autoClose={3000} />
             <Layout>
                 <Routes>
-                    <Route path="/" element={<Admin_login />} />
-                    <Route path="/urunler" element={<ProtectedRoute element={<Admin_product />} />} />
-                    <Route path="/genel" element={<ProtectedRoute element={<Admin_anasayfa />} />} />
-                    <Route path="/kullanicilar" element={<ProtectedRoute element={<Admin_users />} />} />
-                    <Route path="/raporlar" element={<ProtectedRoute element={<Admin_raporlar />} />} />
-                    <Route path="/sayfalar" element={<ProtectedRoute element={<Admin_sayfalar />} />} />
-                    <Route path="/kampanyalar" element={<ProtectedRoute element={<Admin_kampanyalar />} />} />
-                    <Route path="/kategoriler" element={<ProtectedRoute element={<Admin_kategoriler />} />} />
-                    <Route path="/aktif-siparisler" element={<ProtectedRoute element={<Admin_aktif_siparis />} />} />
-                    <Route path="/mesajlar" element={<ProtectedRoute element={<Admin_mesajlar />} />} />
+                    <Route path="/" element={<Login />} />
+                    <Route path="/urunler" element={<ProtectedRoute element={<Products />} />} />
+                    <Route path="/genel" element={<ProtectedRoute element={<Dashboard />} />} />
+                    <Route path="/kullanicilar" element={<ProtectedRoute element={<Users />} />} />
+                    <Route path="/raporlar" element={<ProtectedRoute element={<Reports />} />} />
+                    <Route path="/sayfalar" element={<ProtectedRoute element={<PageContents />} />} />
+                    <Route path="/kampanyalar" element={<ProtectedRoute element={<Offers />} />} />
+                    <Route path="/kategoriler" element={<ProtectedRoute element={<Categories />} />} />
+                    <Route path="/aktif-siparisler" element={<ProtectedRoute element={<ActiveOrders />} />} />
+                    <Route path="/mesajlar" element={<ProtectedRoute element={<Messages />} />} />
                 </Routes>
             </Layout>
         </BrowserRouter>

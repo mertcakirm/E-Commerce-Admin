@@ -1,14 +1,17 @@
 import {useState, useEffect} from 'react';
-import {fetchCategories, deleteCategory} from '../API/kategoriapi';
-import LoadingComp from "../components/child/Loading.jsx";
-import AddCategoryPopup from "../components/child/addCategoryPopup.jsx";
+import {
+    GetCategoriesRequest,
+    deleteCategoryRequest,
+} from '../API/CategoriesApi.js';
+import LoadingComp from "../components/other/Loading.jsx";
+import AddCategoryPopup from "../components/PopUps/AddCategoryPopup.jsx";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {toast} from "react-toastify";
-import Pagination from "../components/child/pagination.jsx";
+import Pagination from "../components/other/Pagination.jsx";
 
 
-const Admin_kategoriler = () => {
+const Categories = () => {
     const [categoriesData, setCategoriesData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState("");
@@ -18,7 +21,7 @@ const Admin_kategoriler = () => {
 
     const getCategories = async () => {
         try {
-            const data = await fetchCategories();
+            const data = await GetCategoriesRequest();
             setCategoriesData(data);
             setloading(false)
         } catch (error) {
@@ -47,7 +50,7 @@ const Admin_kategoriler = () => {
 
     const handleDelete = async (categoryId) => {
         try {
-            await deleteCategory(categoryId);
+            await deleteCategoryRequest(categoryId);
             console.log('Category deleted:', categoryId);
             toast.success("Kategori başarıyla silindi!")
             setReloadPage(!reloadPage);
@@ -151,4 +154,4 @@ const Admin_kategoriler = () => {
     );
 };
 
-export default Admin_kategoriler;
+export default Categories;

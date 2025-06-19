@@ -1,13 +1,13 @@
 import {useState, useEffect} from "react";
-import "./admin-css/admin-genel.css";
-import {getAllUsers, toggleUserActivity as toggleUserActivityAPI} from "../API/userapi";
+import "./css/General.css";
+import {getAllUsers, toggleUserActivity as toggleUserActivityAPI} from "../API/UserApi.js";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {toast} from "react-toastify";
-import LoadingComp from "../components/child/Loading.jsx";
-import Pagination from "../components/child/pagination.jsx";
+import LoadingComp from "../components/other/Loading.jsx";
+import Pagination from "../components/other/Pagination.jsx";
 
-const Admin_users = () => {
+const Users = () => {
     const [usersData, setUsersData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [searchQuery, setSearchQuery] = useState("");
@@ -146,4 +146,4 @@ const Admin_users = () => {
     );
 };
 
-export default Admin_users;
+export default Users;

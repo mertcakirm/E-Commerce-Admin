@@ -1,9 +1,9 @@
 import {useEffect, useState} from 'react';
 import AOS from "aos";
 import "aos/dist/aos.css";
-import Pagination from "../components/child/pagination.jsx";
+import Pagination from "../components/other/Pagination.jsx";
 
-const Admin_raporlar = () => {
+const Reports = () => {
     const reports = [
         {month: '05/2024',
             data: {
@@ -210,4 +210,4 @@ const Admin_raporlar = () => {
     );
 };
 
-export default Admin_raporlar;
+export default Reports;

@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
-import {categoryDropdown} from "../../API/kategoriapi.js";
-import {addCart} from "../../API/sayfalarapi.js";
+import {categoryDropdownRequest} from "../../API/CategoriesApi.js";
+import {AddCartRequest} from "../../API/PageContentsApi.js";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {toast} from "react-toastify";
@@ -18,7 +18,7 @@ const AddCartPopup = ({popupCloser}) => {
 
     useEffect(() => {
         const fetchCategory = async () => {
-            const data = await categoryDropdown();
+            const data = await categoryDropdownRequest();
             setCategories(data || []);
         };
         AOS.init({duration: 500});
@@ -76,8 +76,7 @@ const AddCartPopup = ({popupCloser}) => {
         setDragging(false);
     };
 
-    const handleCartSubmit = async (e) => {
-        e.preventDefault();
+    const handleCartSubmit = async () => {
         const cartCategoryDTO = {
             cartName: cartData.cartName,
             viewType: cartData.cartSize,
@@ -86,7 +85,7 @@ const AddCartPopup = ({popupCloser}) => {
         };
 
         try {
-            await addCart(cartCategoryDTO);
+            await AddCartRequest(cartCategoryDTO);
             setCartData({
                 cartImage: "",
                 cartName: "",

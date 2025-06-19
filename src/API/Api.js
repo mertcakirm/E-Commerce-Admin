@@ -1,5 +1,5 @@
 import axios from "axios";
-import {getCookie} from "../components/cookie/cookie.js";
+import {getCookie} from "../components/cookie/Cookie.js";
 
 export const BaseUrl = "http://213.142.159.49:8000/api/";
 

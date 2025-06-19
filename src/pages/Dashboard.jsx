@@ -1,12 +1,12 @@
-import './admin-css/admin-genel.css';
-import PieChart from "../components/child/chart.jsx";
-import BarChart from "../components/child/scatter.jsx";
+import './css/General.css';
+import PieChart from "../components/other/Chart.jsx";
+import BarChart from "../components/other/Scatter.jsx";
 import {useEffect, useState} from "react";
-import {formatLocalDate} from "../components/child/LocalDateFormat.js";
+import {formatLocalDate} from "../components/other/LocalDateFormat.js";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
-const Admin_anasayfa = () => {
+const Dashboard = () => {
     const [time, setTime] = useState("?");
     const productsData = [
         {
@@ -361,4 +361,4 @@ const Admin_anasayfa = () => {
 }
 
 
-export default Admin_anasayfa;
+export default Dashboard;

@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {addCategory} from "../../API/kategoriapi.js";
+import {addCategoryRequest} from "../../API/CategoriesApi.js";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {toast} from "react-toastify";
@@ -69,7 +69,7 @@ const AddCategoryPopup = ({popupCloser, reloadPageCat}) => {
             categoryName: newCategoryName,
         };
         try {
-            await addCategory(categoryDTO);
+            await addCategoryRequest(categoryDTO);
             popupCloser(false);
             reloadPageCat(true);
             toast.success("Kategori başarıyla eklendi!")
@@ -142,7 +142,7 @@ const AddCategoryPopup = ({popupCloser, reloadPageCat}) => {
                     </div>
 
                     <button onClick={handleSubmit} className="tumunu-gor-btn-admin col-12">
-                        Ekle
+                        Kategoriyi Kaydet
                     </button>
                 </div>
             </div>

@@ -1,12 +1,12 @@
 import {useEffect, useState} from 'react';
-import './admin-css/admin-genel.css';
-import ReplyMessagePopup from "../components/child/ReplyMessagePopup.jsx";
-import ProcessPopup from "../components/child/processPopup.jsx";
+import './css/General.css';
+import ReplyMessagePopup from "../components/PopUps/ReplyMessagePopup.jsx";
+import ProcessPopup from "../components/PopUps/ProcessPopup.jsx";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import Pagination from "../components/child/pagination.jsx";
+import Pagination from "../components/other/Pagination.jsx";
 
-const Admin_mesajlar = () => {
+const Messages = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(10);
     const [popupOpen, setPopupOpen] = useState(false);
@@ -134,4 +134,4 @@ const Admin_mesajlar = () => {
     );
 }
 
-export default Admin_mesajlar;
+export default Messages;
