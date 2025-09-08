@@ -26,6 +26,7 @@ const Sidebar = () => {
                 <div className='admin-sidebar-links'>
                     <Link className={`admin-sidebar-link ${url === "genel" ? "active-link" : ""}`} to="/genel">
                         <div className="links-row align-items-center">
+                            <div className={`${url === "genel" ? "link-stick" : ""}`}></div>
                             <svg clipRule="evenodd" fill="white" width="40" height="40" fillRule="evenodd"
                                  strokeLinejoin="round" strokeMiterlimit="2" viewBox="0 0 27 27"
                                  xmlns="http://www.w3.org/2000/svg">
@@ -39,6 +40,7 @@ const Sidebar = () => {
                     </Link>
                     <Link className={`admin-sidebar-link ${url === "urunler" ? "active-link" : ""}`} to="/urunler">
                         <div className="links-row align-items-center">
+                            <div className={`${url === "urunler" ? "link-stick" : ""}`}></div>
                             <svg width="40" height="40" viewBox="0 0 27 27" fill="white"
                                  xmlns="http://www.w3.org/2000/svg" fillRule="evenodd" clipRule="evenodd">
                                 <path
@@ -50,6 +52,7 @@ const Sidebar = () => {
                     <Link className={`admin-sidebar-link ${url === "aktif-siparisler" ? "active-link" : ""}`}
                        to="/aktif-siparisler">
                         <div className="links-row align-items-center">
+                            <div className={`${url === "aktif-siparisler" ? "link-stick" : ""}`}></div>
                             <svg width="40" height="40" viewBox="0 0 27 27" fill="white"
                                  xmlns="http://www.w3.org/2000/svg" fillRule="evenodd" clipRule="evenodd">
                                 <path
@@ -62,6 +65,7 @@ const Sidebar = () => {
                     <Link className={`admin-sidebar-link ${url === "kategoriler" ? "active-link" : ""}`}
                        to="/kategoriler">
                         <div className="links-row align-items-center">
+                            <div className={`${url === "kategoriler" ? "link-stick" : ""}`}></div>
                             <svg width="40" height="40" fill="white" viewBox="0 0 24 24" clipRule="evenodd"
                                  fillRule="evenodd" strokeLinejoin="round" strokeMiterlimit="2"
                                  xmlns="http://www.w3.org/2000/svg">
@@ -76,6 +80,7 @@ const Sidebar = () => {
                     <Link className={`admin-sidebar-link ${url === "kullanicilar" ? "active-link" : ""}`}
                        to="/kullanicilar">
                         <div className="links-row align-items-center">
+                            <div className={`${url === "kullanicilar" ? "link-stick" : ""}`}></div>
                             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="white"
                                  viewBox="0 0 27 27">
                                 <path
@@ -87,6 +92,7 @@ const Sidebar = () => {
                     <Link className={`admin-sidebar-link ${url === "kampanyalar" ? "active-link" : ""}`}
                        to="/kampanyalar">
                         <div className="links-row align-items-center">
+                            <div className={`${url === "kampanyalar" ? "link-stick" : ""}`}></div>
                             <svg width="40" height="40" fill="white" viewBox="0 0 27 27"
                                  xmlns="http://www.w3.org/2000/svg" fillRule="evenodd" clipRule="evenodd">
                                 <path
@@ -97,6 +103,7 @@ const Sidebar = () => {
                     </Link>
                     <Link className={`admin-sidebar-link ${url === "sayfalar" ? "active-link" : ""}`} to="/sayfalar">
                         <div className="links-row align-items-center">
+                            <div className={`${url === "sayfalar" ? "link-stick" : ""}`}></div>
                             <svg clipRule="evenodd" fillRule="evenodd" width="40" height="40" fill="white"
                                  viewBox="0 0 27 27" strokeLinejoin="round" strokeMiterlimit="2"
                                  xmlns="http://www.w3.org/2000/svg">
@@ -110,6 +117,7 @@ const Sidebar = () => {
 
                     <Link className={`admin-sidebar-link ${url === "raporlar" ? "active-link" : ""}`} to="/raporlar">
                         <div className="links-row align-items-center">
+                            <div className={`${url === "raporlar" ? "link-stick" : ""}`}></div>
                             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="white"
                                  viewBox="0 0 27 27">
                                 <path
@@ -121,6 +129,7 @@ const Sidebar = () => {
 
                     <Link className={`admin-sidebar-link ${url === "mesajlar" ? "active-link" : ""}`} to="/mesajlar">
                         <div className="links-row align-items-center">
+                            <div className={`${url === "mesajlar" ? "link-stick" : ""}`}></div>
                             <svg width="40" height="40" fill="white" viewBox="0 0 27 27"
                                  xmlns="http://www.w3.org/2000/svg" fillRule="evenodd" clipRule="evenodd">
                                 <path

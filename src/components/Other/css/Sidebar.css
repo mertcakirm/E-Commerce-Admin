@@ -28,27 +28,29 @@
     color: #fff;
     font-size: 20px;
     padding-left: 20px;
-    width: 100%;
+    width: 90%;
+    padding-top: 2px;
     height: 50px;
     transition: .4s;
     line-height: 50px;
     display: flex;
     flex-direction: row;
     column-gap: 5px;
+    border-radius: 20px;
     align-items: center;
+    margin-left: 5%;
     justify-content: start;
 }
 
 .admin-sidebar-link:hover{
     transition: .4s;
-    padding-left: 40px;
-    font-size: 24px;
 }
 
 .active-link{
     transition: .4s;
-    padding-left: 40px;
-    font-size: 24px;
+    font-size: 22px;
+    width: 90%;
+    border-radius: 20px;
     background: rgb(27, 103, 165);
 }
 
@@ -92,5 +94,13 @@
 .links-row{
     display: flex;
     flex-direction: row;
-    column-gap: 5px;
+    column-gap: 10px;
+}
+
+.link-stick{
+    height: 30px;
+    width: 5px;
+    background: #FFFFFF;
+    border-radius: 20px;
+    transition: .4s;
 }
