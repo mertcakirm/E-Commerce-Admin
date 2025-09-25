@@ -10,14 +10,13 @@ export const DeleteProductRequest = async (id) => {
 };
 
 export const UpdateDiscountRequest = async (discountRate, productCode) => {
-    const discountDTO = {discount: discountRate};
-    return await api.put(`product-management/update/discount/${productCode}`,JSON.stringify(discountDTO))
+    return await api.put(`Admin/products/${productCode}/discount/${discountRate}`)
 };
 
-export const AddProductRequest = async (productDTO) => {
-    return await api.post(`product-management/add`, JSON.stringify(productDTO));
+export const AddProductRequest = async (formData) => {
+    return await api.post(`Admin/product`, formData, {
+    });
 };
-
 export const GetProductDetailRequest = async (urlpop) => {
     const response = await api.get(`get/${urlpop}`)
     return response;

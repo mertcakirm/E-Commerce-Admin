@@ -12,7 +12,7 @@ export const AddCategoryRequest = async (categoryDTO) => {
 
 
 export const DeleteCategoryRequest = async (categoryId) => {
-    return await api.delete(`admin/category/delete?categoryId=${categoryId}`);
+    return await api.delete(`Admin/category/${categoryId}`);
 
 };
 

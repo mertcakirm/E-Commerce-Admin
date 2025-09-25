@@ -9,7 +9,6 @@ import "aos/dist/aos.css";
 import {toast} from "react-toastify";
 import Pagination from "../components/Other/Pagination.jsx";
 import ProcessPopup from "../components/Popups/ProcessPopup.jsx";
-import {getCookie} from "../components/cookie/Cookie.js";
 
 const Products = () => {
     const [products, setProducts] = useState([]);
@@ -43,7 +42,6 @@ const Products = () => {
         setloading(false);
         try {
             const data = await GetProductsRequest(pageNum,10);
-            console.log(data.data.data.items)
             setProducts(data.data.data.items);
         } catch (err) {
             console.log(err)
@@ -65,12 +63,11 @@ const Products = () => {
 
     const applyDiscount = () => {
         if (!selectedProductCode || discountValue === "") return;
-
         toggleProcess({
             text: "Bu ürüne indirim uygulamak istiyor musunuz?",
             type: "product_discount",
             id: selectedProductCode,
-            extraData: { discount: discountValue },
+            extraData: discountValue,
         });
     };
 
@@ -177,9 +174,9 @@ const Products = () => {
                                                 <input
                                                     type="number"
                                                     maxLength={2}
-                                                    value={selectedProductCode === product.productCode ? discountValue : ""}
+                                                    value={selectedProductCode === product.id ? discountValue : ""}
                                                     onChange={(e) => setDiscountValue(e.target.value)}
-                                                    onFocus={() => setSelectedProductCode(product.productCode)}
+                                                    onFocus={() => setSelectedProductCode(product.id)}
                                                 />
                                                 <button className="siparis-durumu-btn" onClick={applyDiscount}>
                                                     İndirim Yap
@@ -210,7 +207,7 @@ const Products = () => {
                     text={processConfig.text}
                     type={processConfig.type}
                     id={processConfig.id}
-                    discount={processConfig.extraData?.discount}
+                    discount={processConfig.extraData}
                     onClose={() => {
                         setReloadPage(prev => !prev);
                         setProcessConfig(prev => ({ ...prev, isOpen: false }));

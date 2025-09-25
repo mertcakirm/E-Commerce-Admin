@@ -3,17 +3,17 @@ import {AddProductRequest} from "../../API/ProductApi.js";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {toast} from "react-toastify";
-import {GetCategoryDropdownRequest} from "../../API/CategoriesApi.js";
+import {GetCategoriesRequest} from "../../API/CategoriesApi.js";
 import {convertImageToBase64} from "../../Helpers/Helper.js";
 
 const AddProductPopup = ({popupCloser, reload}) => {
     const [productData, setProductData] = useState({
-        productName: "",
-        productCategory: "",
-        productDescription: "",
-        productPrice: 0.0,
-        purchasePrice: 0.0,
-        sizes: [],
+        Name: "",
+        CategoryId: 0,
+        Description: "",
+        Price: 0.0,
+        BasePrice: 0.0,
+        Variants: [],
     });
     const [images, setImages] = useState([]);
     const [sizeInput, setSizeInput] = useState("");
@@ -24,13 +24,13 @@ const AddProductPopup = ({popupCloser, reload}) => {
         const {name, value} = e.target;
         setProductData((prev) => ({
             ...prev,
-            [name]: name === "productPrice" || name === "purchasePrice" ? parseFloat(value) || 0.0 : value,
+            [name]: name === "productPrice" || name === "BasePrice" ? parseFloat(value) || 0.0 : value,
         }));
     };
 
     const getDropdown = async () => {
-        const categoriesObj = await GetCategoryDropdownRequest();
-        setCategories(categoriesObj);
+        const categoriesObj = await GetCategoriesRequest();
+        setCategories(categoriesObj.data);
     };
 
     useEffect(() => {
@@ -67,7 +67,7 @@ const AddProductPopup = ({popupCloser, reload}) => {
     const addStock = (event) => {
         event.preventDefault();
         if (sizeInput && quantityInput) {
-            const updatedSizes = [...productData.sizes];
+            const updatedSizes = [...productData.Variants];
             let found = false;
 
             for (let i = 0; i < updatedSizes.length; i++) {
@@ -89,7 +89,7 @@ const AddProductPopup = ({popupCloser, reload}) => {
 
             setProductData((prev) => ({
                 ...prev,
-                sizes: updatedSizes,
+                Variants: updatedSizes,
                 totalStock,
             }));
 
@@ -98,46 +98,49 @@ const AddProductPopup = ({popupCloser, reload}) => {
         }
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        const productDTO = {
-            ...productData,
-        };
-
+    const handleSubmit = async () => {
         try {
-            const imageBase64Array = [];
-            for (const image of images) {
-                if (image instanceof File || image instanceof Blob) {
-                    const base64String = await convertImageToBase64(image);
-                    imageBase64Array.push({bytes: base64String});
-                } else {
-                    console.error("Hatalı dosya tipi: ", image);
-                }
-            }
+            const formData = new FormData();
 
-            productDTO.images = imageBase64Array;
-            await AddProductRequest(productDTO);
-            toast.success("Ürün Başarıyla oluşturuldu!")
-        } catch {
-            console.log("Resim hatalı");
-            toast.error("Ürün eklenemedi lütfen daha sonra tekrar deneyin!")
+            // Ürün bilgilerini ekliyoruz
+            formData.append("Name", productData.Name);
+            formData.append("Description", productData.Description);
+            formData.append("BasePrice", productData.BasePrice);
+            formData.append("Price", productData.Price);
+            formData.append("CategoryId", productData.CategoryId);
+
+            // Variants dizisini JSON string olarak ekliyoruz
+            formData.append("Variants", JSON.stringify(productData.Variants));
+
+            // Resimleri ekliyoruz
+            images.forEach((image) => {
+                formData.append("Images", image); // backend IFormFile[] için "Images" olmalı
+            });
+
+            // API çağrısı
+            await AddProductRequest(formData);
+
+            toast.success("Ürün başarıyla oluşturuldu!");
+            popupCloser(false);
+            reload(true);
+
+            // Formu temizle
+            setProductData({
+                Name: "",
+                CategoryId: "",
+                Description: "",
+                Price: 0.0,
+                BasePrice: 0.0,
+                Variants: [],
+                totalStock: 0,
+            });
+            setImages([]);
+        } catch (err) {
+            console.error(err);
+            toast.error("Ürün eklenemedi, lütfen daha sonra tekrar deneyin!");
         }
-
-        popupCloser(false);
-
-        setProductData({
-            productName: "",
-            productCategory: "",
-            productDescription: "",
-            productPrice: 0.0,
-            purchasePrice: 0.0,
-            sizes: [],
-            totalStock: 0,
-        });
-        setImages([]);
-        reload(true);
     };
+
 
     return (
         <div className="popup-overlay">
@@ -209,7 +212,7 @@ const AddProductPopup = ({popupCloser, reload}) => {
                                     </button>
                                 </div>
                                 <div className="col-12 stoklar-card-flex p-0">
-                                    {productData.sizes.map((item, index) => (
+                                    {productData.Variants.map((item, index) => (
                                         <div key={index} className="stok-card">
                                             {item.size}: {item.stock}
                                         </div>
@@ -220,44 +223,46 @@ const AddProductPopup = ({popupCloser, reload}) => {
                         <h4>Ürün Yönetim Paneli</h4>
                         <input
                             type="text"
-                            name="productName"
+                            name="Name"
                             placeholder="Ürün Adı"
-                            value={productData.productName}
+                            value={productData.Name}
                             onChange={handleInputChange}
                             className="col-5"
                         />
                         <select
-                            name="productCategory"
-                            value={productData.productCategory}
+                            name="CategoryId"
+                            value={productData.CategoryId}
                             onChange={handleInputChange}
                             className="col-5"
                         >
                             <option value="">Ürün Kategorisi Seçin</option>
                             {categories.map((category) => (
-                                <option key={category} value={category}>
-                                    {category}
+                                <option key={category} value={category.id}>
+                                    {category.name}
                                 </option>
                             ))}
                         </select>
                         <input
                             type="number"
-                            name="purchasePrice"
+                            name="BasePrice"
                             placeholder="Ürün Alış Fiyatı"
+                            value={productData.BasePrice}
                             onChange={handleInputChange}
                             className="col-5"
                         />
                         <input
                             type="number"
-                            name="productPrice"
+                            name="Price"
                             placeholder="Ürün Fiyatı"
+                            value={productData.Price}
                             onChange={handleInputChange}
                             className="col-5"
                         />
                         <input
                             type="text"
-                            name="productDescription"
+                            name="Description"
                             placeholder="Ürün Açıklaması"
-                            value={productData.productDescription}
+                            value={productData.Description}
                             onChange={handleInputChange}
                             className="col-12"
                         />

@@ -54,7 +54,6 @@ const Categories = () => {
 
     useEffect(() => {
         getCategories();
-
     }, [refresh]);
 
     const handleSearch = (event) => {
@@ -95,15 +94,19 @@ const Categories = () => {
                                     <tr key={category.id}>
                                         <th scope="row">{category.id}</th>
                                         <td>
-                                            {category.image ? (
+                                            {category ? (
                                                 <img
-                                                    src={`data:${category.image.type};base64,${category.image.bytes}`}
-                                                    alt={category.categoryName}
+                                                    src={
+                                                        category.length > 0
+                                                            ? `https://localhost:7050${category.imageUrl}`
+                                                            : "https://thumb.ac-illust.com/b1/b170870007dfa419295d949814474ab2_t.jpeg"
+                                                    }
+                                                    alt={category.name || "Ürün Görseli"}
                                                     className='img-fluid'
                                                     style={{width: "100px"}}
                                                 />
                                             ) : (
-                                                <span>No image available</span> // Placeholder text when no image
+                                                <span>No image available</span>
                                             )}
                                         </td>
                                         <td>{category.name}</td>
