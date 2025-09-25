@@ -6,6 +6,7 @@ import "aos/dist/aos.css";
 import {toast} from "react-toastify";
 import logo from '../assets/mob_logo.png';
 import './css/Login.css'
+import {setCookie} from "../components/cookie/Cookie.js";
 
 const Login = () => {
     const [user, setUser] = useState({ email: '', password: '' });
@@ -19,8 +20,8 @@ const Login = () => {
     const handleSubmit = async () => {
         try {
             const response = await LoginRequest(user);
-            if (response.ok) {
-                console.log([...response.headers.entries()]);
+            if (response.data) {
+                setCookie("token", response.data);
                 navigate('/genel');
             } else {
                 toast.error('Giriş başarısız: Geçersiz kullanıcı adı veya parola.');

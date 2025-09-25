@@ -1,7 +1,7 @@
 import api from "./Api.js";
 
 export const GetCategoriesRequest = async () => {
-        return await api.get(`category/admin/get/all`);
+        return await api.get(`category`);
 
 };
 

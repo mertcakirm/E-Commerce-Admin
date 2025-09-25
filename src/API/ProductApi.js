@@ -1,12 +1,12 @@
 import api from "./Api.js";
 
-export const GetProductsRequest = async (pageNum) => {
-    const response = await api.get(`product-management/product/all&page=${pageNum}`)
+export const GetProductsRequest = (pageNum, pageSize) => {
+    const response = api.get(`products?pageNumber=${pageNum}&pageSize=${pageSize}`);
     return response;
 };
 
-export const DeleteProductRequest = async (productCode) => {
-    return await api.delete(`product-management/delete/${productCode}`);
+export const DeleteProductRequest = async (id) => {
+    return await api.delete(`Admin/product/${id}`);
 };
 
 export const UpdateDiscountRequest = async (discountRate, productCode) => {
@@ -24,7 +24,7 @@ export const GetProductDetailRequest = async (urlpop) => {
 };
 
 export const DeleteProductImageRequest = (id) => {
-    return api.delete(`image/delete/${id}`);
+    return api.delete(`Admin/product/image/${id}`);
 };
 
 export const UpdateProductRequest = (urlpop, updatedProduct) => {

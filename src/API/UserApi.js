@@ -1,7 +1,7 @@
 import api from "./Api.js";
 
-export const GetAllUsersRequest = async (currentPage, usersPerPage) => {
-    const response = await api.get(`admin/user/all?page=${currentPage - 1}&size=${usersPerPage}`);
+export const GetAllUsersRequest = async (pageNum, size) => {
+    const response = await api.get(`admin/users/get-all?pageNumber=${pageNum}&pageSize=${size}`);
     return response;
 };
 

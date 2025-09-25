@@ -37,7 +37,8 @@ const Categories = () => {
     const getCategories = async () => {
         try {
             const data = await GetCategoriesRequest();
-            setCategoriesData(data);
+            console.log(data);
+            setCategoriesData(data.data);
             setloading(false)
         } catch (error) {
             console.error('Error fetching categories data:', error);
@@ -105,7 +106,7 @@ const Categories = () => {
                                                 <span>No image available</span> // Placeholder text when no image
                                             )}
                                         </td>
-                                        <td>{category.categoryName}</td>
+                                        <td>{category.name}</td>
                                         <td>
                                             <div className="user-duzenle-row">
                                                 {/* <a href="/admin-kategori-guncelle" className="user-edit-btn">

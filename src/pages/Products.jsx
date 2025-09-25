@@ -9,6 +9,7 @@ import "aos/dist/aos.css";
 import {toast} from "react-toastify";
 import Pagination from "../components/Other/Pagination.jsx";
 import ProcessPopup from "../components/Popups/ProcessPopup.jsx";
+import {getCookie} from "../components/cookie/Cookie.js";
 
 const Products = () => {
     const [products, setProducts] = useState([]);
@@ -41,8 +42,9 @@ const Products = () => {
     const fetchData = async () => {
         setloading(false);
         try {
-            const data = await GetProductsRequest(pageNum);
-            setProducts(data.content);
+            const data = await GetProductsRequest(pageNum,10);
+            console.log(data.data.data.items)
+            setProducts(data.data.data.items);
         } catch (err) {
             console.log(err)
             toast.error("Ürünler alınamadı.");
@@ -117,30 +119,30 @@ const Products = () => {
                                 </thead>
                                 <tbody>
                                 {products.map((product) => (
-                                    <tr key={product.productCode}>
-                                        <th>{product.productCode}</th>
+                                    <tr key={product.id}>
+                                        <th>{product.id}</th>
                                         <td>
-                                            {product.productImage.length > 0 ? (
-                                                <img
-                                                    className="img-fluid urunler-listesi-img"
-                                                    src={`data:${product.productImage.type};base64,${product.productImage[0]?.bytes}`}
-                                                    alt={product.productName}
-                                                />
-                                            ) : (
-                                                <p>Ürün Görseli Yok</p>
-                                            )}
+                                            <img
+                                                className="img-fluid urunler-listesi-img"
+                                                src={
+                                                    product.images.length > 0 && product.images[0].imageUrl
+                                                        ? `https://localhost:7050${product.images[0].imageUrl}`
+                                                        : "https://thumb.ac-illust.com/b1/b170870007dfa419295d949814474ab2_t.jpeg"
+                                                }
+                                                alt={product.productName || "Ürün Görseli"}
+                                            />
                                         </td>
-                                        <td>{product.productName}</td>
-                                        <td>{product.category}</td>
+                                        <td>{product.name}</td>
+                                        <td>{product.categoryName}</td>
                                         <td>Toplam Satış : 80</td>
                                         <td>
                                             <div className="stok-flex">
                                                 <p>
                                                     Toplam Stok:{" "}
-                                                    {product.sizes.reduce((total, size) => total + size.stock, 0)}
+                                                    {product.variants.reduce((total, size) => total + size.stock, 0)}
                                                 </p>
                                                 <div className="stok-details">
-                                                    {product.sizes.map((size, index) => (
+                                                    {product.variants.map((size, index) => (
                                                         <p key={index}>{size.size}: {size.stock}</p>
                                                     ))}
                                                 </div>
@@ -148,9 +150,8 @@ const Products = () => {
                                         </td>
                                         <td>
                                             <div className="stok-details">
-                                                <p>Ana Fiyat : {product.priceWithOutDiscount}₺</p>
+                                                <p>Güncel Fiyat : {product.price}₺</p>
                                                 <p>İndirim Oranı : {product.discountRate}%</p>
-                                                <p>İndirimli Fiyat : {product.priceWithDiscount}₺</p>
                                             </div>
                                         </td>
                                         <td>
@@ -164,7 +165,7 @@ const Products = () => {
                                                     toggleProcess({
                                                         text: "Bu ürünü silmek istediğinize emin misiniz?",
                                                         type: "product_delete",
-                                                        id: product.productCode,
+                                                        id: product.id,
                                                     })
                                                 }>
                                                     <svg fill="white" width="30" height="30" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

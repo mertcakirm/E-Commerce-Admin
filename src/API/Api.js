@@ -1,19 +1,15 @@
 import axios from "axios";
 import {getCookie} from "../components/cookie/Cookie.js";
 
-export const BaseUrl = "http://213.142.159.49:8000/api/";
-
 const api = axios.create({
-    baseURL: BaseUrl,
+    baseURL: "https://localhost:7050/api/",
 });
 
 api.interceptors.request.use((config) => {
-    const token = getCookie("SESSIONID");
-
-    if (!config.headers["NoAuth"] && token) {
-        config.headers["Authorization"] = `Bearer ${token}`;
+    if (config.method !== "get") {
+        const token = getCookie("token");
+        if (token) config.headers["Authorization"] = `Bearer ${token.token}`;
     }
-    delete config.headers["NoAuth"];
     return config;
 });
 
