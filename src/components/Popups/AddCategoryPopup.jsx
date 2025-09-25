@@ -7,7 +7,7 @@ import {convertImageToBase64} from "../../Helpers/Helper.js";
 
 const AddCategoryPopup = ({popupCloser, reloadPageCat}) => {
     const [newCategoryName, setNewCategoryName] = useState("");
-    const [newCategoryType, setNewCategoryType] = useState("");
+    const [newCategoryType, setNewCategoryType] = useState(0);
     const [newCategoryImage, setNewCategoryImage] = useState(null);
     const [dragging, setDragging] = useState(false);
 
@@ -47,27 +47,26 @@ const AddCategoryPopup = ({popupCloser, reloadPageCat}) => {
         setDragging(true);
     };
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
+    const handleSubmit = async () => {
+
         if (!newCategoryImage) {
             alert("Lütfen bir resim seçin.");
             return;
         }
-        const base64Image = await convertImageToBase64(newCategoryImage);
-        const base64new = base64Image.split(",")[1];
-        const categoryDTO = {
-            image: {bytes: base64new},
-            typeName: newCategoryType,
-            categoryName: newCategoryName,
-        };
+
+        const formData = new FormData();
+        formData.append("Name", newCategoryName);
+        formData.append("ParentCategoryId", newCategoryType);
+        formData.append("Image", newCategoryImage);
+
         try {
-            await AddCategoryRequest(categoryDTO);
+            await AddCategoryRequest(formData);
             popupCloser(false);
             reloadPageCat(true);
-            toast.success("Kategori başarıyla eklendi!")
+            toast.success("Kategori başarıyla eklendi!");
         } catch (error) {
             console.error("Error adding category:", error);
-            toast.error("Kategori eklenemedi lütfen daha sonra tekrar deneyin!")
+            toast.error("Kategori eklenemedi lütfen daha sonra tekrar deneyin!");
         }
     };
 
@@ -91,7 +90,7 @@ const AddCategoryPopup = ({popupCloser, reloadPageCat}) => {
                         required
                     />
                     <input
-                        type="text"
+                        type="number"
                         id="type"
                         className="col-5 popup-inp"
                         style={{height: "40px"}}

@@ -6,7 +6,7 @@ export const GetCategoriesRequest = async () => {
 };
 
 export const AddCategoryRequest = async (categoryDTO) => {
-    return await api.post(`category/add`, JSON.stringify(categoryDTO));
+    return await api.post(`Admin/category`,categoryDTO);
 };
 
 

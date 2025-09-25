@@ -14,11 +14,10 @@ export const UpdateDiscountRequest = async (discountRate, productCode) => {
 };
 
 export const AddProductRequest = async (formData) => {
-    return await api.post(`Admin/product`, formData, {
-    });
+    return await api.post(`Admin/product`, formData);
 };
 export const GetProductDetailRequest = async (urlpop) => {
-    const response = await api.get(`get/${urlpop}`)
+    const response = await api.get(`Products/${urlpop}`)
     return response;
 };
 

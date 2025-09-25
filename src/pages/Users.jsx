@@ -16,7 +16,6 @@ const Users = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [loading, setLoading] = useState(false);
     const [refresh, setRefresh] = useState(false);
-
     const [processConfig, setProcessConfig] = useState({
         isOpen: false,
         text: "",
@@ -33,8 +32,9 @@ const Users = () => {
     const getUser = async () => {
         setLoading(false);
         try {
-            const data = await GetAllUsersRequest(currentPage, usersPerPage);
-            setUsersData(data.content || []);
+            const response = await GetAllUsersRequest(currentPage, usersPerPage);
+            console.log(response.data.data.items)
+            setUsersData(response.data.data.items || []);
         } catch (error) {
             console.error(error);
             toast.error("Kullanıcılar alınamadı!");
@@ -49,7 +49,7 @@ const Users = () => {
 
     const filteredUsers = usersData.filter(
         (user) =>
-            user.nameSurname.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
             user.phoneNumber.includes(searchQuery)
     );
 
@@ -85,9 +85,7 @@ const Users = () => {
                                 <tr>
                                     <th>ID</th>
                                     <th>Ad Soyad</th>
-                                    <th>Telefon</th>
-                                    <th>Toplam Harcama</th>
-                                    <th>Toplam Sipariş</th>
+                                    <th>Mail</th>
                                     <th>Aktiflik Durumu</th>
                                     <th>İşlem</th>
                                 </tr>
@@ -97,11 +95,9 @@ const Users = () => {
                                     filteredUsers.map((user) => (
                                         <tr key={user.id}>
                                             <td>{user.id}</td>
-                                            <td>{user.nameSurname}</td>
-                                            <td>{user.phoneNumber}</td>
-                                            <td>{user.totalSpent}</td>
-                                            <td>{user.totalOrder}</td>
-                                            <td>{user.active ? "Aktif" : "Pasif"}</td>
+                                            <td>{user.name}</td>
+                                            <td>{user.email}</td>
+                                            <td>{user.isDeleted ? "Pasif " : "Aktif "}</td>
                                             <td>
                                                 <div className="user-duzenle-row">
                                                     <button
@@ -109,13 +105,13 @@ const Users = () => {
                                                         style={{background: "#000", fontWeight: "600"}}
                                                         onClick={() =>
                                                             toggleProcess({
-                                                                text: `Bu kullanıcıyı ${user.active ? "pasif" : "aktif"} yapmak istiyor musunuz?`,
+                                                                text: `Bu kullanıcıyı ${user.isDeleted ? "aktif" : "pasif" } yapmak istiyor musunuz?`,
                                                                 type: "toggle_user",
                                                                 id: user.id
                                                             })
                                                         }
                                                     >
-                                                        {user.active ? "Pasif Yap" : "Aktif Yap"}
+                                                        {user.isDeleted ? "Aktif Yap" : "Pasif Yap"}
                                                     </button>
                                                 </div>
                                             </td>
