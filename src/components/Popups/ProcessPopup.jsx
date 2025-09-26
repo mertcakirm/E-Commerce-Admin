@@ -10,6 +10,7 @@ import {toast} from "react-toastify";
 import {DeleteCategoryRequest} from "../../API/CategoriesApi.js";
 import {DeleteCartRequest, DeleteSliderRequest} from "../../API/PageContentsApi.js";
 import {ToggleUserActivityRequest} from "../../API/UserApi.js";
+import {CompleteOrderStatus, UpdateOrderStatus} from "../../API/Order.js";
 
 const ProcessPopup = ({ type, text, id, onClose, discount }) => {
 
@@ -26,7 +27,6 @@ const ProcessPopup = ({ type, text, id, onClose, discount }) => {
                     toast.success("İndirim başarıyla uygulandı!");
                     break;
                 }
-
                 case "product_delete": {
                     await DeleteProductRequest(id);
                     toast.success("Ürün başarıyla silindi!");
@@ -37,20 +37,19 @@ const ProcessPopup = ({ type, text, id, onClose, discount }) => {
                     toast.success("Kategori başarıyla silindi!");
                     break;
                 }
-                case "slider_delete": {
-                    await DeleteSliderRequest(id);
-                    toast.success("Slider silindi.");
-                    break;
-                }
-                case "cart_delete": {
-                    await DeleteCartRequest(id);
-                    toast.success("Kategori kartı silindi.");
-                    break;
-                }
                 case "toggle_user": {
-                    const result = await ToggleUserActivityRequest(id);
-                    if (!result.ok) throw new Error("Aktiflik durumu güncellenemedi.");
+                    await ToggleUserActivityRequest(id);
                     toast.success("Kullanıcı aktiflik durumu değiştirildi!");
+                    break;
+                }
+                case "update_order": {
+                    await UpdateOrderStatus(id,discount);
+                    toast.success("Sipariş durumu güncellendi!");
+                    break;
+                }
+                case "finish_order": {
+                    await CompleteOrderStatus(id);
+                    toast.success("Sipariş tamamlandı!");
                     break;
                 }
 

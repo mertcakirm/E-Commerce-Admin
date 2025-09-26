@@ -13,5 +13,5 @@ export const GetAllUsersRequest = async (pageNum, size) => {
     );
 };
 export const ToggleUserActivityRequest = async (userId) => {
-    return await api.put(`admin/user/inactive?userId=${userId}`)
+    return await api.put(`Admin/users/status/${userId}`)
 };
