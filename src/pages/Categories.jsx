@@ -1,20 +1,17 @@
-import {useState, useEffect} from 'react';
-import {
-    GetCategoriesRequest,
-} from '../API/CategoriesApi.js';
+import { useEffect, useState } from 'react';
+import { GetCategoriesRequest } from '../API/CategoriesApi.js';
 import LoadingComp from "../components/Other/Loading.jsx";
 import AddCategoryPopup from "../components/Popups/AddCategoryPopup.jsx";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 import ProcessPopup from "../components/Popups/ProcessPopup.jsx";
-
 
 const Categories = () => {
     const [categoriesData, setCategoriesData] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [showPopup, setShowPopup] = useState(false);
-    const [loading, setloading] = useState(true);
+    const [loading, setLoading] = useState(true);
     const [refresh, setRefresh] = useState(false);
     const [processConfig, setProcessConfig] = useState({
         isOpen: false,
@@ -33,78 +30,72 @@ const Categories = () => {
     };
 
     const getCategories = async () => {
+        setLoading(true);
         try {
             const data = await GetCategoriesRequest();
             setCategoriesData(data.data);
-            setloading(false)
         } catch (error) {
             console.error('Error fetching categories data:', error);
             toast.error("Kategoriler alınamadı.");
+        } finally {
+            setLoading(false);
         }
     };
 
     useEffect(() => {
-        AOS.init({duration: 500});
+        AOS.init({ duration: 500 });
         getCategories();
-
     }, []);
 
     useEffect(() => {
-        getCategories();
+            getCategories();
     }, [refresh]);
 
     const handleSearch = (event) => {
         setSearchTerm(event.target.value);
     };
 
-    if (loading) {
-        <LoadingComp/>
-    }
+    if (loading) return <LoadingComp />;
 
     return (
-        <div>
-            <div className="admin-sag-container">
-                <div className="row px-4 justify-content-between align-items-center row-gap-3 admin-genel-row"
-                     data-aos="fade-in">
-                    <div className="col-12  alt-basliklar-admin">Kategori Listesi</div>
-                    <input
-                        type="text"
-                        placeholder="Ara..."
-                        className="admin-search-inp col-3"
-                        value={searchTerm}
-                        onChange={handleSearch}
-                    />
-                    <button className='tumunu-gor-btn-admin col-2' onClick={()=>setShowPopup(true)}>Kategori Ekle</button>
-                    <div className="col-12 mt-5">
-                        <div className="table-responsive">
-                            <table className="table">
-                                <thead>
-                                <tr>
-                                    <th scope="col">Kategori ID</th>
-                                    <th scope="col">Kategori Kapağı</th>
-                                    <th scope="col">Kategori Adı</th>
-                                    <th scope="col">İşlem</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {categoriesData.map(category => (
+        <div className="admin-sag-container">
+            <div className="row px-4 justify-content-between align-items-center row-gap-3 admin-genel-row" data-aos="fade-in">
+                <div className="col-12 alt-basliklar-admin">Kategori Listesi</div>
+
+                <input
+                    type="text"
+                    placeholder="Ara..."
+                    className="admin-search-inp col-3"
+                    value={searchTerm}
+                    onChange={handleSearch}
+                />
+
+                <button className='tumunu-gor-btn-admin col-2' onClick={() => setShowPopup(true)}>Kategori Ekle</button>
+
+                <div className="col-12 mt-5">
+                    <div className="table-responsive">
+                        <table className="table">
+                            <thead>
+                            <tr>
+                                <th>Kategori ID</th>
+                                <th>Kategori Kapağı</th>
+                                <th>Kategori Adı</th>
+                                <th>İşlem</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {categoriesData
+                                .filter(c => c.name.toLowerCase().includes(searchTerm.toLowerCase()))
+                                .map(category => (
                                     <tr key={category.id}>
-                                        <th scope="row">{category.id}</th>
+                                        <td>{category.id}</td>
                                         <td>
-                                            {category ? (
-                                                <img
-                                                    src={
-                                                        category && category.imageUrl
-                                                            ? `https://localhost:7050${category.imageUrl}`
-                                                            : "https://thumb.ac-illust.com/b1/b170870007dfa419295d949814474ab2_t.jpeg"
-                                                    }
-                                                    alt={category?.name || "Ürün Görseli"}
-                                                    className="img-fluid"
-                                                    style={{ width: "100px" }}
-                                                />
-                                            ) : (
-                                                <span>No image available</span>
-                                            )}
+                                            <img
+                                                src={category.imageUrl ? `https://localhost:7050${category.imageUrl}` : "https://thumb.ac-illust.com/b1/b170870007dfa419295d949814474ab2_t.jpeg"}
+                                                alt={category.name}
+                                                className="img-fluid"
+                                                style={{ width: "100px" }}
+                                            />
                                         </td>
                                         <td>{category.name}</td>
                                         <td>
@@ -131,24 +122,16 @@ const Categories = () => {
                                         </td>
                                     </tr>
                                 ))}
-                                </tbody>
-                            </table>
-                        </div>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
 
             {showPopup && (
                 <AddCategoryPopup
-                    popupCloser={(b) => {
-                        if (b === false) ;
-                        setShowPopup(b);
-                    }}
-                    reloadPageCat={(a) => {
-                        if (a === true) {
-                            setRefresh(a)
-                        }
-                    }}
+                    popupCloser={(state) => setShowPopup(state)}
+                    reloadPageCat={() => setRefresh(true)}
                 />
             )}
 
@@ -158,12 +141,11 @@ const Categories = () => {
                     type={processConfig.type}
                     id={processConfig.id}
                     onClose={() => {
-                        setProcessConfig((prev) => ({ ...prev, isOpen: false }));
-                        setRefresh((prev) => !prev);
+                        setProcessConfig({ ...processConfig, isOpen: false })
+                        setRefresh(!refresh)
                     }}
                 />
             )}
-
         </div>
     );
 };
