@@ -1,14 +1,20 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { toast } from "react-toastify";
 import {GetCategoriesRequest} from "../../API/CategoriesApi.js";
-import {DeleteProductImageRequest, GetProductDetailRequest} from "../../API/ProductApi.js";
+import {
+    AddProductImageRequest,
+    AddStockRequest,
+    DeleteProductImageRequest,
+    DeleteStockRequest,
+    GetProductDetailRequest,
+    UpdateProductRequest
+} from "../../API/ProductApi.js";
 
 const EditProduct = ({ onClose, productId }) => {
     const [categories, setCategories] = useState([]);
-
+    const [refresh, setRefresh] = useState(false);
     const [productData, setProductData] = useState({
         name: "",
         description: "",
@@ -27,7 +33,7 @@ const EditProduct = ({ onClose, productId }) => {
         AOS.init({ duration: 500 });
         getDropdown();
         fetchProduct();
-    }, [productId]);
+    }, [productId,refresh]);
 
     const getDropdown = async () => {
         const categoriesObj = await GetCategoriesRequest();
@@ -37,7 +43,6 @@ const EditProduct = ({ onClose, productId }) => {
     const fetchProduct = async () => {
         try {
             const res = await GetProductDetailRequest(productId)
-            console.log(res)
             const p = res.data.data;
 
             setProductData({
@@ -69,25 +74,50 @@ const EditProduct = ({ onClose, productId }) => {
         setProductData((prev) => ({ ...prev, variants: updated }));
     };
 
-    const addVariant = () => {
+    const addVariant = async () => {
         if (!newVariant.size || newVariant.stock < 0) return;
-        setProductData((prev) => ({
-            ...prev,
-            variants: [...prev.variants, newVariant],
-        }));
-        setNewVariant({ size: "", stock: 0 });
+
+        try {
+            await AddStockRequest(productId,newVariant.size,newVariant.stock);
+            setNewVariant({ size: "", stock: 0 });
+            setRefresh(!refresh);
+            toast.success("Stok eklendi!")
+
+        }catch (error){
+            console.log(error);
+            toast.error("Stok eklenemedi!")
+        }
+
     };
 
-    const removeVariant = (idx) => {
-        setProductData((prev) => ({
-            ...prev,
-            variants: prev.variants.filter((_, i) => i !== idx),
-        }));
+    const removeVariant = async (id) => {
+        try {
+            await DeleteStockRequest(id);
+            toast.success("Stok kaldırıldı!")
+            setRefresh(!refresh);
+        }catch (error) {
+            console.log(error);
+            toast.error("Stok kaldırılamadı!")
+        }
     };
 
     // --- Görseller ---
-    const handleImageUpload = (e) => {
-        setNewImages((prev) => [...prev, ...Array.from(e.target.files)]);
+    const handleImageUpload = async (e) => {
+        const files = Array.from(e.target.files);
+        if (files.length === 0) return;
+
+        try {
+            const formData = new FormData();
+            files.forEach((file) => formData.append("File", file));
+
+            await AddProductImageRequest(productId, formData);
+            toast.success("Görseller başarıyla yüklendi!");
+            setNewImages([]);
+            setRefresh(!refresh);
+        } catch (err) {
+            console.error("Görsel yükleme hatası:", err);
+            toast.error("Görsel yüklenemedi!");
+        }
     };
 
     const handleDragOver = (e) => e.preventDefault();
@@ -115,27 +145,18 @@ const EditProduct = ({ onClose, productId }) => {
     };
 
     // --- Submit ---
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const formData = new FormData();
+    const handleSubmit = async () => {
 
-        formData.append("name", productData.name);
-        formData.append("description", productData.description);
-        formData.append("basePrice", productData.basePrice);
-        formData.append("price", productData.price);
-        formData.append("categoryId", productData.categoryId);
-        formData.append("variants", JSON.stringify(productData.variants));
-
-        // Sadece kalan resimlerin id’lerini gönder
-        const keepIds = existingImages.map((img) => img.id);
-        formData.append("keepImageIds", JSON.stringify(keepIds));
-
-        newImages.forEach((file) => formData.append("images", file));
+        const payload = {
+            name: productData.name,
+            description: productData.description,
+            basePrice: productData.basePrice,
+            price: productData.price,
+            categoryId: productData.categoryId
+        };
 
         try {
-            await axios.put(`/api/Admin/product/${productId}`, formData, {
-                headers: { "Content-Type": "multipart/form-data" },
-            });
+            await UpdateProductRequest(productId, payload);
             toast.success("Ürün güncellendi!");
             onClose();
         } catch (err) {
@@ -154,7 +175,7 @@ const EditProduct = ({ onClose, productId }) => {
                     </button>
                 </div>
 
-                <form className="popup-form" onSubmit={handleSubmit}>
+                <div className="popup-form">
                     <div className="row row-gap-3 column-gap-3 justify-content-between">
 
                         {/* ---- Resim Yönetimi ---- */}
@@ -238,7 +259,7 @@ const EditProduct = ({ onClose, productId }) => {
                                     />
                                     <button
                                         type="button"
-                                        onClick={() => removeVariant(idx)}
+                                        onClick={() => removeVariant(v.id)}
                                         className="btn btn-danger btn-sm"
                                     >
                                         Sil
@@ -322,11 +343,11 @@ const EditProduct = ({ onClose, productId }) => {
                             className="col-12 form-control"
                         />
 
-                        <button type="submit" className="btn btn-primary mt-4">
+                        <button onClick={handleSubmit} className="btn btn-primary mt-4">
                             Kaydet
                         </button>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     );

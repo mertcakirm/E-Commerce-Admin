@@ -21,11 +21,30 @@ export const GetProductDetailRequest = async (urlpop) => {
     return response;
 };
 
+export const AddProductImageRequest = async (productId,formData) => {
+    return await api.post(`Admin/${productId}/upload-image`, formData);
+};
+
+
+export const AddStockRequest = (productId,size,quantity) => {
+    return api.post(`Admin/product/${productId}/stock/${size}/${quantity}`);
+};
+
+
+export const DeleteStockRequest = (variantId) => {
+    return api.delete(`Admin/product/stock/${variantId}`);
+};
+
+
 export const DeleteProductImageRequest = (id) => {
     return api.delete(`Admin/product/image/${id}`);
 };
 
+
 export const UpdateProductRequest = (urlpop, updatedProduct) => {
-    const jsonItem = JSON.stringify(updatedProduct);
-    return api.put(`admin/product/update/${urlpop}`, jsonItem);
+    return api.put(`admin/product/${urlpop}`, updatedProduct, {
+        headers: {
+            "Content-Type": "application/json"
+        }
+    });
 };

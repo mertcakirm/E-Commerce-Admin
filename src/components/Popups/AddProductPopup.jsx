@@ -4,7 +4,6 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import {toast} from "react-toastify";
 import {GetCategoriesRequest} from "../../API/CategoriesApi.js";
-import {convertImageToBase64} from "../../Helpers/Helper.js";
 
 const AddProductPopup = ({popupCloser, reload}) => {
     const [productData, setProductData] = useState({
@@ -109,8 +108,10 @@ const AddProductPopup = ({popupCloser, reload}) => {
             formData.append("Price", productData.Price);
             formData.append("CategoryId", productData.CategoryId);
 
-            // Variants dizisini JSON string olarak ekliyoruz
-            formData.append("Variants", JSON.stringify(productData.Variants));
+            productData.Variants.forEach((variant, index) => {
+                formData.append(`Variants[${index}].Size`, variant.size);
+                formData.append(`Variants[${index}].Stock`, variant.stock);
+            });
 
             // Resimleri ekliyoruz
             images.forEach((image) => {
