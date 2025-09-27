@@ -1,27 +1,38 @@
 import api from "./Api.js";
 
 export const GetSliderDataRequest = async () => {
-    const response = await api.get("slider/main/get")
+    const response = await api.get("SliderCart/sliders")
     return response;
 };
 
-export const AddSliderRequest = async (sliderDTO) => {
-    return await api.post(`slider/main/add`, JSON.stringify(sliderDTO))
+export const AddSliderRequest = async (formData) => {
+    console.log(formData)
+    return await api.post(`SliderCart/sliders` ,formData,
+        {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        })
 };
 
 export const DeleteSliderRequest = async (id) => {
-    return await api.delete(`slider/main/delete?categoryId=${id}`)
+    return await api.delete(`SliderCart/sliders/${id}`)
 };
 
 export const GetCartDataRequest = async () => {
-    const response = await api.get(`product/get/cart`);
+    const response = await api.get(`SliderCart/carts`);
     return response;
 };
 
-export const AddCartRequest = async (cartCategoryDTO) => {
-    return await api.post(`admin/cart/add`, JSON.stringify(cartCategoryDTO))
+export const AddCartRequest = async (formData) => {
+    return await api.post(`SliderCart/carts`,formData,
+        {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        })
 };
 
 export const DeleteCartRequest = async (id) => {
-    return await api.delete(`admin/cart/delete?cartId=${id}`)
+    return await api.delete(`SliderCart/carts/${id}`)
 };

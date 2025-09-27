@@ -22,7 +22,7 @@ const Offers = () => {
 
     const GetOffers = async () => {
         const response = await GetOffersAllRequest();
-        setOffers(response.data);
+        setOffers(response.data.data);
     };
 
     useEffect(() => {

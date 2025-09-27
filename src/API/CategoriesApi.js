@@ -6,13 +6,13 @@ export const GetCategoriesRequest = async () => {
 };
 
 export const AddCategoryRequest = async (categoryDTO) => {
-    return await api.post(`Admin/category`,categoryDTO);
+    return await api.post(`category/category`,categoryDTO);
 };
 
 
 
 export const DeleteCategoryRequest = async (categoryId) => {
-    return await api.delete(`Admin/category/${categoryId}`);
+    return await api.delete(`category/category/${categoryId}`);
 
 };
 

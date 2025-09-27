@@ -19,7 +19,6 @@ const PageContents = () => {
     const [cartData, setCartData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [refresh, setRefresh] = useState(false);
-
     const [processConfig, setProcessConfig] = useState({
         isOpen: false,
         text: "",
@@ -40,9 +39,10 @@ const PageContents = () => {
         try {
             setLoading(false);
             const sliders = await GetSliderDataRequest();
-            setSliderData(sliders || []);
+            console.log(sliders)
+            setSliderData(sliders.data.data || []);
             const carts = await GetCartDataRequest();
-            setCartData(carts || []);
+            setCartData(carts.data.data || []);
         } catch (error) {
             console.error("Veriler alınamadı:", error);
             toast.error("İçerikler yüklenirken hata oluştu.");
@@ -65,112 +65,185 @@ const PageContents = () => {
     return (
         <div>
             <div className="admin-sag-container" data-aos="fade-in">
-                <div className="row admin-genel-row">
+                <div className="row" style={{ height: "100vh" }}>
+
+                {/* ---------- SLIDER TABLOSU ---------- */}
+                <div className="row admin-genel-row col-6">
                     <div className="col-12">
-                        <div className="row">
+                        <div className="row row-gap-3">
                             <div className="row justify-content-between">
                                 <div className="col-6 alt-basliklar-admin">Slider İçerikleri</div>
-                                <button className="tumunu-gor-btn-admin col-2" onClick={() => setSliderPopup(true)}>
+                                <button
+                                    className="tumunu-gor-btn-admin col-3"
+                                    onClick={() => setSliderPopup(true)}
+                                >
                                     Slider Ekle
                                 </button>
                             </div>
-                            <div className="col-lg-8 row sayfa-icerikleri-overflow" style={{padding: '2% 1%'}}>
-                                {sliderData && sliderData.length > 0 ? (
-                                    sliderData.map((slider, index) => (
-                                        <div key={index}
-                                             className="col-12 row sliderlar-card site-icerik-shadow2">
-                                            <div className="col-lg-6">
-                                                <img
-                                                    src={`data:image/jpeg;base64,${slider.image.bytes}`}
-                                                    style={{maxHeight: '300px', objectFit: 'contain'}}
-                                                    className="img-fluid w-100"
-                                                    alt={slider.topTitle}
-                                                />
-                                            </div>
-                                            <div className="col-lg-5">
-                                                <p>Üst Başlık: {slider.topTitle}</p>
-                                                <p>Ana Başlık: {slider.middleTitle}</p>
-                                                <p>Alt Başlık: {slider.underTitle}</p>
-                                                <p>Kategori: {slider.category}</p>
-                                            </div>
-                                            <div className="col-lg-1">
-                                                <button
-                                                    className="slider-edit-sil-btn"
-                                                    onClick={() =>
-                                                        toggleProcess({
-                                                            text: "Bu slider silinsin mi?",
-                                                            type: "slider_delete",
-                                                            id: slider.id
-                                                        })
-                                                    }
-                                                >
-                                                    🗑
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ))
-                                ) : (
-                                    <div>Slider Bulunamadı.</div>
-                                )}
+
+                            <div className="col-lg-12 row ">
+                                <table className="table table-striped table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th className="text-center">Görsel</th>
+                                        <th className="text-center">Üst Başlık</th>
+                                        <th className="text-center">Orta Başlık</th>
+                                        <th className="text-center">Alt Başlık</th>
+                                        <th className="text-center">Redirect</th>
+                                        <th className="text-center">İşlem</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {sliderData?.length > 0 ? (
+                                        sliderData.map((slider) => (
+                                            <tr key={slider.id}>
+                                                <td className="text-center">
+                                                    <img
+                                                        src={
+                                                            slider.imageUrl && slider.imageUrl !== "string"
+                                                                ? (slider.imageUrl.startsWith("http")
+                                                                    ? slider.imageUrl
+                                                                    : `https://localhost:7050${slider.imageUrl.startsWith("/contents/") ? slider.imageUrl : `/contents/${slider.imageUrl}`}`)
+                                                                : "https://thumb.ac-illust.com/b1/b170870007dfa419295d949814474ab2_t.jpeg"
+                                                        }
+                                                        style={{ maxHeight: '300px', objectFit: 'contain' }}
+                                                        className="img-fluid w-100"
+                                                        alt={slider.topTitle || "slider"}
+                                                    />
+                                                </td>
+                                                <td className="text-center">{slider.parentName}</td>
+                                                <td className="text-center">{slider.name}</td>
+                                                <td className="text-center">{slider.subName}</td>
+                                                <td className="text-center">{slider.href}</td>
+                                                <td className="text-center">
+                                                    <button
+                                                        className="add-btn bg-danger text-light fw-bold"
+                                                        onClick={() =>
+                                                            toggleProcess({
+                                                                text: "Bu slider silinsin mi?",
+                                                                type: "slider_delete",
+                                                                id: slider.id
+                                                            })
+                                                        }
+                                                    >
+                                                        Sil
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    ) : (
+                                        <tr>
+                                            <td colSpan="6" className="text-center">
+                                                Slider bulunamadı.
+                                            </td>
+                                        </tr>
+                                    )}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div className="row admin-genel-row pt-3" style={{borderTop: '1px solid #000'}}>
-                    <div className="col-12">
-                        <div className="row" style={{rowGap: '30px'}}>
+                {/* ---------- KATEGORİ KARTLARI ---------- */}
+                <div className="row admin-genel-row col-6" style={{borderLeft:'1px solid #000'}}>
+                    <div className="col-12" style={{height:'fit-content'}}>
+                        <div className="row row-gap-3 h-100" >
                             <div className="row justify-content-between">
-                                <div className="col-6 alt-basliklar-admin">Kategori Kartları</div>
-                                <button className="tumunu-gor-btn-admin col-2" onClick={() => setCartPopup(true)}>
+                                <div className="col-6 alt-basliklar-admin" >Kategori Kartları</div>
+                                <button
+                                    className="tumunu-gor-btn-admin col-4"
+                                    style={{height:'fit-content'}}
+                                    onClick={() => setCartPopup(true)}
+                                >
                                     Kategori Kartı Ekle
                                 </button>
                             </div>
-                            {cartData && cartData.length > 0 ? (
-                                cartData.map((cart, index) => (
-                                    <div key={index} className="col-lg-4">
-                                        <div className="kategori-card-admin-sayfalar">
-                                            <img src={`data:image/jpeg;base64,${cart.image.bytes}`}
-                                                 className='img-fluid w-100 kategori-card-admin-sayfalar-img' alt=""/>
-                                            <p>Kart Kategori Adı : {cart.cartName}</p>
-                                            <p>Kategori : {cart.category}</p>
-                                            <p>Boyut : {cart.viewType}</p>
-                                            <button type="button" style={{width: '100%'}}
-                                                    onClick={() =>
-                                                        toggleProcess({
-                                                            text: "Bu kategori kartı silinsin mi?",
-                                                            type: "cart_delete",
-                                                            id: cart.id
-                                                        })
-                                                    }
-                                                    className='tumunu-gor-btn-admin'>Sil
-                                            </button>
-                                        </div>
-                                    </div>
-                                ))
-                            ) : (
-                                <div>Kart Bulunamadı.</div>
-                            )}
+
+
+
+                            <div className="col-lg-12 row">
+                                <table className="table table-striped table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th className="text-center">Görsel</th>
+                                        <th className="text-center">Kart Adı</th>
+                                        <th className="text-center">Adres</th>
+                                        <th className="text-center">Boyut</th>
+                                        <th className="text-center">İşlem</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {cartData?.length > 0 ? (
+                                        cartData.map((cart) => (
+                                            <tr key={cart.id}>
+                                                <td className="text-center">
+                                                    <img
+                                                        src={
+                                                            cart.imageUrl && cart.imageUrl !== "string"
+                                                                ? (cart.imageUrl.startsWith("http")
+                                                                    ? cart.imageUrl
+                                                                    : `https://localhost:7050${cart.imageUrl.startsWith("/contents/") ? cart.imageUrl : `/contents/${cart.imageUrl}`}`)
+                                                                : "https://thumb.ac-illust.com/b1/b170870007dfa419295d949814474ab2_t.jpeg"
+                                                        }
+                                                        style={{ maxHeight: '300px', objectFit: 'contain' }}
+                                                        className="img-fluid w-100"
+                                                        alt={cart.topTitle || "slider"}
+                                                    />
+                                                </td>
+                                                <td className="text-center">{cart.name}</td>
+                                                <td className="text-center">{cart.href}</td>
+                                                <td className="text-center">{cart.cartSize}</td>
+                                                <td className="text-center">
+                                                    <button
+                                                        className="add-btn bg-danger text-light fw-bold"
+                                                        onClick={() =>
+                                                            toggleProcess({
+                                                                text: "Bu kart silinsin mi?",
+                                                                type: "cart_delete",
+                                                                id: cart.id
+                                                            })
+                                                        }
+                                                    >
+                                                        Sil
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    ) : (
+                                        <tr>
+                                            <td colSpan="6" className="text-center">
+                                                Kart bulunamadı.
+                                            </td>
+                                        </tr>
+                                    )}
+                                    </tbody>
+                                </table>
+                            </div>
+
                         </div>
                     </div>
                 </div>
+                </div>
+
             </div>
 
-            {cartPopup && (
-                <AddCartPopup popupCloser={(b) => setCartPopup(b)}/>
-            )}
-            {sliderPopup && (
-                <AddSliderContentPopup popupCloser={(b) => setSliderPopup(b)}/>
-            )}
-
+            {cartPopup && <AddCartPopup popupCloser={(b) =>{
+                setCartPopup(b)
+                setRefresh(!refresh)
+            }} />}
+            {sliderPopup && <AddSliderContentPopup popupCloser={(b) => {
+                setSliderPopup(b)
+                setRefresh(!refresh)
+            }} />}
             {processConfig.isOpen && (
                 <ProcessPopup
                     text={processConfig.text}
                     type={processConfig.type}
                     id={processConfig.id}
                     onClose={() => {
-                        setRefresh(prev => !prev);
-                        setProcessConfig(prev => ({...prev, isOpen: false}));
+                        setRefresh(!refresh)
+                        setProcessConfig((prev) => ({ ...prev, isOpen: false }));
                     }}
                 />
             )}

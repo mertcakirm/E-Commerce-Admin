@@ -3,69 +3,46 @@ import {AddSliderRequest} from "../../API/PageContentsApi.js";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {toast} from "react-toastify";
-import {GetCategoryDropdownRequest} from "../../API/CategoriesApi.js";
-import {convertImageToBase64} from "../../Helpers/Helper.js";
+import {GetCategoriesRequest} from "../../API/CategoriesApi.js";
 
 const AddSliderContentPopup = ({popupCloser}) => {
-    const [sliderImage, setSliderImage] = useState("");
     const [dragging, setDragging] = useState(false);
     const [categories, setCategories] = useState([]);
+    const [imageFile, setImageFile] = useState(null);
     const [popUpData, setPopUpData] = useState({
         topTitle: "",
         middleTitle: "",
         underTitle: "",
         redirectAddress: "",
-        image: "",
     });
-    const [imageFile, setImageFile] = useState(null);
 
     const handleChange = (e) => {
         const {name, value} = e.target;
-        setPopUpData({...popUpData, [name]: value});
+        setPopUpData(prev => ({...prev, [name]: value}));
     };
 
     const fetchCategory = async () => {
-        const data = await GetCategoryDropdownRequest();
-        setCategories(data || []);
+        const data = await GetCategoriesRequest();
+        setCategories(data.data || []);
     };
 
-    const handleImageChange = async (e) => {
+    const handleImageChange = (e) => {
         const file = e.target.files[0];
-        if (file) {
-            setImageFile(file);
-            const base64 = await convertImageToBase64(file);
-            setSliderImage(base64);
-            setPopUpData({...popUpData, image: file.name});
-        }
+        if (file) setImageFile(file);
     };
 
-    const handleDrop = async (e) => {
+    const handleDrop = (e) => {
         e.preventDefault();
         setDragging(false);
         const file = e.dataTransfer.files[0];
-        if (file) {
-            const base64 = await convertImageToBase64(file);
-            setSliderImage(base64);
-            setPopUpData({...popUpData, image: file.name});
-        }
+        if (file) setImageFile(file);
     };
 
     const handleDragOver = (e) => {
         e.preventDefault();
         setDragging(true);
     };
-
-    const handleDragLeave = () => {
-        setDragging(false);
-    };
-
-    const sliderDTO = {
-        image: {bytes: sliderImage},
-        topTitle: popUpData.topTitle,
-        middleTitle: popUpData.middleTitle,
-        underTitle: popUpData.underTitle,
-        category: popUpData.redirectAddress,
-    };
+    const handleDragLeave = () => setDragging(false);
 
     useEffect(() => {
         AOS.init({duration: 500});
@@ -73,12 +50,25 @@ const AddSliderContentPopup = ({popupCloser}) => {
     }, []);
 
     const handleSubmit = async () => {
+        if (!imageFile) {
+            toast.error("Lütfen bir görsel seçin");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("Image", imageFile);               // IFormFile ile eşleşiyor
+        formData.append("ParentName", popUpData.topTitle);
+        formData.append("Name", popUpData.middleTitle);
+        formData.append("SubName", popUpData.underTitle);
+        formData.append("Href", popUpData.redirectAddress);
+
         try {
-            await AddSliderRequest(sliderDTO);
-            toast.success("Slider başarıyla eklendi!")
+            await AddSliderRequest(formData);
+            toast.success("Slider başarıyla eklendi!");
+            popupCloser(false);
         } catch (error) {
             console.error("Request error: ", error);
-            toast.error("Slider eklenemedi lütfen daha sonra tekrar deneyin!")
+            toast.error("Slider eklenemedi, lütfen tekrar deneyin!");
         }
     };
 
@@ -87,13 +77,9 @@ const AddSliderContentPopup = ({popupCloser}) => {
             <div className="popup-content" data-aos="zoom-in" style={{width: "600px"}}>
                 <div className="popup-header">
                     <h2>Slider Ekle</h2>
-                    <button
-                        className="popup-close-btn"
-                        onClick={() => popupCloser(false)}
-                    >
-                        &times;
-                    </button>
+                    <button className="popup-close-btn" onClick={() => popupCloser(false)}>&times;</button>
                 </div>
+
                 <div className="form-group row row-gap-4 justify-content-center column-gap-1 align-items-center mt-4">
                     <input
                         type="text"
@@ -130,15 +116,11 @@ const AddSliderContentPopup = ({popupCloser}) => {
                         onChange={handleChange}
                     >
                         <option value="">Kategori Seçin</option>
-                        {categories && categories.length > 0 ? (
-                            categories.map((category) => (
-                                <option key={category} value={category}>
-                                    {category}
-                                </option>
+                        {categories.length > 0
+                            ? categories.map(cat => (
+                                <option key={cat.id} value={cat.id}>{cat.name}</option>
                             ))
-                        ) : (
-                            <option disabled>Kategori bulunamadı</option>
-                        )}
+                            : <option disabled>Kategori bulunamadı</option>}
                     </select>
 
                     <div
@@ -148,17 +130,7 @@ const AddSliderContentPopup = ({popupCloser}) => {
                         onDrop={handleDrop}
                     >
                         <p>
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="30"
-                                height="30"
-                                fill="purple"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    d="M14 9l-2.519 4-2.481-1.96-5 6.96h16l-6-9zm8-5v16h-20v-16h20zm2-2h-24v20h24v-20zm-20 6c0-1.104.896-2 2-2s2 .896 2 2c0 1.105-.896 2-2 2s-2-.895-2-2z"/>
-                            </svg>
-                            {imageFile ? imageFile.name : " Kampanya görselini buraya sürükleyin veya yükleyin"}
+                            {imageFile ? imageFile.name : "Kampanya görselini sürükleyin veya seçin"}
                         </p>
                         <input
                             type="file"
@@ -170,11 +142,9 @@ const AddSliderContentPopup = ({popupCloser}) => {
                         />
                     </div>
 
-                    <div className="row justify-content-between align-items-center">
-                        <button onClick={handleSubmit} className="tumunu-gor-btn-admin col-12">
-                            Kaydet
-                        </button>
-                    </div>
+                    <button onClick={handleSubmit} className="tumunu-gor-btn-admin col-12">
+                        Kaydet
+                    </button>
                 </div>
             </div>
         </div>

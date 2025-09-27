@@ -4,7 +4,7 @@ const token = getCookie("token");
 
 export const GetAllUsersRequest = async (pageNum, size) => {
     return await api.get(
-        `Admin/users/get-all?pageNumber=${pageNum}&pageSize=${size}`,
+        `User/get-all?pageNumber=${pageNum}&pageSize=${size}`,
         {
             headers: {
                 Authorization: `Bearer ${token.token}`
@@ -13,5 +13,5 @@ export const GetAllUsersRequest = async (pageNum, size) => {
     );
 };
 export const ToggleUserActivityRequest = async (userId) => {
-    return await api.put(`Admin/users/status/${userId}`)
+    return await api.put(`User/status/${userId}`)
 };
