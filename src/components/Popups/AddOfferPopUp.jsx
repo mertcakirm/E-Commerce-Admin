@@ -1,27 +1,30 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { toast } from "react-toastify";
+import {CreateOfferRequest} from "../../API/OfferApi.js";
 
-const AddOfferPopup = ({popupCloser}) => {
+const AddOfferPopup = ({ popupCloser }) => {
     const [popUpData, setPopUpData] = useState({
-        Image: "",
         Title: "",
-        Address: "",
+        Description: "",
+        StartDate: "",
+        EndDate: "",
+        DiscountRate: 0,
     });
 
     const [imageFile, setImageFile] = useState(null);
     const [dragging, setDragging] = useState(false);
 
     const handleChange = (e) => {
-        const {name, value} = e.target;
-        setPopUpData({...popUpData, [name]: value});
+        const { name, value } = e.target;
+        setPopUpData({ ...popUpData, [name]: value });
     };
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
             setImageFile(file);
-            setPopUpData({...popUpData, Image: file.name});
         }
     };
 
@@ -40,74 +43,130 @@ const AddOfferPopup = ({popupCloser}) => {
         const file = e.dataTransfer.files[0];
         if (file) {
             setImageFile(file);
-            setPopUpData({...popUpData, Image: file.name});
         }
     };
 
-    const handleSubmit = () => {
-        popupCloser(false);
+    const handleSubmit = async () => {
+        if (!imageFile) {
+            toast.error("Lütfen bir görsel yükleyin!");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("Name", popUpData.Title);
+        formData.append("Description", popUpData.Description);
+        formData.append("StartDate", popUpData.StartDate);
+        formData.append("EndDate", popUpData.EndDate);
+        formData.append("DiscountRate", popUpData.DiscountRate);
+        formData.append("ImageFile", imageFile);
+
+        try {
+            const response = await CreateOfferRequest(formData);
+            if (response.status === 200 || response.status === 201) {
+                toast.success("Kampanya başarıyla oluşturuldu!");
+                popupCloser(false);
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error("Kampanya oluşturulurken bir hata oluştu.");
+        }
     };
 
     useEffect(() => {
-        AOS.init({duration: 500});
+        AOS.init({ duration: 500 });
     }, []);
 
     return (
         <div className="popup-overlay">
-            <div className="popup-content" data-aos="zoom-in" style={{width: "600px"}}>
+            <div className="popup-content" data-aos="zoom-in" style={{ width: "600px" }}>
                 <div className="popup-header">
                     <h2>Kampanya Ekle</h2>
                     <button className="popup-close-btn" onClick={() => popupCloser(false)}>
                         &times;
                     </button>
                 </div>
-                <div className="form-group row row-gap-4  justify-content-around align-items-center mt-4">
-                    <input
-                        type="text"
-                        name="Title"
-                        className="popup-inp col-5"
-                        placeholder="Kampanya Başlığı"
-                        value={popUpData.Title}
-                        onChange={handleChange}
-                        required
-                    />
-                    <select
-                        name="Address"
-                        className="col-5"
-                        value={popUpData.Address}
-                        onChange={handleChange}
-                        style={{height: "50px", color: "black"}}
-                    >
-                        <option value="">Kampanya Kategorisi Seçin</option>
-                        <option value="1">Admin</option>
-                        <option value="2">User</option>
-                    </select>
-
-                    {/* Sürükle Bırak Alanı */}
-                    <div
-                        className={`drop-zone col-12 ${dragging ? "dragging" : ""}`}
-                        onDragOver={handleDragOver}
-                        onDragLeave={handleDragLeave}
-                        onDrop={handleDrop}
-                    >
-                        <p>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="purple"
-                                 viewBox="0 0 24 24">
-                                <path
-                                    d="M14 9l-2.519 4-2.481-1.96-5 6.96h16l-6-9zm8-5v16h-20v-16h20zm2-2h-24v20h24v-20zm-20 6c0-1.104.896-2 2-2s2 .896 2 2c0 1.105-.896 2-2 2s-2-.895-2-2z"/>
-                            </svg>
-                            {imageFile ? imageFile.name : " Kampanya görselini buraya sürükleyin veya yükleyin"}</p>
+                <div className="form-group row row-gap-4 justify-content-around align-items-center mt-4">
+                    <div className="col-6">
                         <input
-                            type="file"
-                            name="Image"
-                            className="file-input"
-                            accept="image/*"
-                            onChange={handleImageChange}
+                            type="text"
+                            name="Title"
+                            className="popup-inp w-100"
+                            placeholder="Kampanya Başlığı"
+                            value={popUpData.Title}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    <div className="col-6">
+                        <input
+                            type="number"
+                            name="DiscountRate"
+                            className="popup-inp w-100"
+                            placeholder="Kampanya İndirim Oranı"
+                            value={popUpData.DiscountRate}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    <div className="col-6">
+                        <input
+                            type="datetime-local"
+                            name="StartDate"
+                            className="popup-inp w-100"
+                            value={popUpData.StartDate}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    <div className="col-6">
+                        <input
+                            type="datetime-local"
+                            name="EndDate"
+                            className="popup-inp w-100"
+                            value={popUpData.EndDate}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    <div className="col-12">
+                        <input
+                            type="text"
+                            name="Description"
+                            className="popup-inp w-100"
+                            placeholder="Kampanya Açıklaması"
+                            value={popUpData.Description}
+                            onChange={handleChange}
                             required
                         />
                     </div>
 
-                    <div className="row justify-content-between align-items-center">
+
+
+
+                    <div className="col-12">
+                        <div
+                            className={`drop-zone col-12 ${dragging ? "dragging" : ""}`}
+                            onDragOver={handleDragOver}
+                            onDragLeave={handleDragLeave}
+                            onDrop={handleDrop}
+                        >
+                            <p>
+                                {imageFile ? imageFile.name : "Kampanya görselini buraya sürükleyin veya yükleyin"}
+                            </p>
+                            <input
+                                type="file"
+                                name="Image"
+                                className="file-input"
+                                accept="image/*"
+                                onChange={handleImageChange}
+                                required
+                            />
+                        </div>
+                    </div>
+
+
+
+                    <div className="row justify-content-between align-items-center mt-3">
                         <button onClick={handleSubmit} className="tumunu-gor-btn-admin col-12">
                             Kampanya Oluştur
                         </button>

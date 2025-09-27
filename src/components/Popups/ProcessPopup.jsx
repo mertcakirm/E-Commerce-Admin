@@ -11,6 +11,7 @@ import {DeleteCategoryRequest} from "../../API/CategoriesApi.js";
 import {DeleteCartRequest, DeleteSliderRequest} from "../../API/PageContentsApi.js";
 import {ToggleUserActivityRequest} from "../../API/UserApi.js";
 import {CompleteOrderStatus, UpdateOrderStatus} from "../../API/Order.js";
+import {DeleteOffersRequest, ToggleOffersRequest} from "../../API/OfferApi.js";
 
 const ProcessPopup = ({ type, text, id, onClose, discount }) => {
 
@@ -50,6 +51,17 @@ const ProcessPopup = ({ type, text, id, onClose, discount }) => {
                 case "finish_order": {
                     await CompleteOrderStatus(id);
                     toast.success("Sipariş tamamlandı!");
+                    break;
+                }
+
+                case "toggle_offer": {
+                    await ToggleOffersRequest(id);
+                    toast.success("Kampanya aktiflik durumu başarıyla güncellendi!");
+                    break;
+                }
+                case "delete_offer": {
+                    await DeleteOffersRequest(id);
+                    toast.success("Kampanya başarıyla silindi!");
                     break;
                 }
 
