@@ -89,7 +89,7 @@ const PageContents = () => {
                                         <th className="text-center">Üst Başlık</th>
                                         <th className="text-center">Orta Başlık</th>
                                         <th className="text-center">Alt Başlık</th>
-                                        <th className="text-center">Redirect</th>
+                                        <th className="text-center">Adres</th>
                                         <th className="text-center">İşlem</th>
                                     </tr>
                                     </thead>
@@ -121,7 +121,7 @@ const PageContents = () => {
                                                         onClick={() =>
                                                             toggleProcess({
                                                                 text: "Bu slider silinsin mi?",
-                                                                type: "slider_delete",
+                                                                type: "delete_slider",
                                                                 id: slider.id
                                                             })
                                                         }
@@ -200,7 +200,7 @@ const PageContents = () => {
                                                         onClick={() =>
                                                             toggleProcess({
                                                                 text: "Bu kart silinsin mi?",
-                                                                type: "cart_delete",
+                                                                type: "delete_cart",
                                                                 id: cart.id
                                                             })
                                                         }

@@ -64,6 +64,17 @@ const ProcessPopup = ({ type, text, id, onClose, discount }) => {
                     toast.success("Kampanya başarıyla silindi!");
                     break;
                 }
+                case "delete_slider": {
+                    await DeleteSliderRequest(id);
+                    toast.success("Slider başarıyla silindi!");
+                    break;
+                }
+                case "delete_cart": {
+                    await DeleteCartRequest(id);
+                    toast.success("Kart başarıyla silindi!");
+                    break;
+                }
+
 
                 default:
                     toast.error("Bilinmeyen işlem türü.");
