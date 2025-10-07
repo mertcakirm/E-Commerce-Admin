@@ -55,7 +55,7 @@ const Movements = () => {
 
                 <div className="col-12">
                     <div className="table-responsive">
-                        <table className="table table-striped table-bordered">
+                        <table className="table table-striped overflow-hidden table-bordered">
                             <thead>
                             <tr>
                                 <th>İşlem ID</th>
@@ -68,10 +68,10 @@ const Movements = () => {
                             {movements && movements.length > 0 ? (
                                 movements.map((item) => (
                                     <tr key={item.id}>
-                                        <td>{item.id}</td>
-                                        <td>{item.entityId}</td>
-                                        <td>{item.details}</td>
-                                        <td>{new Date(item.createdAt).toLocaleString("tr-TR")}</td>
+                                        <td>{item.id || "Belirtilmemiş"}</td>
+                                        <td>{item.entityId || "Belirtilmemiş"}</td>
+                                        <td>{item.details || "Belirtilmemiş"}</td>
+                                        <td>{new Date(item.createdAt).toLocaleString("tr-TR") || "Belirtilmemiş"}</td>
                                     </tr>
                                 ))
                             ) : (

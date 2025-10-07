@@ -157,8 +157,9 @@ const Products = () => {
                                         </td>
                                         <td>
                                             <div className="stok-details">
-                                                <p>Güncel Fiyat : {product.price}₺</p>
+                                                <p>Ana Fiyat : {product.price}₺</p>
                                                 <p>İndirim Oranı : {product.discountRate}%</p>
+                                                <p>İndirimli Fiyat : {product.priceWithDiscount}₺</p>
                                             </div>
                                         </td>
                                         <td>
