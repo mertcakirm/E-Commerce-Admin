@@ -4,6 +4,10 @@ export const GetProductsRequest = (pageNum, pageSize) => {
     return api.get(`products?pageNumber=${pageNum}&pageSize=${pageSize}`);
 };
 
+export const GetLowStockProductsRequest = (limit) => {
+    return api.get(`Admin/low-stock?limit=${limit}`);
+};
+
 export const DeleteProductRequest = async (id) => {
     return await api.delete(`Products/${id}`);
 };

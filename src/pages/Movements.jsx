@@ -43,7 +43,7 @@ const Movements = () => {
                 <div className="col-12">
                     <div className="d-flex justify-content-between">
                         <h3 className="col-6">Hareketlerin</h3>
-                        <button className="tumunu-gor-btn-admin" onClick={() =>
+                        <button className="tumunu-gor-btn-admin bg-danger" onClick={() =>
                             toggleProcess({
                                 text: `Hareket geçmişini sıfırlamak istiyor musunuz?`,
                                 type: "clear_logs",
@@ -61,7 +61,7 @@ const Movements = () => {
                                 <th>İşlem ID</th>
                                 <th>İşlem Yapılan Veri ID</th>
                                 <th>İşlem Açıklaması</th>
-                                <th>Oluşturulma Tarihi</th>
+                                <th>İşlem Tarihi</th>
                             </tr>
                             </thead>
                             <tbody>

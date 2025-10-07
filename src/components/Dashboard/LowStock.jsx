@@ -1,199 +1,28 @@
+import { useEffect, useState } from "react";
+import { GetLowStockProductsRequest } from "../../API/ProductApi.js";
 
 const LowStock = ({ onProductClick }) => {
-    const productsData = [
-        {
-            id: 21,
-            name: "T-Shirt",
-            Kategori: "Üst Giyim",
-            stok: 19,
-            harcama: "30000",
-            fiyat: 699,
-            img: "https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg",
-            stoklar: {medium: 2, small: 3, large: 1, xlarge: 1, xsmall: 2}
-        },
-        {
-            id: 2,
-            name: "T-Shirt",
-            Kategori: "Üst Giyim",
-            stok: 19,
-            harcama: "30000",
-            fiyat: 699,
-            img: "https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg",
-            stoklar: {medium: 1, small: 1, large: 1, xlarge: 1, xsmall: 1}
-        },
-        {
-            id: 3,
-            name: "T-Shirt",
-            Kategori: "Üst Giyim",
-            stok: 19,
-            harcama: "30000",
-            fiyat: 699,
-            img: "https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg",
-            stoklar: {medium: 9, small: 2, large: 5, xlarge: 1, xsmall: 2}
-        },
-        {
-            id: 4,
-            name: "T-Shirt",
-            Kategori: "Üst Giyim",
-            stok: 19,
-            harcama: "30000",
-            fiyat: 699,
-            img: "https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg",
-            stoklar: {medium: 9, small: 2, large: 5, xlarge: 1, xsmall: 2}
-        },
-        {
-            id: 5,
-            name: "T-Shirt",
-            Kategori: "Üst Giyim",
-            stok: 19,
-            harcama: "30000",
-            fiyat: 699,
-            img: "https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg",
-            stoklar: {medium: 9, small: 2, large: 5, xlarge: 1, xsmall: 2}
-        },
-        {
-            id: 6,
-            name: "T-Shirt",
-            Kategori: "Üst Giyim",
-            stok: 19,
-            harcama: "30000",
-            fiyat: 699,
-            img: "https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg",
-            stoklar: {medium: 9, small: 2, large: 5, xlarge: 1, xsmall: 2}
-        },
-        {
-            id: 7,
-            name: "search",
-            Kategori: "Üst Giyim",
-            stok: 64,
-            harcama: "30000",
-            fiyat: 699,
-            img: "https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg",
-            stoklar: {medium: 9, small: 2, large: 5, xlarge: 1, xsmall: 2}
-        },
-        {
-            id: 8,
-            name: "T-Shirt",
-            Kategori: "Üst Giyim",
-            stok: 64,
-            harcama: "30000",
-            fiyat: 399,
-            img: "https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg",
-            stoklar: {medium: 5, small: 2, large: 5, xlarge: 1, xsmall: 2}
-        },
-        {
-            id: 9,
-            name: "T-Shirt",
-            Kategori: "Üst Giyim",
-            stok: 64,
-            harcama: "30000",
-            fiyat: 399,
-            img: "https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg",
-            stoklar: {medium: 9, small: 2, large: 5, xlarge: 1, xsmall: 2}
-        },
-        {
-            id: 10,
-            name: "T-Shirt",
-            Kategori: "Üst Giyim",
-            stok: 64,
-            harcama: "30000",
-            fiyat: 399,
-            img: "https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg",
-            stoklar: {medium: 9, small: 2, large: 5, xlarge: 1, xsmall: 2}
-        },
-        {
-            id: 11,
-            name: "T-Shirt",
-            Kategori: "Üst Giyim",
-            stok: 64,
-            harcama: "30000",
-            fiyat: 399,
-            img: "https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg",
-            stoklar: {medium: 9, small: 2, large: 5, xlarge: 1, xsmall: 2}
-        },
-        {
-            id: 12,
-            name: "T-Shirt",
-            Kategori: "Üst Giyim",
-            stok: 64,
-            harcama: "30000",
-            fiyat: 399,
-            img: "https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg",
-            stoklar: {medium: 9, small: 2, large: 5, xlarge: 1, xsmall: 2}
-        },
-        {
-            id: 13,
-            name: "T-Shirt",
-            Kategori: "Üst Giyim",
-            stok: 64,
-            harcama: "30000",
-            fiyat: 399,
-            img: "https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg",
-            stoklar: {medium: 9, small: 2, large: 5, xlarge: 1, xsmall: 2}
-        },
-        {
-            id: 14,
-            name: "T-Shirt",
-            Kategori: "Üst Giyim",
-            stok: 64,
-            harcama: "30000",
-            fiyat: 399,
-            img: "https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg",
-            stoklar: {medium: 9, small: 2, large: 5, xlarge: 1, xsmall: 2}
-        },
-        {
-            id: 15,
-            name: "T-Shirt",
-            Kategori: "Üst Giyim",
-            stok: 64,
-            harcama: "30000",
-            fiyat: 399,
-            img: "https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg",
-            stoklar: {medium: 9, small: 2, large: 5, xlarge: 1, xsmall: 2}
-        },
-        {
-            id: 16,
-            name: "T-Shirt",
-            Kategori: "Üst Giyim",
-            stok: 64,
-            harcama: "30000",
-            fiyat: 399,
-            img: "https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg",
-            stoklar: {medium: 9, small: 2, large: 5, xlarge: 1, xsmall: 2}
-        },
-        {
-            id: 17,
-            name: "T-Shirt",
-            Kategori: "Üst Giyim",
-            stok: 64,
-            harcama: "30000",
-            fiyat: 399,
-            img: "https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg",
-            stoklar: {medium: 9, small: 2, large: 5, xlarge: 1, xsmall: 2}
-        },
-        {
-            id: 18,
-            name: "T-Shirt",
-            Kategori: "Üst Giyim",
-            stok: 64,
-            harcama: "30000",
-            fiyat: 399,
-            img: "https://cdn.aksesuarix.com/Fotograflar/575/90032-polo-yaka-ekru-erkek-tisort-us4152ek-us4152ek-01-1.jpg",
-            stoklar: {medium: 9, small: 2, large: 5, xlarge: 1, xsmall: 2}
-        },
-    ];
+    const [products, setProducts] = useState([]);
 
+    const GetProducts = async () => {
+        const response = await GetLowStockProductsRequest(21);
+        setProducts(response.data);
+    };
 
-    const lowStockProducts = productsData
+    const lowStockProducts = products
         .map(product => ({
             ...product,
-            totalStock: Object.values(product.stoklar).reduce((acc, curr) => acc + curr, 0)
+            totalStock: product.variants.reduce((acc, v) => acc + v.stock, 0)
         }))
-        .filter(product => product.totalStock < 20)
+        .filter(product => product.totalStock < 21)
         .sort((a, b) => a.totalStock - b.totalStock);
 
+    useEffect(() => {
+        GetProducts();
+    }, []);
+
     return (
-        <div className="col-lg-6 col-12" style={{padding: '0% 2% 0% 1%'}}>
+        <div className="col-lg-6 col-12" style={{ padding: '0% 2% 0% 1%' }}>
             <div className="site-icerik-shadow py-5">
                 <h3 className="text-center">Stoğu Azalan Ürünler</h3>
                 <div className="table-responsive scroll-table2 mt-1">
@@ -209,11 +38,11 @@ const LowStock = ({ onProductClick }) => {
                         {lowStockProducts.map(product => (
                             <tr
                                 key={product.id}
-                                style={{cursor: 'pointer'}}
+                                style={{ cursor: 'pointer' }}
                                 onClick={() => onProductClick(product.id)}
                             >
                                 <th scope="row">{product.id}</th>
-                                <td>{product.name}</td>
+                                <td>{product.categoryName}</td>
                                 <td
                                     style={{
                                         color: product.totalStock < 10 ? 'red' : 'orange',

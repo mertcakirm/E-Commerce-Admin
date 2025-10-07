@@ -2,7 +2,7 @@ import {forwardRef, useEffect, useState, useRef} from "react";
 import {createPortal} from "react-dom";
 import PropTypes from "prop-types";
 import "../Popups/css/NotificationButton.css";
-import {GetAuditLogsRequest} from "../../API/AuditLogApi.js";
+import {GetAuditLogsNotSeenRequest, GetAuditLogsRequest, ToggleAuditLogsRequest} from "../../API/AuditLogApi.js";
 import LoadingComp from "../Other/Loading.jsx";
 
 const NotificationPopover = forwardRef(({top, left, width = 240}, ref) => {
@@ -10,6 +10,7 @@ const NotificationPopover = forwardRef(({top, left, width = 240}, ref) => {
     const [pageNum, setPageNum] = useState(1);
     const [lastPage, setLastPage] = useState(1);
     const [loading, setLoading] = useState(true);
+    const [refresh, setRefresh] = useState(false);
     const innerRef = useRef(null);
 
     const style = {
@@ -20,8 +21,19 @@ const NotificationPopover = forwardRef(({top, left, width = 240}, ref) => {
         zIndex: 9999
     };
 
-    const GetLogs = async (page = 1) => {
-        const response = await GetAuditLogsRequest(page);
+    const toggleNotification = async (id) => {
+        try {
+            await ToggleAuditLogsRequest(id);
+            setAuditLogs([]);
+            setPageNum(1);
+            await GetLogs();
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const GetLogs = async () => {
+        const response = await GetAuditLogsNotSeenRequest(pageNum);
         const newItems = response.data.data.items;
 
         setAuditLogs(prev => {
@@ -32,10 +44,6 @@ const NotificationPopover = forwardRef(({top, left, width = 240}, ref) => {
         setLoading(false);
         setLastPage(response.data.data.totalPages);
     };
-
-    useEffect(() => {
-        GetLogs(pageNum);
-    }, [pageNum]);
 
     useEffect(() => {
         const popoverInner = innerRef.current;
@@ -55,11 +63,13 @@ const NotificationPopover = forwardRef(({top, left, width = 240}, ref) => {
                 }
             }
         };
-
         popoverInner.addEventListener("scroll", handleScroll);
         return () => popoverInner.removeEventListener("scroll", handleScroll);
     }, [pageNum, lastPage]);
 
+    useEffect(() => {
+        GetLogs(pageNum);
+    }, [pageNum,refresh]);
 
     return createPortal(
         <div className="custom-popover" ref={ref} style={style}>
@@ -84,7 +94,7 @@ const NotificationPopover = forwardRef(({top, left, width = 240}, ref) => {
                                         {new Date(log.createdAt).toLocaleString("tr-TR")}
                                     </div>
                                 </div>
-                                <button className="btn not-see-btn p-0">
+                                <button onClick={()=>toggleNotification(log.id)} className="btn not-see-btn p-1">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                                         <path d="M9 21.035l-9-8.638 2.791-2.87 6.156 5.874 12.21-12.436 2.843 2.817z" />
                                     </svg>
