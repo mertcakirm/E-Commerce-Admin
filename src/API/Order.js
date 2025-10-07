@@ -4,7 +4,7 @@ import {getCookie} from "../components/cookie/Cookie.js";
 const token = getCookie("token");
 
 export const GetActiveOrders = async ()=>{
-    return await api.get("order/notCompleted",
+    return await api.get("Orders/notCompleted",
         {
             headers: {
                 Authorization: `Bearer ${token.token}`
@@ -13,9 +13,9 @@ export const GetActiveOrders = async ()=>{
 }
 
 export const UpdateOrderStatus = async (orderId, status) => {
-    return await api.put(`order/${orderId}/status/${status}`)
+    return await api.put(`Orders/${orderId}/status/${status}`)
 }
 
 export const CompleteOrderStatus = async (orderId) => {
-    return await api.put(`order/${orderId}/order/complete`)
+    return await api.put(`Orders/${orderId}/order/complete`)
 }

@@ -1,12 +1,14 @@
-import './Other/css/Sidebar.css';
-import logo from '../assets/white_logo.png';
+import './css/Navbar.css';
+import logo from '../../assets/mob_logo.png';
 import {Link, useNavigate} from 'react-router-dom';
 import {useEffect} from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import {deleteCookie} from "./cookie/Cookie.js";
-
-const Sidebar = () => {
+import {deleteCookie} from "../cookie/Cookie.js";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import NotificationButton from "./NotificationButton.jsx";
+const Navbar = () => {
     const navigate = useNavigate();
 
     const LogOut = async () => {
@@ -14,14 +16,29 @@ const Sidebar = () => {
         navigate('/');
     };
     const url = window.location.pathname.split("/").filter(Boolean).pop();
+
     useEffect(() => {
         AOS.init({duration: 500});
     }, []);
+
     return (
-        <div>
+        <div className="position-fixed">
+            {/* NAVBAR */}
+            <div className="admin-navbar">
+                <div className="d-flex w-100 justify-content-between">
+                    <h3 className="navbar-title m-0">Yönetim Paneli</h3>
+                    <div className="d-flex-justify-content-end">
+                        <NotificationButton />
+                        <button onClick={LogOut} className="navbar-logout">Çıkış Yap</button>
+                    </div>
+
+                </div>
+            </div>
+
+            {/* SIDEBAR */}
             <div className="admin-sidebar-parent" data-aos="fade-in">
                 <div className='admin-sidebar-logo-part'>
-                    <img src={logo} className='img-fluid logo' alt=""/>
+                    <img src={logo} className='img-fluid logo w-75' alt=""/>
                 </div>
                 <div className='admin-sidebar-links'>
                     <Link className={`admin-sidebar-link ${url === "genel" ? "active-link" : ""}`} to="/genel">
@@ -50,7 +67,7 @@ const Sidebar = () => {
                         </div>
                     </Link>
                     <Link className={`admin-sidebar-link ${url === "aktif-siparisler" ? "active-link" : ""}`}
-                       to="/aktif-siparisler">
+                          to="/aktif-siparisler">
                         <div className="links-row align-items-center">
                             <div className={`${url === "aktif-siparisler" ? "link-stick" : ""}`}></div>
                             <svg width="40" height="40" viewBox="0 0 27 27" fill="white"
@@ -63,7 +80,7 @@ const Sidebar = () => {
                     </Link>
 
                     <Link className={`admin-sidebar-link ${url === "kategoriler" ? "active-link" : ""}`}
-                       to="/kategoriler">
+                          to="/kategoriler">
                         <div className="links-row align-items-center">
                             <div className={`${url === "kategoriler" ? "link-stick" : ""}`}></div>
                             <svg width="40" height="40" fill="white" viewBox="0 0 24 24" clipRule="evenodd"
@@ -78,7 +95,7 @@ const Sidebar = () => {
 
                     </Link>
                     <Link className={`admin-sidebar-link ${url === "kullanicilar" ? "active-link" : ""}`}
-                       to="/kullanicilar">
+                          to="/kullanicilar">
                         <div className="links-row align-items-center">
                             <div className={`${url === "kullanicilar" ? "link-stick" : ""}`}></div>
                             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="white"
@@ -90,7 +107,7 @@ const Sidebar = () => {
                         </div>
                     </Link>
                     <Link className={`admin-sidebar-link ${url === "kampanyalar" ? "active-link" : ""}`}
-                       to="/kampanyalar">
+                          to="/kampanyalar">
                         <div className="links-row align-items-center">
                             <div className={`${url === "kampanyalar" ? "link-stick" : ""}`}></div>
                             <svg width="40" height="40" fill="white" viewBox="0 0 27 27"
@@ -118,12 +135,9 @@ const Sidebar = () => {
                     <Link className={`admin-sidebar-link ${url === "raporlar" ? "active-link" : ""}`} to="/raporlar">
                         <div className="links-row align-items-center">
                             <div className={`${url === "raporlar" ? "link-stick" : ""}`}></div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="white"
-                                 viewBox="0 0 27 27">
-                                <path
-                                    d="M13 24h6c2.762 0 5-2.239 5-5v-6h-11v11zm3-7h5v1h-5v-1zm0 2h5v1h-5v-1zm-16 0c0 2.761 2.239 5 5 5h6v-11h-11v6zm3-1h2v-2h1v2h2v1h-2v2h-1v-2h-2v-1zm16-18h-6v11h11v-6c0-2.761-2.238-5-5-5zm-.5 3c.276 0 .5.224.5.5s-.224.5-.5.5-.5-.224-.5-.5.224-.5.5-.5zm0 5c-.276 0-.5-.224-.5-.5s.224-.5.5-.5.5.224.5.5-.224.5-.5.5zm2.5-2h-5v-1h5v1zm-21-1v6h11v-11h-6c-2.761 0-5 2.239-5 5zm6.914-1.622l.708.708-1.415 1.414 1.414 1.414-.707.707-1.414-1.414-1.414 1.414-.708-.707 1.414-1.414-1.414-1.414.707-.707 1.415 1.414 1.414-1.415z"/>
-                            </svg>
-                            <div className="admin-sidebar-link-text  p-0">Raporlar</div>
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="white" viewBox="0 0 27 27"><path d="M17 12c-3.313 0-6 2.687-6 6s2.687 6 6 6 6-2.687 6-6-2.687-6-6-6zm.5 8.474v.526h-.5v-.499c-.518-.009-1.053-.132-1.5-.363l.228-.822c.478.186 1.114.383 1.612.27.574-.13.692-.721.057-1.005-.465-.217-1.889-.402-1.889-1.622 0-.681.52-1.292 1.492-1.425v-.534h.5v.509c.362.01.768.073 1.221.21l-.181.824c-.384-.135-.808-.257-1.222-.232-.744.043-.81.688-.29.958.856.402 1.972.7 1.972 1.773.001.858-.672 1.315-1.5 1.432zm1.624-10.179c1.132-.223 2.162-.626 2.876-1.197v.652c0 .499-.386.955-1.007 1.328-.581-.337-1.208-.6-1.869-.783zm-2.124-5.795c2.673 0 5-1.007 5-2.25s-2.327-2.25-5-2.25c-2.672 0-5 1.007-5 2.25s2.328 2.25 5 2.25zm.093-2.009c-.299-.09-1.214-.166-1.214-.675 0-.284.334-.537.958-.593v-.223h.321v.211c.234.005.494.03.784.09l-.116.342c-.221-.051-.467-.099-.708-.099l-.072.001c-.482.02-.521.287-.188.399.547.169 1.267.292 1.267.74 0 .357-.434.548-.967.596v.22h-.321v-.208c-.328-.003-.676-.056-.962-.152l.147-.343c.244.063.552.126.828.126l.208-.014c.369-.053.443-.3.035-.418zm-11.093 13.009c1.445 0 2.775-.301 3.705-.768.311-.69.714-1.329 1.198-1.899-.451-1.043-2.539-1.833-4.903-1.833-2.672 0-5 1.007-5 2.25s2.328 2.25 5 2.25zm.093-2.009c-.299-.09-1.214-.166-1.214-.675 0-.284.335-.537.958-.593v-.223h.321v.211c.234.005.494.03.784.09l-.117.342c-.22-.051-.466-.099-.707-.099l-.072.001c-.482.02-.52.287-.188.399.547.169 1.267.292 1.267.74 0 .357-.434.548-.967.596v.22h-.321v-.208c-.329-.003-.676-.056-.962-.152l.147-.343c.244.063.552.126.828.126l.208-.014c.368-.053.443-.3.035-.418zm4.003 8.531c-.919.59-2.44.978-4.096.978-2.672 0-5-1.007-5-2.25v-.652c1.146.918 3.109 1.402 5 1.402 1.236 0 2.499-.211 3.549-.611.153.394.336.773.547 1.133zm-9.096-3.772v-.651c1.146.917 3.109 1.401 5 1.401 1.039 0 2.094-.151 3.028-.435.033.469.107.926.218 1.37-.888.347-2.024.565-3.246.565-2.672 0-5-1.007-5-2.25zm0-2.5v-.652c1.146.918 3.109 1.402 5 1.402 1.127 0 2.275-.176 3.266-.509-.128.493-.21 1.002-.241 1.526-.854.298-1.903.483-3.025.483-2.672 0-5-1.007-5-2.25zm11-11v-.652c1.146.918 3.109 1.402 5 1.402 1.892 0 3.854-.484 5-1.402v.652c0 1.243-2.327 2.25-5 2.25-2.672 0-5-1.007-5-2.25zm0 5v-.652c.713.571 1.744.974 2.876 1.197-.661.183-1.287.446-1.868.783-.622-.373-1.008-.829-1.008-1.328zm0-2.5v-.651c1.146.917 3.109 1.401 5 1.401 1.892 0 3.854-.484 5-1.401v.651c0 1.243-2.327 2.25-5 2.25-2.672 0-5-1.007-5-2.25z"/></svg>
+                            <div className="admin-sidebar-link-text  p-0">Finansal Durum</div>
                         </div>
                     </Link>
 
@@ -138,17 +152,22 @@ const Sidebar = () => {
                             <div className="admin-sidebar-link-text  p-0">Mesajlar</div>
                         </div>
                     </Link>
+
+                    <Link className={`admin-sidebar-link ${url === "hareketler" ? "active-link" : ""}`} to="/hareketler">
+                        <div className="links-row align-items-center">
+                            <div className={`${url === "hareketler" ? "link-stick" : ""}`}></div>
+                            <svg width="40" height="40" fill="white" viewBox="0 0 27 27" xmlns="http://www.w3.org/2000/svg" fillRule="evenodd" clipRule="evenodd"><path d="M24 19h-1v-2.2c-1.853 4.237-6.083 7.2-11 7.2-6.623 0-12-5.377-12-12h1c0 6.071 4.929 11 11 11 4.66 0 8.647-2.904 10.249-7h-2.249v-1h4v4zm-11.036 0h-1.886c-.34-.957-.437-1.571-1.177-1.878h-.001c-.743-.308-1.251.061-2.162.494l-1.333-1.333c.427-.899.804-1.415.494-2.163-.308-.74-.926-.839-1.878-1.177v-1.886c.954-.339 1.57-.437 1.878-1.178.308-.743-.06-1.248-.494-2.162l1.333-1.333c.918.436 1.421.801 2.162.494l.001-.001c.74-.307.838-.924 1.177-1.877h1.886c.34.958.437 1.57 1.177 1.877l.001.001c.743.308 1.252-.062 2.162-.494l1.333 1.333c-.435.917-.801 1.421-.494 2.161v.001c.307.739.915.835 1.878 1.178v1.886c-.953.338-1.571.437-1.878 1.178-.308.743.06 1.249.494 2.162l-1.333 1.333c-.92-.438-1.42-.802-2.157-.496-.746.31-.844.926-1.183 1.88zm-.943-4.667c-1.289 0-2.333-1.044-2.333-2.333 0-1.289 1.044-2.334 2.333-2.334 1.289 0 2.333 1.045 2.333 2.334 0 1.289-1.044 2.333-2.333 2.333zm-8.021-5.333h-4v-4h1v2.2c1.853-4.237 6.083-7.2 11-7.2 6.623 0 12 5.377 12 12h-1c0-6.071-4.929-11-11-11-4.66 0-8.647 2.904-10.249 7h2.249v1z"/></svg>
+                            <div className="admin-sidebar-link-text p-0">Hareketler</div>
+                        </div>
+                    </Link>
+
+
                 </div>
-                <button className='admin-sidebar-logout' onClick={LogOut}>
-                    <svg fill='white' xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24">
-                        <path d="M16 10v-5l8 7-8 7v-5h-8v-4h8zm-16-8v20h14v-2h-12v-16h12v-2h-14z"/>
-                    </svg>
-                    <span>Çıkış Yap</span>
-                </button>
+
             </div>
         </div>
     )
 }
 
 
-export default Sidebar;
+export default Navbar;

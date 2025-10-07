@@ -37,7 +37,7 @@ const Offers = () => {
     return (
         <div>
             <div className="admin-sag-container">
-                <div className="row pt-5" data-aos="fade-in">
+                <div className="row" data-aos="fade-in">
                     <div className="col-12">
                         <div className="row">
                             <div className="col-12 row mb-5" style={{rowGap: '30px', height: 'fit-content'}}>

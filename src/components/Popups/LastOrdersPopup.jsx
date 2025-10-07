@@ -10,7 +10,7 @@ const LastOrdersPopup = ({popupCloser}) => {
 
     return (
         <div className="popup-overlay">
-            <div className="popup-content" data-aos="zoom-in" style={{width: "1200px", maxHeight: "800px"}}>
+            <div className="popup-content" data-aos="zoom-in" style={{width: "80%", maxHeight: "800px"}}>
                 <div className="popup-header">
                     <h2>Geçmiş Siparişler Listesi</h2>
                     <button className="popup-close-btn" onClick={() => popupCloser(false)}>
@@ -18,7 +18,7 @@ const LastOrdersPopup = ({popupCloser}) => {
                     </button>
                 </div>
 
-                <table className="table m-0 p-0 mt-3 table-striped">
+                <table className="table m-0 p-0 mt-3 table-striped table-bordered">
                     <thead>
                     <tr>
                         <th scope="col">Sipariş Kodu</th>
@@ -29,7 +29,7 @@ const LastOrdersPopup = ({popupCloser}) => {
                 </table>
 
                 <div style={{maxHeight: '600px', overflow: 'hidden', overflowY: 'auto'}}>
-                    <table className="table m-0  table-striped">
+                    <table className="table m-0  table-striped table-bordered">
                         <tbody>
                         <tr>
                             <th scope="row">ANW2KA5</th>

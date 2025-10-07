@@ -22,16 +22,17 @@ const Products = () => {
     const [loading, setloading] = useState(true);
     const [reloadPage, setReloadPage] = useState(false);
     const [updateId, setUpdateId] = useState(null);
+    const [lastPage, setLastPage] = useState(0);
 
     const [processConfig, setProcessConfig] = useState({
         isOpen: false,
         text: "",
         type: "",
         id: null,
-        extraData:null
+        extraData: null
     });
 
-    const toggleProcess = ({ text, type, id, extraData }) => {
+    const toggleProcess = ({text, type, id, extraData}) => {
         setProcessConfig({
             isOpen: true,
             text,
@@ -44,7 +45,8 @@ const Products = () => {
     const fetchData = async () => {
         setloading(false);
         try {
-            const data = await GetProductsRequest(pageNum,10);
+            const data = await GetProductsRequest(pageNum, 10);
+            setLastPage(data.data.data.totalPages)
             setProducts(data.data.data.items);
         } catch (err) {
             console.log(err)
@@ -85,7 +87,7 @@ const Products = () => {
 
     useEffect(() => {
         fetchData();
-    }, [pageNum, reloadPage]);
+    }, [ pageNum , reloadPage ]);
 
     if (loading) return <LoadingComp/>;
 
@@ -139,7 +141,7 @@ const Products = () => {
                                         </td>
                                         <td>{product.name}</td>
                                         <td>{product.categoryName}</td>
-                                        <td>Toplam Satış : 80</td>
+                                        <td>Toplam Satış : {product.saleCount}</td>
                                         <td>
                                             <div className="stok-flex">
                                                 <p>
@@ -161,9 +163,12 @@ const Products = () => {
                                         </td>
                                         <td>
                                             <div className="user-duzenle-row">
-                                                <button onClick={()=>toggleUpdatePopup(product.id)} className="user-edit-btn">
-                                                    <svg fill="white" width="30" height="30" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M11.25 6c.398 0 .75.352.75.75 0 .414-.336.75-.75.75-1.505 0-7.75 0-7.75 0v12h17v-8.75c0-.414.336-.75.75-.75s.75.336.75.75v9.25c0 .621-.522 1-1 1h-18c-.48 0-1-.379-1-1v-13c0-.481.38-1 1-1zm-.123 6.526-1.238 3.84c0 .441.385.626.627.626.272 0 1.108-.301 3.829-1.249l3.22 3.22 8.408-8.4c.163-.163.245-.377.245-.592 0-.213-.082-.427-.245-.591l-2.039-2.036a.833.833 0 0 0-.591-.245.833.833 0 0 0-.592.245z"/>
+                                                <button onClick={() => toggleUpdatePopup(product.id)}
+                                                        className="user-edit-btn">
+                                                    <svg fill="white" width="30" height="30" viewBox="0 0 24 24"
+                                                         xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M11.25 6c.398 0 .75.352.75.75 0 .414-.336.75-.75.75-1.505 0-7.75 0-7.75 0v12h17v-8.75c0-.414.336-.75.75-.75s.75.336.75.75v9.25c0 .621-.522 1-1 1h-18c-.48 0-1-.379-1-1v-13c0-.481.38-1 1-1zm-.123 6.526-1.238 3.84c0 .441.385.626.627.626.272 0 1.108-.301 3.829-1.249l3.22 3.22 8.408-8.4c.163-.163.245-.377.245-.592 0-.213-.082-.427-.245-.591l-2.039-2.036a.833.833 0 0 0-.591-.245.833.833 0 0 0-.592.245z"/>
                                                     </svg>
                                                 </button>
                                                 <button className="user-sil-btn" onClick={() =>
@@ -173,8 +178,10 @@ const Products = () => {
                                                         id: product.id,
                                                     })
                                                 }>
-                                                    <svg fill="white" width="30" height="30" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M4.015 5.494h-.253a.747.747 0 1 1 0-1.494h5.253v-1a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1h5.254a.747.747 0 1 1 0 1.494h-.254v15.435c0 .591-.448 1.071-1 1.071H5.015c-.552 0-1-.48-1-1.071zm14.5 0h-13v15.006h13zM14.265 8c-.414 0-.75.336-.75.75v8.5c0 .414.336.75.75.75s.75-.336.75-.75v-8.5c0-.414-.336-.75-.75-.75zm-4.5 0c-.414 0-.75.336-.75.75v8.5c0 .414.336.75.75.75s.75-.336.75-.75v-8.5c0-.414-.336-.75-.75-.75zM13.5 4v-.5h-3v.5z"/>
+                                                    <svg fill="white" width="30" height="30" viewBox="0 0 24 24"
+                                                         xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M4.015 5.494h-.253a.747.747 0 1 1 0-1.494h5.253v-1a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1h5.254a.747.747 0 1 1 0 1.494h-.254v15.435c0 .591-.448 1.071-1 1.071H5.015c-.552 0-1-.48-1-1.071zm14.5 0h-13v15.006h13zM14.265 8c-.414 0-.75.336-.75.75v8.5c0 .414.336.75.75.75s.75-.336.75-.75v-8.5c0-.414-.336-.75-.75-.75zm-4.5 0c-.414 0-.75.336-.75.75v8.5c0 .414.336.75.75.75s.75-.336.75-.75v-8.5c0-.414-.336-.75-.75-.75zM13.5 4v-.5h-3v.5z"/>
                                                     </svg>
                                                 </button>
                                             </div>
@@ -196,11 +203,10 @@ const Products = () => {
                                 </tbody>
                             </table>
                         </div>
-                        <Pagination pageNum={pageNum} setPageNum={setPageNum} lastPage="5"/>
+                        <Pagination pageNum={pageNum} setPageNum={setPageNum} lastPage={lastPage}/>
                     </div>
                 </div>
             </div>
-
             {showPopup && (
                 <AddProductPopup
                     popupCloser={(b) => setShowPopup(b)}
@@ -210,14 +216,13 @@ const Products = () => {
                 />
             )}
 
-
             {showUpdatePopup && (
                 <UpdateProductPopup
                     onClose={
-                    (b) => {
-                        setShowUpdatePopup(b)
-                        setReloadPage(!reloadPage)
-                    }}
+                        (b) => {
+                            setShowUpdatePopup(b)
+                            setReloadPage(!reloadPage)
+                        }}
                     productId={updateId}
                 />
             )}
@@ -230,7 +235,7 @@ const Products = () => {
                     discount={processConfig.extraData}
                     onClose={() => {
                         setReloadPage(prev => !prev);
-                        setProcessConfig(prev => ({ ...prev, isOpen: false }));
+                        setProcessConfig(prev => ({...prev, isOpen: false}));
                         setDiscountValue("");
                         setSelectedProductCode(null);
                     }}

@@ -6,10 +6,8 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-    if (config.method !== "get") {
-        const token = getCookie("token");
-        if (token) config.headers["Authorization"] = `Bearer ${token.token}`;
-    }
+    const token = getCookie("token");
+    if (token) config.headers["Authorization"] = `Bearer ${token.token}`;
     return config;
 });
 

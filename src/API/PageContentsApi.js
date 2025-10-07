@@ -1,8 +1,7 @@
 import api from "./Api.js";
 
 export const GetSliderDataRequest = async () => {
-    const response = await api.get("SliderCart/sliders")
-    return response;
+    return  await api.get("SliderCart/sliders")
 };
 
 export const AddSliderRequest = async (formData) => {
@@ -20,8 +19,7 @@ export const DeleteSliderRequest = async (id) => {
 };
 
 export const GetCartDataRequest = async () => {
-    const response = await api.get(`SliderCart/carts`);
-    return response;
+    return await api.get(`SliderCart/carts`);
 };
 
 export const AddCartRequest = async (formData) => {

@@ -1,8 +1,7 @@
 import api from "./Api.js";
 
 export const GetProductsRequest = (pageNum, pageSize) => {
-    const response = api.get(`products?pageNumber=${pageNum}&pageSize=${pageSize}`);
-    return response;
+    return api.get(`products?pageNumber=${pageNum}&pageSize=${pageSize}`);
 };
 
 export const DeleteProductRequest = async (id) => {
@@ -10,7 +9,7 @@ export const DeleteProductRequest = async (id) => {
 };
 
 export const UpdateDiscountRequest = async (discountRate, productCode) => {
-    return await api.put(`Admin/products/${productCode}/discount/${discountRate}`)
+    return await api.put(`Products/${productCode}/discount/${discountRate}`)
 };
 
 export const AddProductRequest = async (formData) => {

@@ -1,0 +1,67 @@
+.notification-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    transition: 0.3s;
+}
+
+.notification-btn:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+}
+
+.not-see-btn{
+    background: #e7e7e7;
+    border: none;
+}
+
+.not-see-btn:hover{
+    border: 1px solid #000000;
+}
+
+.custom-popover {
+    position: relative;
+    width: 370px!important;
+    margin-right: 500px!important;
+    background: white;
+    color: #333;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    padding: 12px;
+    z-index: 999;
+    animation: fadeIn 0.2s ease-in-out;
+}
+
+.popover-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+}
+
+.popover-list {
+    list-style: none;
+    margin: 0;
+    padding: 0 15px;
+    font-size: 13px;
+}
+.popover-inner {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.popover-list li {
+    padding: 5px 0;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.popover-list li:last-child {
+    border-bottom: none;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}

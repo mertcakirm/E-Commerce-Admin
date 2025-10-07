@@ -8,7 +8,7 @@ import "aos/dist/aos.css";
 import {toast} from "react-toastify";
 import LoadingComp from "../components/Other/Loading.jsx";
 import Pagination from "../components/Other/Pagination.jsx";
-import ProcessPopup from "../components/Popups/processPopup.jsx"; // ✨ EKLENDİ
+import ProcessPopup from "../components/Popups/processPopup.jsx";
 
 const Users = () => {
     const [usersData, setUsersData] = useState([]);
@@ -16,6 +16,7 @@ const Users = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [loading, setLoading] = useState(false);
     const [refresh, setRefresh] = useState(false);
+    const [lastPage, setLastPage] = useState(0);
     const [processConfig, setProcessConfig] = useState({
         isOpen: false,
         text: "",
@@ -34,6 +35,7 @@ const Users = () => {
         try {
             const response = await GetAllUsersRequest(currentPage, usersPerPage);
             console.log(response.data.data.items)
+            setLastPage(response.data.data.totalPages)
             setUsersData(response.data.data.items || []);
         } catch (error) {
             console.error(error);
@@ -45,7 +47,7 @@ const Users = () => {
 
     useEffect(() => {
         getUser();
-    }, [currentPage,refresh]);
+    }, [currentPage, refresh]);
 
     const filteredUsers = usersData.filter(
         (user) =>
@@ -105,7 +107,7 @@ const Users = () => {
                                                         style={{background: "#000", fontWeight: "600"}}
                                                         onClick={() =>
                                                             toggleProcess({
-                                                                text: `Bu kullanıcıyı ${user.isDeleted ? "aktif" : "pasif" } yapmak istiyor musunuz?`,
+                                                                text: `Bu kullanıcıyı ${user.isDeleted ? "aktif" : "pasif"} yapmak istiyor musunuz?`,
                                                                 type: "toggle_user",
                                                                 id: user.id
                                                             })
@@ -126,7 +128,7 @@ const Users = () => {
                                 )}
                                 </tbody>
                             </table>
-                            <Pagination pageNum={currentPage} setPageNum={setCurrentPage} lastPage="5"/>
+                            <Pagination pageNum={currentPage} setPageNum={setCurrentPage} lastPage={lastPage}/>
                         </div>
                     </div>
                 </div>
@@ -138,8 +140,8 @@ const Users = () => {
                     type={processConfig.type}
                     id={processConfig.id}
                     onClose={() => {
-                        setRefresh(true)
-                        setProcessConfig((prev) => ({...prev, isOpen: false}));
+                        setProcessConfig(prev => ({ ...prev, isOpen: false }));
+                        setRefresh(!refresh);
                     }}
                 />
             )}

@@ -1,4 +1,3 @@
-import React from 'react';
 import './css/Pagination.css'
 
 const Pagination = ({pageNum, setPageNum, lastPage}) => {
@@ -25,7 +24,7 @@ const Pagination = ({pageNum, setPageNum, lastPage}) => {
             <div className="my-notes-process-see text-center" style={{width: '40px', lineHeight: '40px'}}>
                 {pageNum}
             </div>
-            {(lastPage !== pageNum && lastPage !== 0) && (
+            {(lastPage > pageNum && lastPage !== 0) && (
                 <button onClick={() => setPageNum(pageNum + 1)} className="my-notes-process-see">
                     <svg
                         fill="white"

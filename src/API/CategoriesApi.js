@@ -17,6 +17,5 @@ export const DeleteCategoryRequest = async (categoryId) => {
 };
 
 export const GetCategoryDropdownRequest = async () => {
-    const response = await api.get(`category/get/all`);
-    return response;
+    return await api.get(`category/get/all`);
 };

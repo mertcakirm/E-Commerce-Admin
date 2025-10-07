@@ -9,9 +9,12 @@ import ActiveOrders from './pages/ActiveOrders.jsx';
 import Messages from './pages/Messages.jsx';
 import Offers from './pages/Offers.jsx';
 import Login from './pages/Login.jsx';
-import Sidebar from "./components/Sidebar.jsx";
+import Sidebar from "./components/Other/Navbar.jsx";
 import {ToastContainer} from "react-toastify";
 import {getCookie} from "./components/cookie/Cookie.js";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import Movements from "./pages/Movements.jsx";
 
 const ProtectedRoute = ({element}) => {
     const session = getCookie("SESSIONID");
@@ -48,6 +51,7 @@ function App() {
                     <Route path="/kategoriler" element={<ProtectedRoute element={<Categories />} />} />
                     <Route path="/aktif-siparisler" element={<ProtectedRoute element={<ActiveOrders />} />} />
                     <Route path="/mesajlar" element={<ProtectedRoute element={<Messages />} />} />
+                    <Route path="/hareketler" element={<ProtectedRoute element={<Movements />} />} />
                 </Routes>
             </Layout>
         </BrowserRouter>

@@ -20,8 +20,9 @@ const Login = () => {
     const handleSubmit = async () => {
         try {
             const response = await LoginRequest(user);
+            console.log(response)
             if (response.data) {
-                setCookie("token", response.data);
+                setCookie("token", response.data.tokenString);
                 navigate('/genel');
             } else {
                 toast.error('Giriş başarısız: Geçersiz kullanıcı adı veya parola.');
