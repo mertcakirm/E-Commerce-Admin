@@ -2,6 +2,7 @@ import {useEffect, useState} from 'react';
 import {formatLocalDate} from "../../Helpers/Helper.js";
 import {GetProductsRequest} from "../../API/ProductApi.js";
 import {GetAllUsersRequest} from "../../API/UserApi.js";
+import {GetActiveOrders} from "../../API/Order.js";
 
 const InfoCarts = () => {
     const [time, setTime] = useState("?");
@@ -15,11 +16,13 @@ const InfoCarts = () => {
         try {
             const product = await GetProductsRequest(1, 0);
             const user = await GetAllUsersRequest(1,0)
+            const order = await GetActiveOrders(1,0)
 
             setDetails((prev) => ({
                 ...prev,
                 productCount: product.data.data.totalCount,
-                userCount: user.data.data.totalCount
+                userCount: user.data.data.totalCount,
+                orderCount: order.data.totalCount
             }));
 
         } catch (error) {

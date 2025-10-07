@@ -55,7 +55,7 @@ const Movements = () => {
 
                 <div className="col-12">
                     <div className="table-responsive">
-                        <table className="table">
+                        <table className="table table-striped table-bordered">
                             <thead>
                             <tr>
                                 <th>İşlem ID</th>

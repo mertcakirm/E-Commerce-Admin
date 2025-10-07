@@ -14,6 +14,7 @@ const ActiveOrders = () => {
     const [orders, setOrders] = useState([]);
     const [selectedStatus, setSelectedStatus] = useState("");
     const [refresh, setRefresh] = useState(false);
+    const [lastPage, setLastPage] = useState(1);
     const [proccessState, setProcessState] = useState({
         text:"",
         acceptedText:"",
@@ -31,9 +32,9 @@ const ActiveOrders = () => {
     }, []);
 
     const GetOrders = async () => {
-        const response = await GetActiveOrders();
-        console.log(response)
-        setOrders(response.data);
+        const response = await GetActiveOrders(currentPage);
+        setLastPage(response.data.totalPages)
+        setOrders(response.data.items);
     }
 
     useEffect(() => {
@@ -42,7 +43,7 @@ const ActiveOrders = () => {
 
     useEffect(() => {
         GetOrders();
-    }, [refresh]);
+    }, [ refresh , currentPage ]);
 
     return (
         <div>
@@ -158,7 +159,7 @@ const ActiveOrders = () => {
                             </tbody>
                         </table>
                     </div>
-                    <Pagination pageNum={currentPage} setPageNum={setCurrentPage} lastPage="5"/>
+                    <Pagination pageNum={currentPage} setPageNum={setCurrentPage} lastPage={lastPage}/>
                 </div>
             </div>
 

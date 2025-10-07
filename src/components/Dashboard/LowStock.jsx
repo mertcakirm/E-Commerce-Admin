@@ -45,7 +45,7 @@ const LowStock = ({ onProductClick }) => {
                                 <td>{product.categoryName}</td>
                                 <td
                                     style={{
-                                        color: product.totalStock < 10 ? 'red' : 'orange',
+                                        color: product.totalStock < 11 ? 'red' : 'orange',
                                         fontWeight: '700'
                                     }}
                                 >

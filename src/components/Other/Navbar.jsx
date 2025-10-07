@@ -12,7 +12,7 @@ const Navbar = () => {
     const navigate = useNavigate();
 
     const LogOut = async () => {
-        await deleteCookie("SESSIONID")
+        await deleteCookie("token")
         navigate('/');
     };
     const url = window.location.pathname.split("/").filter(Boolean).pop();
@@ -25,8 +25,12 @@ const Navbar = () => {
         <div className="position-fixed">
             {/* NAVBAR */}
             <div className="admin-navbar">
-                <div className="d-flex w-100 justify-content-between">
-                    <h3 className="navbar-title m-0">Yönetim Paneli</h3>
+                <div className="d-flex  w-100 justify-content-between">
+                    <h3 className="navbar-title align-items-center gap-3 d-flex m-0">
+                        <div>Yönetim Paneli</div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M7.33 24l-2.83-2.829 9.339-9.175-9.339-9.167 2.83-2.829 12.17 11.996z"/></svg>
+                        <div>{url.toUpperCase()}</div>
+                    </h3>
                     <div className="d-flex-justify-content-end">
                         <NotificationButton />
                         <button onClick={LogOut} className="navbar-logout">Çıkış Yap</button>
@@ -34,16 +38,15 @@ const Navbar = () => {
 
                 </div>
             </div>
-
             {/* SIDEBAR */}
             <div className="admin-sidebar-parent" data-aos="fade-in">
                 <div className='admin-sidebar-logo-part'>
                     <img src={logo} className='img-fluid logo w-75' alt=""/>
                 </div>
                 <div className='admin-sidebar-links'>
-                    <Link className={`admin-sidebar-link ${url === "genel" ? "active-link" : ""}`} to="/genel">
+                    <Link className={`admin-sidebar-link ${url === "ana-panel" ? "active-link" : ""}`} to="/ana-panel">
                         <div className="links-row align-items-center">
-                            <div className={`${url === "genel" ? "link-stick" : ""}`}></div>
+                            <div className={`${url === "ana-panel" ? "link-stick" : ""}`}></div>
                             <svg clipRule="evenodd" fill="white" width="40" height="40" fillRule="evenodd"
                                  strokeLinejoin="round" strokeMiterlimit="2" viewBox="0 0 27 27"
                                  xmlns="http://www.w3.org/2000/svg">
@@ -53,7 +56,6 @@ const Navbar = () => {
                             </svg>
                             <div className="admin-sidebar-link-text p-0">Ana Panel</div>
                         </div>
-
                     </Link>
                     <Link className={`admin-sidebar-link ${url === "urunler" ? "active-link" : ""}`} to="/urunler">
                         <div className="links-row align-items-center">
@@ -78,7 +80,6 @@ const Navbar = () => {
                             <div className="admin-sidebar-link-text  p-0">Aktif Siparişler</div>
                         </div>
                     </Link>
-
                     <Link className={`admin-sidebar-link ${url === "kategoriler" ? "active-link" : ""}`}
                           to="/kategoriler">
                         <div className="links-row align-items-center">
@@ -92,7 +93,6 @@ const Navbar = () => {
                             </svg>
                             <div className="admin-sidebar-link-text ">Kategoriler</div>
                         </div>
-
                     </Link>
                     <Link className={`admin-sidebar-link ${url === "kullanicilar" ? "active-link" : ""}`}
                           to="/kullanicilar">
@@ -131,7 +131,13 @@ const Navbar = () => {
                             <div className="admin-sidebar-link-text  p-0">Sayfa İçerikleri</div>
                         </div>
                     </Link>
-
+                    <Link className={`admin-sidebar-link ${url === "soru-cevap" ? "active-link" : ""}`} to="/soru-cevap">
+                        <div className="links-row align-items-center">
+                            <div className={`${url === "soru-cevap" ? "link-stick" : ""}`}></div>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="white" width="40" height="40" viewBox="0 0 27 27"><path d="M20 9.352c0-4.852-4.75-8.352-10-8.352-5.281 0-10 3.527-10 8.352 0 1.71.615 3.39 1.705 4.695.047 1.527-.85 3.719-1.66 5.312 2.168-.391 5.252-1.258 6.648-2.115 7.698 1.877 13.307-2.842 13.307-7.892zm-14.5 1.381c-.689 0-1.25-.56-1.25-1.25s.561-1.25 1.25-1.25 1.25.56 1.25 1.25-.561 1.25-1.25 1.25zm4.5 0c-.689 0-1.25-.56-1.25-1.25s.561-1.25 1.25-1.25 1.25.56 1.25 1.25-.561 1.25-1.25 1.25zm4.5 0c-.689 0-1.25-.56-1.25-1.25s.561-1.25 1.25-1.25 1.25.56 1.25 1.25-.561 1.25-1.25 1.25zm7.036 1.441c-.161.488-.361.961-.601 1.416 1.677 1.262 2.257 3.226.464 5.365-.021.745-.049 1.049.138 1.865-.892-.307-.979-.392-1.665-.813-2.127.519-4.265.696-6.089-.855-.562.159-1.145.278-1.74.364 1.513 1.877 4.298 2.897 7.577 2.1.914.561 2.933 1.127 4.352 1.385-.53-1.045-1.117-2.479-1.088-3.479 1.755-2.098 1.543-5.436-1.348-7.348z"/></svg>
+                            <div className="admin-sidebar-link-text p-0">Soru Cevap</div>
+                        </div>
+                    </Link>
                     <Link className={`admin-sidebar-link ${url === "raporlar" ? "active-link" : ""}`} to="/raporlar">
                         <div className="links-row align-items-center">
                             <div className={`${url === "raporlar" ? "link-stick" : ""}`}></div>
@@ -140,7 +146,6 @@ const Navbar = () => {
                             <div className="admin-sidebar-link-text  p-0">Finansal Durum</div>
                         </div>
                     </Link>
-
                     <Link className={`admin-sidebar-link ${url === "mesajlar" ? "active-link" : ""}`} to="/mesajlar">
                         <div className="links-row align-items-center">
                             <div className={`${url === "mesajlar" ? "link-stick" : ""}`}></div>
@@ -152,7 +157,6 @@ const Navbar = () => {
                             <div className="admin-sidebar-link-text  p-0">Mesajlar</div>
                         </div>
                     </Link>
-
                     <Link className={`admin-sidebar-link ${url === "hareketler" ? "active-link" : ""}`} to="/hareketler">
                         <div className="links-row align-items-center">
                             <div className={`${url === "hareketler" ? "link-stick" : ""}`}></div>
@@ -161,9 +165,7 @@ const Navbar = () => {
                         </div>
                     </Link>
 
-
                 </div>
-
             </div>
         </div>
     )
