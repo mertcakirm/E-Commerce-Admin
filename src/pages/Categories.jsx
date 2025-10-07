@@ -67,7 +67,7 @@ const Categories = () => {
                 </div>
 
 
-                <div className="col-12 mt-5">
+                <div className="col-12 ">
                     <div className="table-responsive">
                         <table className="table">
                             <thead>

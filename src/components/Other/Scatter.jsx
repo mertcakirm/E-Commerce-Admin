@@ -9,7 +9,7 @@ const BarChart = ({type, title}) => {
         datasets: [
             {
                 label: "Satış Miktarı",
-                data: [50, 70, 40, 90, 60, 100, 150, 23, 25, 12, 68, 46], // Değerler
+                data: [50, 70, 40, 90, 60, 100, 150, 23, 25, 12, 68, 46],
                 backgroundColor: "rgba(0,157,255,0.7)",
                 borderColor: "rgb(10,154,244)",
                 borderWidth: 1,

@@ -8,7 +8,7 @@ const PieChart = ({type, title}) => {
         labels: ["Pantolon", "T-Shirt", "Şort", "Ceket", "Ayakkabı"],
         datasets: [
             {
-                data: [30, 40, 15, 25, 10], // Yüzdeler
+                data: [30, 40, 15, 25, 10],
                 backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4CAF50", "#9966FF"],
                 hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4CAF50", "#9966FF"],
             },
@@ -16,7 +16,6 @@ const PieChart = ({type, title}) => {
 
     };
 
-    // Grafik seçenekleri
     const options = {
         responsive: true,
         plugins: {

@@ -70,26 +70,32 @@ const NotificationPopover = forwardRef(({top, left, width = 240}, ref) => {
                 ref={innerRef}>
                 <ul className="popover-list">
                     {loading && <LoadingComp />}
-                    {auditLogs.map(log => (
-                        <li key={log.id} className="d-flex justify-content-between">
-                            <div className="d-flex flex-column">
-                                <div
-                                    className="text-wrap fs-6"
-                                    style={{ width: "250px", wordBreak: "break-all" }}
-                                >
-                                    {log.details}
+                    {auditLogs && auditLogs.length > 0 ? (
+                        auditLogs.map((log) => (
+                            <li key={log.id} className="d-flex justify-content-between align-items-center py-2 border-bottom">
+                                <div className="d-flex flex-column">
+                                    <div
+                                        className="text-wrap fs-6"
+                                        style={{ width: "250px", wordBreak: "break-all" }}
+                                    >
+                                        {log.details}
+                                    </div>
+                                    <div className="text-muted small">
+                                        {new Date(log.createdAt).toLocaleString("tr-TR")}
+                                    </div>
                                 </div>
-                                <div className="text-muted">
-                                    {new Date(log.createdAt).toLocaleString()}
-                                </div>
-                            </div>
-                            <button className="btn not-see-btn">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                    <path d="M9 21.035l-9-8.638 2.791-2.87 6.156 5.874 12.21-12.436 2.843 2.817z" />
-                                </svg>
-                            </button>
+                                <button className="btn not-see-btn p-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                        <path d="M9 21.035l-9-8.638 2.791-2.87 6.156 5.874 12.21-12.436 2.843 2.817z" />
+                                    </svg>
+                                </button>
+                            </li>
+                        ))
+                    ) : (
+                        <li className="text-center text-muted py-3">
+                            Henüz bir bildirim bulunmuyor.
                         </li>
-                    ))}
+                    )}
                 </ul>
             </div>
         </div>,

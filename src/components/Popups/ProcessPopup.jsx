@@ -12,6 +12,7 @@ import {DeleteCartRequest, DeleteSliderRequest} from "../../API/PageContentsApi.
 import {ToggleUserActivityRequest} from "../../API/UserApi.js";
 import {CompleteOrderStatus, UpdateOrderStatus} from "../../API/Order.js";
 import {DeleteOffersRequest, ToggleOffersRequest} from "../../API/OfferApi.js";
+import {ClearAuditLogsRequest} from "../../API/AuditLogApi.js";
 
 const ProcessPopup = ({ type, text, id, onClose, discount }) => {
 
@@ -74,8 +75,11 @@ const ProcessPopup = ({ type, text, id, onClose, discount }) => {
                     toast.success("Kart başarıyla silindi!");
                     break;
                 }
-
-
+                case "clear_logs": {
+                    await ClearAuditLogsRequest();
+                    toast.success("Hareket geçmişi başarıyla silindi!");
+                    break;
+                }
                 default:
                     toast.error("Bilinmeyen işlem türü.");
                     return;
