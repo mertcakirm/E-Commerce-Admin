@@ -1,7 +1,7 @@
 import api from "./Api.js";
 
 export const GetProductsRequest = (pageNum, pageSize) => {
-    return api.get(`products?pageNumber=${pageNum}&pageSize=${pageSize}`);
+    return api.get(`Admin/products?pageNumber=${pageNum}&pageSize=${pageSize}`);
 };
 
 export const GetLowStockProductsRequest = (limit) => {

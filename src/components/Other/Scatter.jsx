@@ -1,15 +1,35 @@
-import {Bar} from "react-chartjs-2";
-import {Chart as ChartJS, BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend} from "chart.js";
+import { Bar } from "react-chartjs-2";
+import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend } from "chart.js";
+import { GetYearlySalesRequest } from "../../API/Order.js";
+import { useEffect, useState } from "react";
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend);
 
-const BarChart = ({type, title}) => {
+const BarChart = ({ title }) => {
+    const [sales, setSales] = useState([]);
+
+    const GetSales = async () => {
+        const response = await GetYearlySalesRequest();
+        setSales(response.data);
+    }
+
+    useEffect(() => {
+        GetSales();
+    }, []);
+
+    const monthlySales = Array(12).fill(0);
+
+    sales.forEach(item => {
+        const monthIndex = item.month - 1;
+        monthlySales[monthIndex] = item.salesCount;
+    });
+
     const data = {
         labels: ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"],
         datasets: [
             {
                 label: "Satış Miktarı",
-                data: [50, 70, 40, 90, 60, 100, 150, 23, 25, 12, 68, 46],
+                data: monthlySales,
                 backgroundColor: "rgba(0,157,255,0.7)",
                 borderColor: "rgb(10,154,244)",
                 borderWidth: 1,
@@ -43,9 +63,9 @@ const BarChart = ({type, title}) => {
     };
 
     return (
-        <div style={{width: "100%", height: "400px", margin: "0 auto"}}>
+        <div style={{ width: "100%", height: "400px", margin: "0 auto" }}>
             <h3 className="text-center mb-3">{title}</h3>
-            <Bar data={data} options={options}/>
+            <Bar data={data} options={options} />
         </div>
     );
 };

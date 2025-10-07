@@ -28,3 +28,12 @@ export const UpdateOrderStatus = async (orderId, status) => {
 export const CompleteOrderStatus = async (orderId) => {
     return await api.put(`Orders/${orderId}/order/complete`)
 }
+
+export const GetYearlySalesRequest = async () => {
+    return await api.get(`Admin/sale/yearly-by-month`)
+}
+
+export const GetMonthlyCategorySalesRequest = async () => {
+    return await api.get(`Admin/monthly-category-sales`)
+}
+
