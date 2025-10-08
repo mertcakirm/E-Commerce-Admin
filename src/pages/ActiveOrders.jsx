@@ -56,7 +56,7 @@ const ActiveOrders = () => {
                         </button>
                     </div>
                     <div className="table-responsive">
-                        <table className="table mt-3 table-striped">
+                        <table className="table mt-3 table-striped table-bordered text-center">
                             <thead>
                             <tr>
                                 <th scope="col">Sipariş Kodu</th>
@@ -84,6 +84,7 @@ const ActiveOrders = () => {
                                         <td>{order.userEmail}</td>
                                         <td>{order.shippingAddress ? order.shippingAddress : "Adres Yok"}</td>
                                         <td>
+                                            <div  style={{height:'100px',width:'300px',overflow:'hidden',overflowY:'visible'}}>
                                             {order.orderItem.map(item => (
                                                 <div key={item.orderItemId} style={{ marginBottom: '5px' }}>
                                                     {item.orderItemProduct.map(prod => (
@@ -95,17 +96,17 @@ const ActiveOrders = () => {
                                                     ))}
                                                 </div>
                                             ))}
+                                            </div>
                                         </td>
                                         <td>{order.totalAmount}₺</td>
-                                        <td className="row justify-content-center align-items-center">
-                                            <p className="col-12">
+                                        <td className="d-flex w-100 h-100 gap-2 flex-wrap h-100 justify-content-center align-items-center">
+                                            <p className="w-100 text-center">
                                                 Şuanki sipariş durumu: <span className='green'>{order.status}</span>
                                             </p>
                                             <select
-                                                className="col-6"
-                                                style={{ marginRight: '5px' }}
                                                 name="siparis-durumu-admin"
                                                 id="siparis-durumu-admin"
+                                                style={{ width: "fit-content" }}
                                                 value={selectedStatus}
                                                 onChange={(e) => setSelectedStatus(e.target.value)}
                                             >
@@ -115,7 +116,7 @@ const ActiveOrders = () => {
                                                 <option value="Yolda">Yolda</option>
                                             </select>
                                             <button
-                                                className='answer-message-btn col-5'
+                                                className='answer-message-btn '
                                                 onClick={() => {
                                                     setProcessState({
                                                         text: "Sipariş durumu güncellensin mi?",

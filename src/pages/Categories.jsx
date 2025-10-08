@@ -69,7 +69,7 @@ const Categories = () => {
 
                 <div className="col-12 ">
                     <div className="table-responsive">
-                        <table className="table">
+                        <table className="table table-bordered table-striped">
                             <thead>
                             <tr>
                                 <th>Kategori ID</th>

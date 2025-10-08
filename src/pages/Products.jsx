@@ -111,7 +111,7 @@ const Products = () => {
 
                     <div className="col-12 mt-5">
                         <div className="table-responsive">
-                            <table className="table">
+                            <table className="table table-bordered table-striped">
                                 <thead>
                                 <tr>
                                     <th>Ürün Kodu</th>

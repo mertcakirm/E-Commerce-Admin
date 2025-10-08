@@ -84,7 +84,7 @@ const LastOrdersPopup = ({popupCloser}) => {
                         ) : (
                             <tr>
                                 <td colSpan="8" className="text-center">
-                                    Aktif sipariş yok.
+                                    Geçmiş sipariş yok.
                                 </td>
                             </tr>
                         )}

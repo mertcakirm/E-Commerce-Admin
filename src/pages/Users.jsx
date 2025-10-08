@@ -82,7 +82,7 @@ const Users = () => {
                     </div>
                     <div className="col-12 mt-5">
                         <div className="table-responsive">
-                            <table className="table">
+                            <table className="table table-striped table-bordered overflow-hidden">
                                 <thead>
                                 <tr>
                                     <th>ID</th>
