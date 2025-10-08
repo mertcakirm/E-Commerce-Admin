@@ -52,3 +52,7 @@ export const GetReportByDates = async (startDate,endDate) => {
 export const CreateReportRequest = async (ReportData) => {
     return await api.post(`Admin/create-payment-record`,ReportData)
 }
+
+export const DeleteReportRequest = async (recordId) => {
+    return await api.delete(`Admin/record/${recordId}`)
+}

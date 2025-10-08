@@ -1,6 +1,6 @@
 import '../Other/css/Accepted.css';
 import {
-    DeleteProductRequest,
+    DeleteProductRequest, DeleteQuestionRequest,
     UpdateDiscountRequest,
 } from "../../API/ProductApi.js";
 import AOS from "aos";
@@ -10,7 +10,7 @@ import {toast} from "react-toastify";
 import {DeleteCategoryRequest} from "../../API/CategoriesApi.js";
 import {DeleteCartRequest, DeleteSliderRequest} from "../../API/PageContentsApi.js";
 import {ToggleUserActivityRequest} from "../../API/UserApi.js";
-import {CompleteOrderStatus, UpdateOrderStatus} from "../../API/Order.js";
+import {CompleteOrderStatus, DeleteReportRequest, UpdateOrderStatus} from "../../API/Order.js";
 import {DeleteOffersRequest, ToggleOffersRequest} from "../../API/OfferApi.js";
 import {ClearAuditLogsRequest} from "../../API/AuditLogApi.js";
 
@@ -78,6 +78,16 @@ const ProcessPopup = ({ type, text, id, onClose, discount }) => {
                 case "clear_logs": {
                     await ClearAuditLogsRequest();
                     toast.success("Hareket geçmişi başarıyla silindi!");
+                    break;
+                }
+                case "delete_report": {
+                    await DeleteReportRequest(id);
+                    toast.success("Rapor başarıyla silindi!");
+                    break;
+                }
+                case "question_delete": {
+                    await DeleteQuestionRequest(id);
+                    toast.success("Soru başarıyla silindi!");
                     break;
                 }
                 default:

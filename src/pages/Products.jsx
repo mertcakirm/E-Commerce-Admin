@@ -125,7 +125,14 @@ const Products = () => {
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {products.map((product) => (
+                                {products.length === 0 ? (
+                                    <tr>
+                                        <td colSpan="8" className="text-center py-4">
+                                            Ürün bulunamadı.
+                                        </td>
+                                    </tr>
+                                ) : (
+                                    products.map((product) => (
                                     <tr key={product.id}>
                                         <th>{product.id}</th>
                                         <td>
@@ -202,7 +209,8 @@ const Products = () => {
                                             </div>
                                         </td>
                                     </tr>
-                                ))}
+                                    ))
+                                )}
                                 </tbody>
                             </table>
                         </div>

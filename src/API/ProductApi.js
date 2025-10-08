@@ -50,3 +50,16 @@ export const UpdateProductRequest = (urlpop, updatedProduct) => {
         }
     });
 };
+
+
+export const GetProductQuestionsRequest = async () => {
+    return await api.get("QuestionAndAnswer/get-all")
+}
+
+export const AnswerQuestionRequest = async (formData) => {
+    return await api.post("QuestionAndAnswer/add-answer", formData);
+}
+
+export const DeleteQuestionRequest = async (id) => {
+    return await api.delete(`QuestionAndAnswer/question/${id}`);
+}
