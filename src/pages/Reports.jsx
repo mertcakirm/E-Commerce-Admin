@@ -2,124 +2,39 @@ import {useEffect, useState} from 'react';
 import AOS from "aos";
 import "aos/dist/aos.css";
 import Pagination from "../components/Other/Pagination.jsx";
+import {GetReportAllRequest} from "../API/Order.js";
+import CreateReportPopup from "../components/Popups/CreateReportPopup.jsx";
 
 const Reports = () => {
-    const reports = [
-        {month: '05/2024',
-            data: {
-                bankTransfer: '14499₺',
-                creditCard: '14499₺',
-                totalPayment: '14499₺',
-                netProfit: '14499₺',
-                totalSales: '1449'
-            }
-        },
-        {month: '06/2024',
-            data: {
-                bankTransfer: '12000₺',
-                creditCard: '13000₺',
-                totalPayment: '25000₺',
-                netProfit: '5000₺',
-                totalSales: '1500'
-            }
-        },
-        {month: '06/2024',
-            data: {
-                bankTransfer: '12000₺',
-                creditCard: '13000₺',
-                totalPayment: '25000₺',
-                netProfit: '5000₺',
-                totalSales: '1500'
-            }
-        },
-        {month: '06/2024',
-            data: {
-                bankTransfer: '12000₺',
-                creditCard: '13000₺',
-                totalPayment: '25000₺',
-                netProfit: '5000₺',
-                totalSales: '1500'
-            }
-        },
-        {month: '06/2024',
-            data: {
-                bankTransfer: '12000₺',
-                creditCard: '13000₺',
-                totalPayment: '25000₺',
-                netProfit: '5000₺',
-                totalSales: '1500'
-            }
-        },
-        {month: '06/2024',
-            data: {
-                bankTransfer: '12000₺',
-                creditCard: '13000₺',
-                totalPayment: '25000₺',
-                netProfit: '5000₺',
-                totalSales: '1500'
-            }
-        },
-        {month: '06/2024',
-            data: {
-                bankTransfer: '12000₺',
-                creditCard: '13000₺',
-                totalPayment: '25000₺',
-                netProfit: '5000₺',
-                totalSales: '1500'
-            }
-        },
-        {month: '06/2024',
-            data: {
-                bankTransfer: '12000₺',
-                creditCard: '13000₺',
-                totalPayment: '25000₺',
-                netProfit: '5000₺',
-                totalSales: '1500'
-            }
-        },
-        {month: '06/2024',
-            data: {
-                bankTransfer: '12000₺',
-                creditCard: '13000₺',
-                totalPayment: '25000₺',
-                netProfit: '5000₺',
-                totalSales: '1500'
-            }
-        },
-        {month: '06/2024',
-            data: {
-                bankTransfer: '12000₺',
-                creditCard: '13000₺',
-                totalPayment: '25000₺',
-                netProfit: '5000₺',
-                totalSales: '1500'
-            }
-        },
-        {month: '06/2024',
-            data: {
-                bankTransfer: '12000₺',
-                creditCard: '13000₺',
-                totalPayment: '25000₺',
-                netProfit: '5000₺',
-                totalSales: '1500'
-            }
-        },
+    const [reports, setReports] = useState([]);
+    const [pageNum, setPageNum] = useState(1);
+    const [lastPage, setLastPage] = useState(1);
+    const [popupOpen, setPopupOpen] = useState(false);
+    const [refresh, setRefresh] = useState(false);
 
-    ];
-    const itemsPerPage = 15;
-    const [currentPage, setCurrentPage] = useState(1);
-
-    const currentReports = reports.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+    const getReports = async () => {
+        const response = await GetReportAllRequest(pageNum);
+        console.log(response.data);
+        setReports(response.data.items);
+        setLastPage(response.data.totalPages)
+    }
 
     useEffect(() => {
+        getReports();
         AOS.init({duration: 500});
     }, []);
 
+    useEffect(() => {
+        getReports();
+    }, [pageNum,refresh]);
+
     return (
-        <div>
             <div className="admin-sag-container">
                 <div className="row px-5 admin-genel-row" data-aos="fade-in">
-                    <div className="col-12 alt-basliklar-admin mb-5">FİNANSAL RAPORLAR</div>
+                    <div className="col-12 mb-3 d-flex justify-content-between align-items-center">
+                        <div className="alt-basliklar-admin">FİNANSAL RAPORLAR</div>
+                        <button onClick={()=>setPopupOpen(true)} className="tumunu-gor-btn-admin">Rapor Oluştur</button>
+                    </div>
                     <table className="table table-striped  table-bordered">
                         <thead>
                         <tr>
@@ -127,20 +42,39 @@ const Reports = () => {
                             <th className="text-center" scope="col">Havale</th>
                             <th className="text-center" scope="col">Kredi Kartı</th>
                             <th className="text-center" scope="col">Toplam</th>
-                            <th className="text-center" scope="col">Net Kar</th>
+                            <th className="text-center" scope="col">Rapor Tarih Aralığı</th>
                             <th className="text-center" scope="col">Yapılan Satış</th>
                             <th className="text-center" scope="col">Yazdır</th>
                         </tr>
                         </thead>
                         <tbody>
-                        {currentReports.map((report, index) => (
-                            <tr key={index}>
-                                <th className="text-center" scope="row">{report.month}</th>
-                                <td className="text-center">{report.data.bankTransfer}</td>
-                                <td className="text-center">{report.data.creditCard}</td>
-                                <td className="text-center">{report.data.totalPayment}</td>
-                                <td className="text-center">{report.data.netProfit}</td>
-                                <td className="text-center">{report.data.totalSales}</td>
+                        {reports.map((report) => (
+                            <tr key={report.id}>
+                                <th className="text-center" scope="row">
+                                    {new Date(report.createdAt).toLocaleString("tr-TR", {
+                                        day: "2-digit",
+                                        month: "2-digit",
+                                        year: "numeric",
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                    })}
+                                </th>
+                                <td className="text-center">{report.transferTotal}₺</td>
+                                <td className="text-center">{report.creditCartTotal}₺</td>
+                                <td className="text-center">{report.totalAmount}₺</td>
+                                <td className="text-center">
+                                    {new Date(report.startDate).toLocaleDateString("tr-TR", {
+                                        day: "2-digit",
+                                        month: "2-digit",
+                                        year: "numeric",
+                                    })}{" "}
+                                    -{" "}
+                                    {new Date(report.endDate).toLocaleDateString("tr-TR", {
+                                        day: "2-digit",
+                                        month: "2-digit",
+                                        year: "numeric",
+                                    })}
+                                </td>                                <td className="text-center">{report.ordersCount}</td>
                                 <td>
                                     <div className="w-100 row justify-content-center p-0 m-0">
                                         <button className="col-12 bg-transparent border-0">
@@ -157,10 +91,15 @@ const Reports = () => {
                         ))}
                         </tbody>
                     </table>
-                    <Pagination pageNum={currentPage} setPageNum={setCurrentPage} lastPage="5"/>
+                    <Pagination pageNum={pageNum} setPageNum={setPageNum} lastPage={lastPage}/>
                 </div>
+                {popupOpen && (
+                    <CreateReportPopup onClose={(b)  => {
+                        setPopupOpen(b);
+                        setRefresh(!refresh);
+                    }} />
+                )}
             </div>
-        </div>
     );
 };
 

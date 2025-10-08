@@ -85,8 +85,8 @@ const AddCartPopup = ({popupCloser}) => {
     }, []);
 
     return (
-        <div className="modal-overlay">
-            <div className="modal-content" data-aos="zoom-in">
+        <div className="popup-overlay">
+            <div className="popup-content" data-aos="zoom-in">
                 <div className="model-header">
                     <h3>Kategori Kartı Ekle</h3>
                     <button className="popup-close-btn" onClick={() => popupCloser(false)}>&times;</button>

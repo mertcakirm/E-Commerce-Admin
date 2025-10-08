@@ -523,8 +523,7 @@ outline: none;
 }
 
 .modal-content {
-  background: white;
-  padding: 20px;
+  background: white!important;
   border-radius: 5px;
   width: 800px;
   max-width: 80%;

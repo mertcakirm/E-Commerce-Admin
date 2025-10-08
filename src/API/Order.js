@@ -37,3 +37,18 @@ export const GetMonthlyCategorySalesRequest = async () => {
     return await api.get(`Admin/monthly-category-sales`)
 }
 
+export const GetGeneralCategorySalesRequest = async () => {
+    return await api.get(`Admin/category/general`)
+}
+
+export const GetReportAllRequest = async (pageNum) => {
+    return await api.get(`Admin/report-get-all?pageNumber=${pageNum}&pageSize=10`,)
+}
+
+export const GetReportByDates = async (startDate,endDate) => {
+    return await api.get(`Admin/monthly-report?startDate=${startDate}&endDate=${endDate}`)
+}
+
+export const CreateReportRequest = async (ReportData) => {
+    return await api.post(`Admin/create-payment-record`,ReportData)
+}

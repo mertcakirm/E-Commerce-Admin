@@ -23,7 +23,7 @@ const Login = () => {
             console.log(response)
             if (response.data) {
                 setCookie("token", response.data.tokenString);
-                navigate('/genel');
+                navigate('/ana-panel');
             } else {
                 toast.error('Giriş başarısız: Geçersiz kullanıcı adı veya parola.');
             }

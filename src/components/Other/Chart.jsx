@@ -1,36 +1,73 @@
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { useEffect, useState } from "react";
-import { GetMonthlyCategorySalesRequest } from "../../API/Order.js";
+import { GetMonthlyCategorySalesRequest, GetGeneralCategorySalesRequest } from "../../API/Order.js";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const PieChart = ({ title }) => {
+const PieChart = ({ title, type }) => {
     const [sales, setSales] = useState([]);
 
-    const getMonthlySalesChart = async () => {
+    const getSalesChart = async () => {
         try {
-            const response = await GetMonthlyCategorySalesRequest();
-            // API'den gelen data
+            let response;
+
+            if (type === "month") {
+                response = await GetMonthlyCategorySalesRequest();
+            } else if (type === "general") {
+                response = await GetGeneralCategorySalesRequest();
+            } else {
+                console.warn("Geçersiz type değeri:", type);
+                return;
+            }
+
             const dataFromApi = response.data.data;
-            setSales(dataFromApi);
+            setSales(dataFromApi || []);
         } catch (error) {
             console.error("Hata:", error);
         }
     };
 
     useEffect(() => {
-        getMonthlySalesChart();
-    }, []);
+        getSalesChart();
+    }, [type]);
 
-    // API’den gelen veriye göre labels ve dataset oluşturuyoruz
+    // API tipine göre etiketleri ve değerleri belirliyoruz
+    const labels =
+        type === "month"
+            ? sales.map((item) => item.categoryName)
+            : sales.map((item) => item.categoryName); // general response kategorilere göre
+
+    const values =
+        type === "month"
+            ? sales.map((item) => item.orderCount) // monthly response count
+            : sales.map((item) => item.orderCount); // general response count
+
+    const totalSales = values.reduce((acc, val) => acc + val, 0);
+
     const data = {
-        labels: sales.map((item) => item.categoryName),
+        labels,
         datasets: [
             {
-                data: sales.map((item) => item.totalAmount), // toplam satış tutarı
-                backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4CAF50", "#9966FF"],
-                hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4CAF50", "#9966FF"],
+                data: values,
+                backgroundColor: [
+                    "#FF6384",
+                    "#36A2EB",
+                    "#FFCE56",
+                    "#4CAF50",
+                    "#9966FF",
+                    "#FF9F40",
+                    "#C9CBCF",
+                ],
+                hoverBackgroundColor: [
+                    "#FF6384",
+                    "#36A2EB",
+                    "#FFCE56",
+                    "#4CAF50",
+                    "#9966FF",
+                    "#FF9F40",
+                    "#C9CBCF",
+                ],
             },
         ],
     };
@@ -48,9 +85,6 @@ const PieChart = ({ title }) => {
         },
     };
 
-    // Toplam satışı hesaplamak için
-    const totalAmount = sales.reduce((acc, item) => acc + item.totalAmount, 0);
-
     return (
         <div style={{ width: "250px", height: "250px", margin: "0 auto", position: "relative" }}>
             <h3 className="text-center mb-3">{title}</h3>
@@ -65,7 +99,7 @@ const PieChart = ({ title }) => {
                     fontWeight: "bold",
                 }}
             >
-                {totalAmount}
+                {totalSales}
             </div>
         </div>
     );
