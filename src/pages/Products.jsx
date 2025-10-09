@@ -45,7 +45,7 @@ const Products = () => {
     const fetchData = async () => {
         setloading(false);
         try {
-            const data = await GetProductsRequest(pageNum, 10);
+            const data = await GetProductsRequest(pageNum, 10,searchTerm);
             setLastPage(data.data.data.totalPages)
             setProducts(data.data.data.items);
         } catch (err) {

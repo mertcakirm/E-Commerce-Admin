@@ -1,12 +1,22 @@
 import AOS from "aos";
 import "aos/dist/aos.css";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
+import {SendMessageAnswerRequest} from "../../API/MessagesApi.js";
+import {toast} from "react-toastify";
 
-const ReplyMessagePopup = ({popupCloser, id, processReady}) => {
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        popupCloser(false);
-        processReady(true)
+const ReplyMessagePopup = ({popupCloser, id}) => {
+    const [answerText, setAnswerText] = useState("");
+
+    const handleSubmit = async () => {
+        try {
+            await SendMessageAnswerRequest(id, answerText);
+            toast.success("Mesaj başarıyla gönderildi!");
+        } catch (error) {
+            console.error(error);
+            toast.error("Mesaj gönderilemedi!");
+        } finally {
+            popupCloser(false);
+        }
     };
 
     useEffect(() => {
@@ -22,10 +32,15 @@ const ReplyMessagePopup = ({popupCloser, id, processReady}) => {
                         &times;
                     </button>
                 </div>
-                <div className="form-group row row-gap-4  justify-content-around align-items-center mt-4">
-                    <textarea className="col-12 popup-inp" style={{height: '200px', resize: 'none'}}
-                              placeholder="Mesaj cevabını yazınız..."></textarea>
 
+                <div className="form-group row row-gap-4 justify-content-around align-items-center mt-4">
+                    <textarea
+                        className="col-12 popup-inp"
+                        style={{height: "200px", resize: "none"}}
+                        placeholder="Mesaj cevabını yazınız..."
+                        value={answerText}
+                        onChange={(e) => setAnswerText(e.target.value)}
+                    />
 
                     <div className="row justify-content-between align-items-center">
                         <button onClick={handleSubmit} className="tumunu-gor-btn-admin col-12">
@@ -34,7 +49,6 @@ const ReplyMessagePopup = ({popupCloser, id, processReady}) => {
                     </div>
                 </div>
             </div>
-
         </div>
     );
 };

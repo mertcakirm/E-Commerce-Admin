@@ -33,7 +33,7 @@ const Users = () => {
     const getUser = async () => {
         setLoading(false);
         try {
-            const response = await GetAllUsersRequest(currentPage, usersPerPage);
+            const response = await GetAllUsersRequest(currentPage, usersPerPage,searchQuery);
             console.log(response.data.data.items)
             setLastPage(response.data.data.totalPages)
             setUsersData(response.data.data.items || []);

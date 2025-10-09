@@ -1,7 +1,7 @@
 import api from "./Api.js";
 
-export const GetProductsRequest = (pageNum, pageSize) => {
-    return api.get(`Admin/products?pageNumber=${pageNum}&pageSize=${pageSize}`);
+export const GetProductsRequest = (pageNum, pageSize,search) => {
+    return api.get(`Admin/products?pageNumber=${pageNum}&pageSize=${pageSize}0&searchTerm=${search}`);
 };
 
 export const GetLowStockProductsRequest = (limit) => {

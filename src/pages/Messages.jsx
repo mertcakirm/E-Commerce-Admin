@@ -5,58 +5,38 @@ import ProcessPopup from "../components/Popups/ProcessPopup.jsx";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import Pagination from "../components/Other/Pagination.jsx";
+import {GetMessagesRequest} from "../API/MessagesApi.js";
 
 const Messages = () => {
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage] = useState(10);
     const [popupOpen, setPopupOpen] = useState(false);
-    const [messages] = useState([
-        {
-            email: 'furkangeren@gmail.com',
-            subject: 'Üyelik İşlemleri',
-            message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, fuga quidem officia illum commodi maiores quis similique numquam nobis beatae, dignissimos eligendi omnis at aperiam impedit accusantium id nulla tenetur.',
-            answered: true
-        },
-        {
-            email: 'furkangeren@gmail.com',
-            subject: 'Üyelik İşlemleri',
-            message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, fuga quidem officia illum commodi maiores quis similique numquam nobis beatae, dignissimos eligendi omnis at aperiam impedit accusantium id nulla tenetur.',
-            answered: true
-        },
-        {
-            email: 'furkangeren@gmail.com',
-            subject: 'Üyelik İşlemleri',
-            message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, fuga quidem officia illum commodi maiores quis similique numquam nobis beatae, dignissimos eligendi omnis at aperiam impedit accusantium id nulla tenetur.',
-            answered: false
-        },
-        {
-            email: 'furkangeren@gmail.com',
-            subject: 'Üyelik İşlemleri',
-            message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, fuga quidem officia illum commodi maiores quis similique numquam nobis beatae, dignissimos eligendi omnis at aperiam impedit accusantium id nulla tenetur.',
-            answered: false
-        },
-        {
-            email: 'furkangeren@gmail.com',
-            subject: 'Üyelik İşlemleri',
-            message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, fuga quidem officia illum commodi maiores quis similique numquam nobis beatae, dignissimos eligendi omnis at aperiam impedit accusantium id nulla tenetur.',
-            answered: true
-        }
-    ]);
+    const [lastPage, setLastPage] = useState(0);
+    const [messages, setMessages] = useState([]);
     const [isProcessPopupOpen, setProcessIsPopupOpen] = useState(false);
+    const [selectedMessageId, setSelectedMessageId] = useState(null);
+    const [refreh, setRefreh] = useState(false);
 
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentMessages = messages.slice(indexOfFirstItem, indexOfLastItem);
-
-    const toggleProcessPopup = () => {
-        setProcessIsPopupOpen(!isProcessPopupOpen);
-    };
-    const togglePopup = () => {
+    const togglePopup = async (id) => {
+        await setSelectedMessageId(id);
         setPopupOpen(!popupOpen);
     };
+
+    const GetMessages = async () => {
+        const response = await GetMessagesRequest(currentPage);
+        setMessages(response.data.items);
+        setLastPage(response.data.totalPages);
+    }
+
     useEffect(() => {
+        GetMessages();
         AOS.init({duration: 500});
     }, []);
+
+    useEffect(() => {
+        GetMessages();
+    }, [refreh]);
+
+
     return (
         <div>
             <div className="admin-sag-container">
@@ -70,16 +50,16 @@ const Messages = () => {
                                 <th scope="col">Konu</th>
                                 <th scope="col">Mesaj</th>
                                 <th scope="col">Cevaplandı mı?</th>
-                                <th scope="col">Cevapla</th>
+                                <th scope="col">Cevap</th>
                             </tr>
                             </thead>
                             <tbody className='table-group-divider'>
-                            {currentMessages.map((message, index) => (
-                                <tr key={index}>
-                                    <td>{message.email}</td>
-                                    <td>{message.subject}</td>
-                                    <td><p className='admin-mesajlar-mesaj'>{message.message}</p></td>
-                                    <td><span className='green'>{message.answered ? 'Evet' : 'Hayır'}</span></td>
+                            {messages.map((message) => (
+                                <tr key={message.id}>
+                                    <td>{message.userEmail}</td>
+                                    <td>{message.messageTitle}</td>
+                                    <td><p className='admin-mesajlar-mesaj'>{message.messageText}</p></td>
+                                    <td><span className='green'>{message.isReply ? 'Evet' : 'Hayır'}</span></td>
                                     <td style={{position: 'relative', width: '200px'}}>
                                         <div style={{
                                             display: 'flex',
@@ -90,8 +70,8 @@ const Messages = () => {
                                             top: '0',
                                             left: '0'
                                         }}>
-                                            {message.answered ? '' :
-                                                <button className='answer-message-btn ' onClick={togglePopup}>Mesajı
+                                            {message.isReply ? <div className="text-center admin-mesajlar-mesaj">{message.answer}</div> :
+                                                <button className='answer-message-btn ' onClick={()=>togglePopup(message.id)}>Mesajı
                                                     Cevapla</button>}
 
                                         </div>
@@ -100,7 +80,7 @@ const Messages = () => {
                             ))}
                             </tbody>
                         </table>
-                        <Pagination pageNum={currentPage} setPageNum={setCurrentPage} lastPage="5"/>
+                        <Pagination pageNum={currentPage} setPageNum={setCurrentPage} lastPage={lastPage}/>
 
                     </div>
                 </div>
@@ -108,14 +88,12 @@ const Messages = () => {
             {popupOpen && (
                 <ReplyMessagePopup
                     popupCloser={(b) => {
-                        if (b === false) setPopupOpen(b);
-                    }}
-                    id="1"
-                    processReady={(b) => {
-                        if (b === true) {
-                            toggleProcessPopup();
-                        }
-                    }}
+                        if (b === false) {
+                            setPopupOpen(b);
+                            setRefreh(!refreh);
+                        }}
+                    }
+                    id={selectedMessageId}
                 />
             )}
 
