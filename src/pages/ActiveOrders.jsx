@@ -116,7 +116,7 @@ const ActiveOrders = () => {
                                                 <option value="Yolda">Yolda</option>
                                             </select>
                                             <button
-                                                className='answer-message-btn '
+                                                className='user-edit-btn rounded-2 '
                                                 onClick={() => {
                                                     setProcessState({
                                                         text: "Sipariş durumu güncellensin mi?",

@@ -147,7 +147,11 @@ const Products = () => {
                                             />
                                         </td>
                                         <td>{product.name}</td>
-                                        <td>{product.categoryName}</td>
+                                        <td style={{width:'200px',wordBreak:'break-all',textWrap:'wrap'}}>
+                                            {product.categoryNames && product.categoryNames.length > 0
+                                                ? product.categoryNames.join(", ")
+                                                : "-"}
+                                        </td>
                                         <td>Toplam Satış : {product.saleCount}</td>
                                         <td>
                                             <div className="stok-flex">
@@ -172,7 +176,7 @@ const Products = () => {
                                         <td>
                                             <div className="user-duzenle-row">
                                                 <button onClick={() => toggleUpdatePopup(product.id)}
-                                                        className="user-edit-btn">
+                                                        className="user-edit-btn rounded-2">
                                                     <svg clipRule="evenodd" fillRule="evenodd" strokeLinejoin="round"
                                                          strokeMiterlimit="2" fill="white" width="30" height="30"
                                                          viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -181,7 +185,7 @@ const Products = () => {
                                                             fillRule="nonzero"/>
                                                     </svg>
                                                 </button>
-                                                <button className="user-sil-btn" onClick={() =>
+                                                <button className="user-sil-btn rounded-2" onClick={() =>
                                                     toggleProcess({
                                                         text: "Bu ürünü silmek istediğinize emin misiniz?",
                                                         type: "product_delete",
@@ -203,7 +207,7 @@ const Products = () => {
                                                     onChange={(e) => setDiscountValue(e.target.value)}
                                                     onFocus={() => setSelectedProductCode(product.id)}
                                                 />
-                                                <button className="siparis-durumu-btn" onClick={applyDiscount}>
+                                                <button className="siparis-durumu-btn rounded-2" onClick={applyDiscount}>
                                                     İndirim Yap
                                                 </button>
                                             </div>
@@ -245,7 +249,7 @@ const Products = () => {
                     id={processConfig.id}
                     discount={processConfig.extraData}
                     onClose={() => {
-                        setReloadPage(prev => !prev);
+                        setReloadPage(!reloadPage);
                         setProcessConfig(prev => ({...prev, isOpen: false}));
                         setDiscountValue("");
                         setSelectedProductCode(null);

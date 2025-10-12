@@ -96,7 +96,7 @@ const Categories = () => {
                                         <td>
                                             <div className="user-duzenle-row">
                                                 <button
-                                                    className="user-sil-btn"
+                                                    className="user-sil-btn rounded-2"
                                                     onClick={() =>
                                                         toggleProcess({
                                                             text: "Bu kategoriyi silmek istediğinize emin misiniz?",

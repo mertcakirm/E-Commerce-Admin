@@ -8,24 +8,18 @@ import {GetCategoriesRequest} from "../../API/CategoriesApi.js";
 const AddProductPopup = ({popupCloser, reload}) => {
     const [productData, setProductData] = useState({
         Name: "",
-        CategoryId: 0,
+        CategoryIds: [],
         Description: "",
         Price: 0.0,
         BasePrice: 0.0,
         Variants: [],
     });
+
+    const [selectedCategory, setSelectedCategory] = useState(""); // Dropdown seçimi
+    const [categories, setCategories] = useState([]);
     const [images, setImages] = useState([]);
     const [sizeInput, setSizeInput] = useState("");
     const [quantityInput, setQuantityInput] = useState("");
-    const [categories, setCategories] = useState([]);
-
-    const handleInputChange = (e) => {
-        const {name, value} = e.target;
-        setProductData((prev) => ({
-            ...prev,
-            [name]: name === "productPrice" || name === "BasePrice" ? parseFloat(value) || 0.0 : value,
-        }));
-    };
 
     const getDropdown = async () => {
         const categoriesObj = await GetCategoriesRequest();
@@ -34,19 +28,32 @@ const AddProductPopup = ({popupCloser, reload}) => {
 
     useEffect(() => {
         AOS.init({duration: 500});
-
         getDropdown();
     }, []);
 
+    const handleAddCategory = () => {
+        const id = parseInt(selectedCategory, 10);
+        if (!id || productData.CategoryIds.includes(id)) return;
+
+        setProductData(prev => ({
+            ...prev,
+            CategoryIds: [...prev.CategoryIds, id]
+        }));
+    };
+
+    const handleRemoveCategory = (id) => {
+        setProductData(prev => ({
+            ...prev,
+            CategoryIds: prev.CategoryIds.filter(c => c !== id)
+        }));
+    };
 
     const handleImageUpload = (event) => {
         const files = Array.from(event.target.files);
         handleImageFiles(files);
     };
 
-    const handleDragOver = (event) => {
-        event.preventDefault();
-    };
+    const handleDragOver = (event) => event.preventDefault();
 
     const handleDrop = (event) => {
         event.preventDefault();
@@ -55,223 +62,167 @@ const AddProductPopup = ({popupCloser, reload}) => {
     };
 
     const handleImageFiles = (files) => {
-        const validImages = files.filter((file) => file.type.startsWith("image/"));
-        if (validImages.length > 0) {
-            setImages((prevImages) => [...prevImages, ...validImages]);
-        } else {
-            console.log("Geçersiz dosya formatı");
-        }
+        const validImages = files.filter(file => file.type.startsWith("image/"));
+        if (validImages.length > 0) setImages(prev => [...prev, ...validImages]);
     };
 
+    // --- Stok ekleme ---
     const addStock = (event) => {
         event.preventDefault();
-        if (sizeInput && quantityInput) {
-            const updatedSizes = [...productData.Variants];
-            let found = false;
+        if (!sizeInput || !quantityInput) return;
 
-            for (let i = 0; i < updatedSizes.length; i++) {
-                if (updatedSizes[i].size === sizeInput) {
-                    updatedSizes[i].stock += parseInt(quantityInput, 10);
-                    found = true;
-                    break;
-                }
+        const updatedVariants = [...productData.Variants];
+        const qty = parseInt(quantityInput, 10);
+        let found = false;
+
+        for (let i = 0; i < updatedVariants.length; i++) {
+            if (updatedVariants[i].size === sizeInput) {
+                updatedVariants[i].stock += qty;
+                found = true;
+                break;
             }
-
-            if (!found) {
-                updatedSizes.push({
-                    size: sizeInput,
-                    stock: parseInt(quantityInput, 10),
-                });
-            }
-
-            const totalStock = updatedSizes.reduce((total, item) => total + item.stock, 0);
-
-            setProductData((prev) => ({
-                ...prev,
-                Variants: updatedSizes,
-                totalStock,
-            }));
-
-            setSizeInput("");
-            setQuantityInput("");
         }
+
+        if (!found) updatedVariants.push({size: sizeInput, stock: qty});
+
+        setProductData(prev => ({
+            ...prev,
+            Variants: updatedVariants
+        }));
+
+        setSizeInput("");
+        setQuantityInput("");
+    };
+
+    // --- Stok sil ---
+    const handleRemoveVariant = (size) => {
+        setProductData(prev => ({
+            ...prev,
+            Variants: prev.Variants.filter(v => v.size !== size)
+        }));
+    };
+
+    // --- Resim sil ---
+    const handleRemoveImage = (index) => {
+        setImages(prev => prev.filter((_, i) => i !== index));
     };
 
     const handleSubmit = async () => {
         try {
             const formData = new FormData();
-
-            // Ürün bilgilerini ekliyoruz
             formData.append("Name", productData.Name);
             formData.append("Description", productData.Description);
             formData.append("BasePrice", productData.BasePrice);
             formData.append("Price", productData.Price);
-            formData.append("CategoryId", productData.CategoryId);
+
+            productData.CategoryIds.forEach((cid, index) => {
+                formData.append(`CategoryIds[${index}]`, cid);
+            });
 
             productData.Variants.forEach((variant, index) => {
                 formData.append(`Variants[${index}].Size`, variant.size);
                 formData.append(`Variants[${index}].Stock`, variant.stock);
             });
 
-            // Resimleri ekliyoruz
-            images.forEach((image) => {
-                formData.append("Images", image); // backend IFormFile[] için "Images" olmalı
-            });
+            images.forEach(image => formData.append("Images", image));
 
-            // API çağrısı
             await AddProductRequest(formData);
 
             toast.success("Ürün başarıyla oluşturuldu!");
             popupCloser(false);
             reload(true);
 
-            // Formu temizle
             setProductData({
                 Name: "",
-                CategoryId: "",
+                CategoryIds: [],
                 Description: "",
                 Price: 0.0,
                 BasePrice: 0.0,
                 Variants: [],
-                totalStock: 0,
             });
             setImages([]);
         } catch (err) {
             console.error(err);
-            toast.error("Ürün eklenemedi, lütfen daha sonra tekrar deneyin!");
+            toast.error("Ürün eklenemedi, lütfen tekrar deneyin!");
         }
     };
-
 
     return (
         <div className="popup-overlay">
             <div className="popup-content" data-aos="zoom-in" style={{width: "1200px"}}>
                 <div className="popup-header">
-                    <div></div>
-                    <button className="popup-close-btn" onClick={() => popupCloser(false)}>
-                        &times;
-                    </button>
+                    <button className="popup-close-btn" onClick={() => popupCloser(false)}>&times;</button>
                 </div>
-                <div className="popup-form">
-                    <div className="row row-gap-3 column-gap-3 justify-content-between">
-                        <div className="col-5">
-                            <h4>Resim Yönetim Paneli</h4>
-                            <div
-                                className="drop-zone"
-                                onDragOver={handleDragOver}
-                                onDrop={handleDrop}
-                            >
-                                <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="purple"
-                                         viewBox="0 0 24 24">
-                                        <path
-                                            d="M14 9l-2.519 4-2.481-1.96-5 6.96h16l-6-9zm8-5v16h-20v-16h20zm2-2h-24v20h24v-20zm-20 6c0-1.104.896-2 2-2s2 .896 2 2c0 1.105-.896 2-2 2s-2-.895-2-2z"/>
-                                    </svg>
-                                    <p>Ürün görsellerini sürükleyin veya seçmek için tıklayın</p>
-                                </div>
-                                <input
-                                    type="file"
-                                    multiple
-                                    onChange={handleImageUpload}
-                                    className="file-input"
-                                />
-                            </div>
 
-                            <div className="preview-flex">
-                                {images.map((image, index) => (
-                                    <div className="preview-flex-child" key={index}>
-                                        <img
-                                            src={URL.createObjectURL(image)}
-                                            alt={`uploaded-img-${index}`}
-                                            width="100"
-                                        />
-                                        <p>{image.name}</p>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                        <div className="col-5">
-                            <h4>Stok Yönetim Paneli</h4>
-                            <div className="row row-gap-3 mt-3">
-                                <div className="col-12 row justify-content-between align-items-center">
-                                    <input
-                                        type="text"
-                                        className="col-3"
-                                        placeholder="XL"
-                                        value={sizeInput}
-                                        onChange={(e) => setSizeInput(e.target.value)}
-                                    />
-                                    <input
-                                        type="number"
-                                        className="col-3"
-                                        placeholder="0"
-                                        value={quantityInput}
-                                        onChange={(e) => setQuantityInput(e.target.value)}
-                                    />
-                                    <button className="mt-3 col-5 add-stock-btn" onClick={addStock}>
-                                        Stok Ekle
-                                    </button>
-                                </div>
-                                <div className="col-12 stoklar-card-flex p-0">
-                                    {productData.Variants.map((item, index) => (
-                                        <div key={index} className="stok-card">
-                                            {item.size}: {item.stock}
-                                        </div>
+                <div className="popup-form row">
+                    <div className="col-6 d-flex flex-column gap-3">
+                        <h4>Kategori Yönetim Paneli</h4>
+                        <div className="d-flex gap-3">
+                            <div className="d-flex align-items-center gap-2 mb-2">
+                                <select value={selectedCategory} onChange={e => setSelectedCategory(e.target.value)}>
+                                    <option value="">Kategori Seçin</option>
+                                    {categories.map(cat => (
+                                        <option key={cat.id} value={cat.id}>{cat.name}</option>
                                     ))}
-                                </div>
+                                </select>
+                                <button className="tumunu-gor-btn-admin fs-6 py-2 px-3" onClick={handleAddCategory}>Ekle</button>
+                            </div>
+                            <div className="selected-categories mb-3">
+                                {productData.CategoryIds.map(id => {
+                                    const cat = categories.find(c => c.id === id);
+                                    return cat ? (
+                                        <span key={id} className="category-chip">
+                                            {cat.name} <button className="user-sil-btn px-2 fs-6" onClick={() => handleRemoveCategory(id)}>Sil</button>
+                                        </span>
+                                    ) : null;
+                                })}
                             </div>
                         </div>
-                        <h4>Ürün Yönetim Paneli</h4>
-                        <input
-                            type="text"
-                            name="Name"
-                            placeholder="Ürün Adı"
-                            value={productData.Name}
-                            onChange={handleInputChange}
-                            className="col-5"
-                        />
-                        <select
-                            name="CategoryId"
-                            value={productData.CategoryId}
-                            onChange={handleInputChange}
-                            className="col-5"
-                        >
-                            <option value="">Ürün Kategorisi Seçin</option>
-                            {categories.map((category) => (
-                                <option key={category} value={category.id}>
-                                    {category.name}
-                                </option>
-                            ))}
-                        </select>
-                        <input
-                            type="number"
-                            name="BasePrice"
-                            placeholder="Ürün Alış Fiyatı"
-                            value={productData.BasePrice}
-                            onChange={handleInputChange}
-                            className="col-5"
-                        />
-                        <input
-                            type="number"
-                            name="Price"
-                            placeholder="Ürün Fiyatı"
-                            value={productData.Price}
-                            onChange={handleInputChange}
-                            className="col-5"
-                        />
-                        <input
-                            type="text"
-                            name="Description"
-                            placeholder="Ürün Açıklaması"
-                            value={productData.Description}
-                            onChange={handleInputChange}
-                            className="col-12"
-                        />
 
-                        <button className="tumunu-gor-btn-admin" onClick={handleSubmit}>
-                            Kaydet
-                        </button>
+                        <h4>Stok Yönetim Paneli</h4>
+                        <div className="d-flex align-items-center mb-2">
+                            <input type="text" placeholder="Beden" value={sizeInput} onChange={e => setSizeInput(e.target.value)} />
+                            <input type="number" placeholder="Adet" value={quantityInput} onChange={e => setQuantityInput(e.target.value)} />
+                            <button className="tumunu-gor-btn-admin fs-6 py-2 px-3" onClick={addStock}>Stok Ekle</button>
+                        </div>
+                        <div className="stoklar-card-flex mb-3">
+                            {productData.Variants.map((item, idx) => (
+                                <div key={idx} className="stok-card">
+                                    {item.size}: {item.stock}
+                                    <button className="user-sil-btn mx-2 px-2 fs-6" onClick={() => handleRemoveVariant(item.size)}>Sil</button>
+                                </div>
+                            ))}
+                        </div>
                     </div>
+
+                    <div className="col-6">
+                        <h4>Resim Yönetim Paneli</h4>
+                        <div className="drop-zone" onDragOver={handleDragOver} onDrop={handleDrop}>
+                            <div>
+                                <p>Ürün görsellerini sürükleyin veya seçmek için tıklayın</p>
+                            </div>
+                            <input type="file" multiple onChange={handleImageUpload} className="file-input"/>
+                        </div>
+                        <div className="preview-flex mb-3">
+                            {images.map((image, index) => (
+                                <div key={index} className="preview-flex-child">
+                                    <img src={URL.createObjectURL(image)} alt={`img-${index}`} width="100"/>
+                                    <p>{image.name}</p>
+                                    <button className="user-sil-btn px-2 fs-6" onClick={() => handleRemoveImage(index)}>Sil</button>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="d-flex flex-column gap-2">
+                        <h4>Ürün Bilgileri</h4>
+                        <input type="text" placeholder="Ürün Adı" value={productData.Name} onChange={e => setProductData(prev => ({...prev, Name: e.target.value}))} />
+                        <input type="number" placeholder="Alış Fiyatı" value={productData.BasePrice} onChange={e => setProductData(prev => ({...prev, BasePrice: parseFloat(e.target.value)}))} />
+                        <input type="number" placeholder="Satış Fiyatı" value={productData.Price} onChange={e => setProductData(prev => ({...prev, Price: parseFloat(e.target.value)}))} />
+                        <textarea placeholder="Ürün Açıklaması" value={productData.Description} onChange={e => setProductData(prev => ({...prev, Description: e.target.value}))} />
+                        <button className="tumunu-gor-btn-admin" onClick={handleSubmit}>Kaydet</button>
+                    </div>
+
                 </div>
             </div>
         </div>

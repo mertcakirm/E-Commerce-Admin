@@ -114,7 +114,7 @@ const Offers = () => {
                                                 <td style={{ position: 'relative', width: '200px' }}>
                                                     <div style={{ position: 'absolute', top: '0', left: '0' }}
                                                          className="row w-100 h-100 p-0 m-0 align-items-center justify-content-center">
-                                                        <button className="answer-message-btn w-75"
+                                                        <button className="user-sil-btn rounded-2 w-75"
                                                                 onClick={() => {
                                                                     setProcessState({
                                                                         text: "Kampanya silinsin mi?",
