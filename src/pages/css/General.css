@@ -220,12 +220,6 @@
   row-gap: 10px;
 }
 
-.stok-card{
-  border: 1px solid #000;
-  height: fit-content;
-  padding: 10px 20px;
-    border-radius: 5px;
-}
 
 
 .popup-overlay {
@@ -293,11 +287,10 @@
     width: 50px;
   }
 
-  .siparis-durumu-btn{
+  .sale-btn{
     border: 0;
     background: #000;
     color: #fff;
-    padding: 5px 30px;
   }
 
   .admin-mesajlar-mesaj{
@@ -308,11 +301,6 @@
     resize: none;
   }
 
-  .indirim-uygula-flex{
-    padding-top: 10px;
-    display: flex;
-    flex-direction: row;
-  }
   .indirim-uygula-flex>input{
     width: 50px;
     margin-right: 5px;
@@ -404,7 +392,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 }
 
 .preview-flex-child>img{

@@ -13,8 +13,9 @@ import UpdateProductPopup from "../components/Popups/UpdateProductPopup.jsx";
 
 const Products = () => {
     const [products, setProducts] = useState([]);
-    const [searchTerm, setSearchTerm] = useState("");
+    const [debouncedSearch, setDebouncedSearch] = useState("");
     const [showPopup, setShowPopup] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("");
     const [showUpdatePopup, setShowUpdatePopup] = useState(false);
     const [selectedProductCode, setSelectedProductCode] = useState(null);
     const [discountValue, setDiscountValue] = useState("");
@@ -45,7 +46,7 @@ const Products = () => {
     const fetchData = async () => {
         setloading(false);
         try {
-            const data = await GetProductsRequest(pageNum, 10,searchTerm);
+            const data = await GetProductsRequest(pageNum, 10, debouncedSearch);
             setLastPage(data.data.data.totalPages)
             setProducts(data.data.data.items);
         } catch (err) {
@@ -82,12 +83,20 @@ const Products = () => {
     }
 
     useEffect(() => {
+        const delayDebounce = setTimeout(() => {
+            setDebouncedSearch(searchTerm);
+        }, 2000);
+
+        return () => clearTimeout(delayDebounce);
+    }, [searchTerm]);
+
+    useEffect(() => {
         AOS.init({duration: 500});
     }, []);
 
     useEffect(() => {
         fetchData();
-    }, [pageNum, reloadPage]);
+    }, [pageNum, debouncedSearch,reloadPage]);
 
     if (loading) return <LoadingComp/>;
 
@@ -175,7 +184,10 @@ const Products = () => {
                                         </td>
                                         <td>
                                             <div className="user-duzenle-row">
-                                                <button onClick={() => toggleUpdatePopup(product.id)}
+                                                <button onClick={() => {
+                                                    setShowPopup(true);
+                                                    setUpdateId(product.id)
+                                                }}
                                                         className="user-edit-btn rounded-2">
                                                     <svg clipRule="evenodd" fillRule="evenodd" strokeLinejoin="round"
                                                          strokeMiterlimit="2" fill="white" width="30" height="30"
@@ -199,15 +211,16 @@ const Products = () => {
                                                     </svg>
                                                 </button>
                                             </div>
-                                            <div className="indirim-uygula-flex">
+                                            <div className="d-flex pt-2 gap-2">
                                                 <input
                                                     type="number"
+                                                    style={{width:'70px'}}
                                                     maxLength={2}
                                                     value={selectedProductCode === product.id ? discountValue : ""}
                                                     onChange={(e) => setDiscountValue(e.target.value)}
                                                     onFocus={() => setSelectedProductCode(product.id)}
                                                 />
-                                                <button className="siparis-durumu-btn rounded-2" onClick={applyDiscount}>
+                                                <button className="sale-btn px-3 rounded-2" onClick={applyDiscount}>
                                                     İndirim Yap
                                                 </button>
                                             </div>
@@ -224,23 +237,15 @@ const Products = () => {
             </div>
             {showPopup && (
                 <AddProductPopup
-                    popupCloser={(b) => setShowPopup(b)}
-                    reload={(a) => {
-                        if (a === true) setReloadPage(a);
+                    popupCloser={(b) => {
+                        setShowPopup(b)
+                        setReloadPage(!reloadPage);
+                        setUpdateId(null)
                     }}
-                />
-            )}
-
-            {showUpdatePopup && (
-                <UpdateProductPopup
-                    onClose={
-                        (b) => {
-                            setShowUpdatePopup(b)
-                            setReloadPage(!reloadPage)
-                        }}
                     productId={updateId}
                 />
             )}
+
 
             {processConfig.isOpen && (
                 <ProcessPopup

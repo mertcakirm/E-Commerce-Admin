@@ -14,9 +14,10 @@ const InfoCarts = () => {
 
     const getDetail = async () => {
         try {
-            const product = await GetProductsRequest(1, 0);
-            const user = await GetAllUsersRequest(1,0)
+            const product = await GetProductsRequest(1, 0,"");
+            const user = await GetAllUsersRequest(1,0,"")
             const order = await GetActiveOrders(1,0)
+            console.log(user)
 
             setDetails((prev) => ({
                 ...prev,

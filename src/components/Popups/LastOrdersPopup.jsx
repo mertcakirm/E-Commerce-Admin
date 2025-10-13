@@ -30,7 +30,7 @@ const LastOrdersPopup = ({popupCloser}) => {
                     </button>
                 </div>
 
-                <div style={{maxHeight: '600px', overflow: 'hidden', overflowY: 'auto'}}>
+                <div style={{maxHeight: '600px', overflow: 'hidden', overflowY: 'auto'}} className="table-responsive">
                     <table className="table m-0 table-bordered">
                         <thead>
                         <tr>
