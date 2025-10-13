@@ -1,4 +1,4 @@
-.admin-sidebar-parent{
+.admin-sidebar-parent {
     height: 100%;
     position: fixed;
     width: 300px;
@@ -7,8 +7,30 @@
     flex-direction: column;
     align-items: baseline;
     justify-content: space-between;
-    padding: 1% 0%;
-    overflow: hidden;
+    padding-top: 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: #1889ff #022B5C;
+}
+
+.admin-sidebar-parent::-webkit-scrollbar {
+    width: 8px;
+}
+
+.admin-sidebar-parent::-webkit-scrollbar-track {
+    background: #022B5C;
+    border-radius: 10px;
+}
+
+.admin-sidebar-parent::-webkit-scrollbar-thumb {
+    background-color: #4DA3FF;
+    border-radius: 10px;
+    border: 2px solid #022B5C;
+}
+
+.admin-sidebar-parent::-webkit-scrollbar-thumb:hover {
+    background-color: #76B7FF;
 }
 
 .admin-layout {

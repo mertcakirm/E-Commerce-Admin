@@ -39,7 +39,7 @@ const Layout = ({children}) => {
 function App() {
     return (
         <BrowserRouter>
-            <ToastContainer theme="colored" closeOnClick position="top-center" autoClose={3000} />
+            <ToastContainer theme="colored" closeOnClick position="bottom-center" autoClose={3000} />
             <Layout>
                 <Routes>
                     <Route path="/" element={<Login />} />

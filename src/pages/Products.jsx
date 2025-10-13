@@ -9,14 +9,12 @@ import "aos/dist/aos.css";
 import {toast} from "react-toastify";
 import Pagination from "../components/Other/Pagination.jsx";
 import ProcessPopup from "../components/Popups/ProcessPopup.jsx";
-import UpdateProductPopup from "../components/Popups/UpdateProductPopup.jsx";
 
 const Products = () => {
     const [products, setProducts] = useState([]);
     const [debouncedSearch, setDebouncedSearch] = useState("");
     const [showPopup, setShowPopup] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
-    const [showUpdatePopup, setShowUpdatePopup] = useState(false);
     const [selectedProductCode, setSelectedProductCode] = useState(null);
     const [discountValue, setDiscountValue] = useState("");
     const [pageNum, setPageNum] = useState(1);
@@ -76,11 +74,6 @@ const Products = () => {
             extraData: discountValue,
         });
     };
-
-    const toggleUpdatePopup = (id) => {
-        setUpdateId(id);
-        setShowUpdatePopup(true);
-    }
 
     useEffect(() => {
         const delayDebounce = setTimeout(() => {

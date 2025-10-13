@@ -3,9 +3,9 @@ import PieChart from "../components/Other/Chart.jsx";
 import BarChart from "../components/Other/Scatter.jsx";
 import {useState} from "react";
 import "aos/dist/aos.css";
-import UpdateProductPopup from "../components/Popups/UpdateProductPopup.jsx";
 import InfoCarts from "../components/Dashboard/InfoCarts.jsx";
 import LowStock from "../components/Dashboard/LowStock.jsx";
+import AddProductPopup from "../components/Popups/AddProductPopup.jsx";
 
 const Dashboard = () => {
     const [selectedProductId, setSelectedProductId] = useState(null);
@@ -50,8 +50,8 @@ const Dashboard = () => {
             </div>
 
             {showUpdatePopup && (
-                <UpdateProductPopup
-                    onClose={(b) => setShowUpdatePopup(b)}
+                <AddProductPopup
+                    popupCloser={(b) => setShowUpdatePopup(b)}
                     productId={selectedProductId}
                 />
             )}

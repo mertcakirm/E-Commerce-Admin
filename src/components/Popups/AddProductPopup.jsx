@@ -234,7 +234,8 @@ const ProductPopup = ({popupCloser, productId = null}) => {
 
                         <div className="preview-flex mb-3">
                             {existingImages.map((img) => (
-                                <div key={img.id} className="preview-flex-child border shadow-sm rounded-3 overflow-hidden">
+                                <div key={img.id}
+                                     className="preview-flex-child border shadow-sm rounded-3 overflow-hidden">
                                     <img className="object-fit-cover h-100
                                     " src={`https://localhost:7050${img.imageUrl}`} alt="existing" width="100"/>
                                     <button className="user-sil-btn px-2 w-100 fs-6"
@@ -254,17 +255,21 @@ const ProductPopup = ({popupCloser, productId = null}) => {
                             ))}
                         </div>
 
+
                         {/* Kategori Seçimi */}
-                        <label>Kategori Seçimi</label>
-                        <div className="d-flex align-items-center gap-2 mb-2">
-                            <select value={selectedCategory} onChange={e => setSelectedCategory(e.target.value)}>
-                                <option value="">Kategori Seçin</option>
-                                {categories.map(cat => (
-                                    <option key={cat.id} value={cat.id}>{cat.name}</option>
-                                ))}
-                            </select>
-                            <button className="tumunu-gor-btn-admin fs-6 py-2 px-3" onClick={handleAddCategory}>Ekle
-                            </button>
+
+                        <div className="d-flex flex-column gap-2">
+                            <label className="fw-bold">Kategori Seçimi</label>
+                            <div className="d-flex align-items-center gap-2 mb-2">
+                                <select value={selectedCategory} onChange={e => setSelectedCategory(e.target.value)}>
+                                    <option value="">Kategori Seçin</option>
+                                    {categories.map(cat => (
+                                        <option key={cat.id} value={cat.id}>{cat.name}</option>
+                                    ))}
+                                </select>
+                                <button className="tumunu-gor-btn-admin fs-6 py-2 px-3" onClick={handleAddCategory}>Ekle
+                                </button>
+                            </div>
                         </div>
 
                         <div
@@ -277,7 +282,7 @@ const ProductPopup = ({popupCloser, productId = null}) => {
                                         <div
                                             key={id}
                                             className="d-flex gap-2 align-items-center justify-content-between border rounded-3 shadow-sm overflow-hidden "
-                                            style={{ width: "fit-content" }}
+                                            style={{width: "fit-content"}}
                                         >
                                             <span className="category-chip mx-2">{cat.name}</span>
                                             <button
@@ -295,18 +300,22 @@ const ProductPopup = ({popupCloser, productId = null}) => {
                         </div>
 
                         {/* Stok Yönetimi */}
-                        <label>Stok Yönetimi</label>
-                        <div className="d-flex align-items-center gap-2 mb-2">
-                            <input type="text" placeholder="Beden" value={sizeInput}
-                                   onChange={e => setSizeInput(e.target.value)}/>
-                            <input type="number" placeholder="Adet" value={quantityInput}
-                                   onChange={e => setQuantityInput(e.target.value)}/>
-                            <button className="tumunu-gor-btn-admin fs-6 py-2 px-3" onClick={addStock}>Ekle</button>
+                        <div className="d-flex flex-column gap-2">
+
+                            <label className="fw-bold">Stok Yönetimi</label>
+                            <div className="d-flex align-items-center gap-2 mb-2">
+                                <input type="text" placeholder="Beden" value={sizeInput}
+                                       onChange={e => setSizeInput(e.target.value)}/>
+                                <input type="number" placeholder="Adet" value={quantityInput}
+                                       onChange={e => setQuantityInput(e.target.value)}/>
+                                <button className="tumunu-gor-btn-admin fs-6 py-2 px-3" onClick={addStock}>Ekle</button>
+                            </div>
                         </div>
 
                         <div className="stoklar-card-flex mb-3">
                             {productData.Variants.map((item, idx) => (
-                                <div key={idx} className="d-flex gap-2 justify-content-between align-items-center border rounded-2 overflow-hidden">
+                                <div key={idx}
+                                     className="d-flex gap-2 justify-content-between align-items-center border rounded-2 overflow-hidden">
                                     <span className="mx-2">
                                     {item.size}: {item.stock}
                                     </span>
@@ -336,11 +345,13 @@ const ProductPopup = ({popupCloser, productId = null}) => {
                                     type="number"
                                     placeholder="Alış Fiyatı"
                                     value={productData.BasePrice}
-                                    onChange={e => setProductData(prev => ({...prev, BasePrice: parseFloat(e.target.value)}))}
+                                    onChange={e => setProductData(prev => ({
+                                        ...prev,
+                                        BasePrice: parseFloat(e.target.value)
+                                    }))}
                                 />
                             </div>
                         )}
-
 
 
                         <label>Satış Fiyatı</label>
