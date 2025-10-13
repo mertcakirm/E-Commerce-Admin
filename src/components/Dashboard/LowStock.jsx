@@ -23,7 +23,7 @@ const LowStock = ({ onProductClick }) => {
 
     return (
         <div className="col-lg-6 col-12" style={{ padding: '0% 2% 0% 1%' }}>
-            <div className="site-icerik-shadow py-5">
+            <div className="site-icerik-shadow border shadow-sm rounded-5 py-5">
                 <h3 className="text-center">Stoğu Azalan Ürünler</h3>
                 <div className="table-responsive scroll-table2 mt-1">
                     <table className="table text-center table-striped">
@@ -42,7 +42,7 @@ const LowStock = ({ onProductClick }) => {
                                 onClick={() => onProductClick(product.id)}
                             >
                                 <th scope="row">{product.id}</th>
-                                <td>{product.categoryName}</td>
+                                <td>{product.name}</td>
                                 <td
                                     style={{
                                         color: product.totalStock < 11 ? 'red' : 'orange',

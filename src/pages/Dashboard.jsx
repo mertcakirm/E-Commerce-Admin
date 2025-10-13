@@ -22,7 +22,7 @@ const Dashboard = () => {
                 <div className="row admin-genel-row" data-aos="fade-up">
 
                     <div className="col-lg-6 justify-content-center col-12 mt-4 row">
-                        <div className="row site-icerik-shadow"
+                        <div className="row border shadow rounded-5 site-icerik-shadow"
                              style={{height: 'fit-content', padding: '50px 0px 100px 30px'}}>
                             <div className="col-lg-6 col-12 mb-5">
                                 <PieChart title="Genel Satış Dağılımı" type="general"/>
@@ -36,7 +36,7 @@ const Dashboard = () => {
                     <InfoCarts />
 
                     <div className="col-lg-6 justify-content-center col-12 mt-4 d-flex">
-                        <div className="row w-100 site-icerik-shadow p-5" style={{height: 'fit-content'}}>
+                        <div className="row w-100 border shadow rounded-5 site-icerik-shadow p-5" style={{height: 'fit-content'}}>
                             <div className="col-lg-12 col-12 ">
                                 <BarChart title="Yıllık Satış Grafiği" type="general"/>
                             </div>

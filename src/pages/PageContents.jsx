@@ -80,7 +80,7 @@ const PageContents = () => {
                                     </button>
                                 </div>
 
-                                <div className="col-lg-12 row ">
+                                <div className="col-lg-12 row table-responsive">
                                     <table className="table table-striped table-bordered">
                                         <thead>
                                         <tr>
@@ -159,7 +159,7 @@ const PageContents = () => {
                                 </div>
 
 
-                                <div className="col-lg-12 row">
+                                <div className="col-lg-12 row table-responsive">
                                     <table className="table table-striped table-bordered">
                                         <thead>
                                         <tr>

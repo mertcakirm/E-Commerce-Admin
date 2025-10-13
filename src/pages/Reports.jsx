@@ -50,7 +50,7 @@ const Reports = () => {
                     <div className="alt-basliklar-admin">FİNANSAL RAPORLAR</div>
                     <button onClick={() => setPopupOpen(true)} className="tumunu-gor-btn-admin">Rapor Oluştur</button>
                 </div>
-
+                <div className="table-responsive">
                 <table className="table table-striped table-bordered">
                     <thead>
                     <tr>
@@ -128,7 +128,7 @@ const Reports = () => {
                     )}
                     </tbody>
                 </table>
-
+                </div>
                 {reports.length > 0 && (
                     <Pagination pageNum={pageNum} setPageNum={setPageNum} lastPage={lastPage} />
                 )}

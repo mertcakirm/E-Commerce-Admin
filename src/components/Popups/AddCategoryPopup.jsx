@@ -62,7 +62,6 @@ const AddCategoryPopup = ({ popupCloser, reloadPageCat }) => {
 
         const formData = new FormData();
         formData.append("Name", newCategoryName);
-        formData.append("ParentCategoryId", newCategoryType || ""); // boş olabilir
         formData.append("Image", newCategoryImage);
 
         try {
@@ -92,27 +91,12 @@ const AddCategoryPopup = ({ popupCloser, reloadPageCat }) => {
                         type="text"
                         name="name"
                         placeholder="Kategori Adı"
-                        className="col-5 popup-inp"
+                        className="col-12 popup-inp"
                         style={{ height: "50px" }}
                         value={newCategoryName}
                         onChange={handleChange}
                         required
                     />
-
-                    {/* Üst Kategori Seçimi */}
-                    <select
-                        name="type"
-                        value={newCategoryType}
-                        onChange={handleChange}
-                        className="col-5 popup-inp"
-                    >
-                        <option value="">Üst Kategori Seçin</option>
-                        {categories.map((category) => (
-                            <option key={category.id} value={category.id}>
-                                {category.name}
-                            </option>
-                        ))}
-                    </select>
 
                     {/* Dropzone */}
                     <div

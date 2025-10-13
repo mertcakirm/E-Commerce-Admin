@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { toast } from "react-toastify";
-import {GetCategoriesRequest} from "../../API/CategoriesApi.js";
+import { GetCategoriesRequest } from "../../API/CategoriesApi.js";
 import {
     AddProductImageRequest,
     AddStockRequest,
@@ -14,13 +14,14 @@ import {
 
 const EditProduct = ({ onClose, productId }) => {
     const [categories, setCategories] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState(""); // 🔹 Yeni state
     const [refresh, setRefresh] = useState(false);
     const [productData, setProductData] = useState({
         name: "",
         description: "",
         price: 0,
         basePrice: 0,
-        categoryId: "",
+        categoryIds: [],
         variants: [],
         totalStock: 0,
     });
@@ -33,7 +34,7 @@ const EditProduct = ({ onClose, productId }) => {
         AOS.init({ duration: 500 });
         getDropdown();
         fetchProduct();
-    }, [productId,refresh]);
+    }, [productId, refresh]);
 
     const getDropdown = async () => {
         const categoriesObj = await GetCategoriesRequest();
@@ -42,7 +43,7 @@ const EditProduct = ({ onClose, productId }) => {
 
     const fetchProduct = async () => {
         try {
-            const res = await GetProductDetailRequest(productId)
+            const res = await GetProductDetailRequest(productId);
             const p = res.data.data;
 
             setProductData({
@@ -50,12 +51,11 @@ const EditProduct = ({ onClose, productId }) => {
                 description: p.description,
                 price: p.price,
                 basePrice: p.basePrice ?? 0,
-                categoryId: p.categoryId,
+                categoryIds: p.categoryIds || [],
                 variants: p.variants || [],
                 totalStock: (p.variants || []).reduce((t, v) => t + v.stock, 0),
             });
 
-            // Mevcut görselleri (id + imageUrl) kaydet
             setExistingImages(p.images || []);
         } catch (err) {
             console.error("Ürün çekilemedi:", err);
@@ -78,26 +78,24 @@ const EditProduct = ({ onClose, productId }) => {
         if (!newVariant.size || newVariant.stock < 0) return;
 
         try {
-            await AddStockRequest(productId,newVariant.size,newVariant.stock);
+            await AddStockRequest(productId, newVariant.size.toUpperCase(), newVariant.stock);
             setNewVariant({ size: "", stock: 0 });
             setRefresh(!refresh);
-            toast.success("Stok eklendi!")
-
-        }catch (error){
+            toast.success("Stok eklendi!");
+        } catch (error) {
             console.log(error);
-            toast.error("Stok eklenemedi!")
+            toast.error("Stok eklenemedi!");
         }
-
     };
 
     const removeVariant = async (id) => {
         try {
             await DeleteStockRequest(id);
-            toast.success("Stok kaldırıldı!")
+            toast.success("Stok kaldırıldı!");
             setRefresh(!refresh);
-        }catch (error) {
+        } catch (error) {
             console.log(error);
-            toast.error("Stok kaldırılamadı!")
+            toast.error("Stok kaldırılamadı!");
         }
     };
 
@@ -130,29 +128,49 @@ const EditProduct = ({ onClose, productId }) => {
         try {
             setExistingImages((prev) => prev.filter((img) => img.id !== id));
             await DeleteProductImageRequest(id);
-            toast.success("Görsel silindi!")
-        }
-        catch (errow){
+            toast.success("Görsel silindi!");
+        } catch (errow) {
             console.log(errow);
-            toast.error("Görsel silinemedi!")
-
+            toast.error("Görsel silinemedi!");
         }
-
     };
 
     const removeNewImage = (file) => {
         setNewImages((prev) => prev.filter((img) => img !== file));
     };
 
+    // --- Kategori Yönetimi ---
+    const handleAddCategory = () => {
+        const selectedId = parseInt(selectedCategory);
+        if (!selectedId) return;
+
+        if (productData.categoryIds.includes(selectedId)) {
+            toast.warning("Bu kategori zaten eklendi!");
+            return;
+        }
+
+        setProductData((prev) => ({
+            ...prev,
+            categoryIds: [...prev.categoryIds, selectedId],
+        }));
+        setSelectedCategory("");
+    };
+
+    const handleRemoveCategory = (id) => {
+        setProductData((prev) => ({
+            ...prev,
+            categoryIds: prev.categoryIds.filter((catId) => catId !== id),
+        }));
+    };
+
     // --- Submit ---
     const handleSubmit = async () => {
-
         const payload = {
             name: productData.name,
             description: productData.description,
             basePrice: productData.basePrice,
             price: productData.price,
-            categoryId: productData.categoryId
+            categoryIds: productData.categoryIds
         };
 
         try {
@@ -170,7 +188,7 @@ const EditProduct = ({ onClose, productId }) => {
             <div className="popup-content" data-aos="zoom-in" style={{ width: "1200px" }}>
                 <div className="popup-header">
                     <div></div>
-                    <button className="popup-close-btn" onClick={()=>onClose(false)}>
+                    <button className="popup-close-btn" onClick={() => onClose(false)}>
                         &times;
                     </button>
                 </div>
@@ -188,7 +206,7 @@ const EditProduct = ({ onClose, productId }) => {
                             >
                                 <div>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="purple" viewBox="0 0 24 24">
-                                        <path d="M14 9l-2.519 4-2.481-1.96-5 6.96h16l-6-9zm8-5v16h-20v-16h20zm2-2h-24v20h24v-20zm-20 6c0-1.104.896-2 2-2s2 .896 2 2c0 1.105-.896 2-2 2s-2-.895-2-2z"/>
+                                        <path d="M14 9l-2.519 4-2.481-1.96-5 6.96h16l-6-9zm8-5v16h-20v-16h20zm2-2h-24v20h24v-20zm-20 6c0-1.104.896-2 2-2s2 .896 2 2c0 1.105-.896 2-2 2s-2-.895-2-2z" />
                                     </svg>
                                     <p>Ürün görsellerini sürükleyin veya seçmek için tıklayın</p>
                                 </div>
@@ -200,7 +218,6 @@ const EditProduct = ({ onClose, productId }) => {
                                 />
                             </div>
 
-                            {/* Mevcut Görseller */}
                             <div className="preview-flex mt-2">
                                 {existingImages.map((img) => (
                                     <div className="preview-flex-child" key={img.id}>
@@ -220,7 +237,6 @@ const EditProduct = ({ onClose, productId }) => {
                                 ))}
                             </div>
 
-                            {/* Yeni Görseller */}
                             <div className="preview-flex mt-3">
                                 {newImages.map((file, idx) => (
                                     <div className="preview-flex-child" key={idx}>
@@ -305,19 +321,51 @@ const EditProduct = ({ onClose, productId }) => {
                             className="col-5 form-control"
                         />
 
-                        <select
-                            name="categoryId"
-                            value={productData.categoryId}
-                            onChange={handleInputChange}
-                            className="col-5 form-control"
-                        >
-                            <option value="">Ürün Kategorisi Seçin</option>
-                            {categories.map((cat) => (
-                                <option key={cat.id} value={cat.id}>
-                                    {cat.name}
-                                </option>
-                            ))}
-                        </select>
+                        {/* ---- Kategori Seçimi ---- */}
+                        <div className="col-12 d-flex gap-2 align-items-center">
+                            <div className="d-flex align-items-center gap-2">
+                                <select
+                                    value={selectedCategory}
+                                    onChange={(e) => setSelectedCategory(e.target.value)}
+                                    className="form-control"
+                                >
+                                    <option value="">Kategori Seçin</option>
+                                    {categories.map((cat) => (
+                                        <option key={cat.id} value={cat.id}>
+                                            {cat.name}
+                                        </option>
+                                    ))}
+                                </select>
+                                <button
+                                    type="button"
+                                    onClick={handleAddCategory}
+                                    className="btn btn-primary"
+                                >
+                                    Ekle
+                                </button>
+                            </div>
+
+                            <div className=" d-flex flex-wrap gap-2">
+                                {productData.categoryIds.map((id) => {
+                                    const cat = categories.find((c) => c.id === id);
+                                    return (
+                                        <div
+                                            key={id}
+                                            className="d-flex align-items-center gap-2 bg-light border rounded px-2 py-1"
+                                        >
+                                            <span>{cat ? cat.name : `ID: ${id}`}</span>
+                                            <button
+                                                type="button"
+                                                onClick={() => handleRemoveCategory(id)}
+                                                className="btn btn-sm btn-outline-danger"
+                                            >
+                                                ×
+                                            </button>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
 
                         <input
                             type="number"

@@ -9,7 +9,6 @@ import ProcessPopup from "../components/Popups/ProcessPopup.jsx";
 
 const Categories = () => {
     const [categoriesData, setCategoriesData] = useState([]);
-    const [searchTerm, setSearchTerm] = useState("");
     const [showPopup, setShowPopup] = useState(false);
     const [loading, setLoading] = useState(true);
     const [refresh, setRefresh] = useState(false);
@@ -36,7 +35,6 @@ const Categories = () => {
             setCategoriesData(data.data);
         } catch (error) {
             console.error('Error fetching categories data:', error);
-            toast.error("Kategoriler alınamadı.");
         } finally {
             setLoading(false);
         }
@@ -50,10 +48,6 @@ const Categories = () => {
     useEffect(() => {
             getCategories();
     }, [refresh]);
-
-    const handleSearch = (event) => {
-        setSearchTerm(event.target.value);
-    };
 
     if (loading) return <LoadingComp />;
 
@@ -79,14 +73,17 @@ const Categories = () => {
                             </tr>
                             </thead>
                             <tbody>
-                            {categoriesData
-                                .filter(c => c.name.toLowerCase().includes(searchTerm.toLowerCase()))
-                                .map(category => (
+                            {categoriesData && categoriesData.length > 0 ? (
+                                categoriesData.map(category => (
                                     <tr key={category.id}>
                                         <td>{category.id}</td>
                                         <td>
                                             <img
-                                                src={category.imageUrl ? `https://localhost:7050${category.imageUrl}` : "https://thumb.ac-illust.com/b1/b170870007dfa419295d949814474ab2_t.jpeg"}
+                                                src={
+                                                    category.imageUrl
+                                                        ? `https://localhost:7050${category.imageUrl}`
+                                                        : "https://thumb.ac-illust.com/b1/b170870007dfa419295d949814474ab2_t.jpeg"
+                                                }
                                                 alt={category.name}
                                                 className="img-fluid"
                                                 style={{ width: "100px" }}
@@ -105,18 +102,34 @@ const Categories = () => {
                                                         })
                                                     }
                                                 >
-                                                    <svg clipRule="evenodd" fillRule="evenodd" width="30" height="30"
-                                                         fill="white" strokeLinejoin="round" strokeMiterlimit="2"
-                                                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                    <svg
+                                                        clipRule="evenodd"
+                                                        fillRule="evenodd"
+                                                        width="30"
+                                                        height="30"
+                                                        fill="white"
+                                                        strokeLinejoin="round"
+                                                        strokeMiterlimit="2"
+                                                        viewBox="0 0 24 24"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                    >
                                                         <path
                                                             d="m4.015 5.494h-.253c-.413 0-.747-.335-.747-.747s.334-.747.747-.747h5.253v-1c0-.535.474-1 1-1h4c.526 0 1 .465 1 1v1h5.254c.412 0 .746.335.746.747s-.334.747-.746.747h-.254v15.435c0 .591-.448 1.071-1 1.071-2.873 0-11.127 0-14 0-.552 0-1-.48-1-1.071zm14.5 0h-13v15.006h13zm-4.25 2.506c-.414 0-.75.336-.75.75v8.5c0 .414.336.75.75.75s.75-.336.75-.75v-8.5c0-.414-.336-.75-.75-.75zm-4.5 0c-.414 0-.75.336-.75.75v8.5c0 .414.336.75.75.75s.75-.336.75-.75v-8.5c0-.414-.336-.75-.75-.75zm3.75-4v-.5h-3v.5z"
-                                                            fillRule="nonzero"/>
+                                                            fillRule="nonzero"
+                                                        />
                                                     </svg>
                                                 </button>
                                             </div>
                                         </td>
                                     </tr>
-                                ))}
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan="4" className="text-center py-3">
+                                        Kategori bulunamadı.
+                                    </td>
+                                </tr>
+                            )}
                             </tbody>
                         </table>
                     </div>

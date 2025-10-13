@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { GetAuditLogsRequest } from "../API/AuditLogApi.js";
 import ProcessPopup from "../components/Popups/ProcessPopup.jsx";
+import Pagination from "../components/Other/Pagination.jsx";
 
 const Movements = () => {
     const [movements, setMovements] = useState([]);
     const [page, setPage] = useState(1);
     const [refresh, setRefresh] = useState(false);
+    const [lastPage, setLastPage] = useState(1);
     const [processConfig, setProcessConfig] = useState({
         isOpen: false,
         text: "",
@@ -27,6 +29,7 @@ const Movements = () => {
             const response = await GetAuditLogsRequest(page);
             if (response && response.data && response.data.data && response.data.data.items) {
                 setMovements(response.data.data.items);
+                setLastPage(response.data.data.totalPages);
             }
         } catch (error) {
             console.error("Audit log verisi alınırken hata oluştu:", error);
@@ -84,6 +87,7 @@ const Movements = () => {
                             </tbody>
                         </table>
                     </div>
+                    <Pagination pageNum={page} setPageNum={setPage} lastPage={lastPage}/>
                 </div>
             </div>
             {processConfig.isOpen && (

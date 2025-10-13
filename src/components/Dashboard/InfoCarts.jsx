@@ -52,7 +52,7 @@ const InfoCarts = () => {
             <div className="col-lg-6 justify-content-center col-12 m-0 row">
                 <div className="tooltip-container">
                     <div
-                        className="d-flex flex-column gap-2 align-items-center justify-content-center site-icerik-shadow"
+                        className="d-flex flex-column gap-2 align-items-center justify-content-center border shadow rounded-5 site-icerik-shadow"
                         style={{height: '200px'}}>
                         <svg
                             className="col-12"
@@ -73,7 +73,7 @@ const InfoCarts = () => {
 
             <div className="col-lg-6 justify-content-center col-12 m-0 row">
                 <div className="tooltip-container">
-                    <div className="d-flex flex-column gap-2 align-items-center site-icerik-shadow pt-4"
+                    <div className="d-flex flex-column gap-2 align-items-center border shadow rounded-5 site-icerik-shadow pt-4"
                          style={{height: '200px'}}>
                         <p className="text-center clock">
                             {time}
@@ -88,7 +88,7 @@ const InfoCarts = () => {
             <div className="col-lg-6 justify-content-center col-12 m-0 row">
                 <div className="tooltip-container">
                     <div
-                        className="d-flex flex-column gap-2 site-icerik-shadow align-items-center justify-content-center"
+                        className="d-flex flex-column gap-2 site-icerik-shadow align-items-center border shadow rounded-5 justify-content-center"
                         style={{height: '200px'}}>
                         <svg
                             fill="green"
@@ -109,7 +109,7 @@ const InfoCarts = () => {
             <div className="col-lg-6 justify-content-center col-12 m-0 row">
                 <div className="tooltip-container">
                     <div
-                        className="d-flex flex-column gap-2 site-icerik-shadow align-items-center justify-content-center"
+                        className="d-flex flex-column gap-2 site-icerik-shadow align-items-center border shadow rounded-5 justify-content-center"
                         style={{height: '200px'}}>
                         <svg fill="green" width="70" viewBox="0 0 24 24" height="70"
                              xmlns="http://www.w3.org/2000/svg" fillRule="evenodd" clipRule="evenodd">

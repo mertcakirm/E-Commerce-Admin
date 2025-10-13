@@ -25,11 +25,9 @@ const Questions = () => {
     const fetchQuestions = async () => {
         try {
             const res = await GetProductQuestionsRequest();
-            console.log(res);
             setQuestions(res.data || []);
         } catch (err) {
             console.error(err);
-            toast.error("Sorular alınamadı.");
         }
     };
 
@@ -136,8 +134,10 @@ const Questions = () => {
             {isProcessPopupOpen && (
                 <ProcessPopup
                     onClose={(b) => {
-                        setProcessIsPopupOpen(b);
-                        setRefresh(!refresh);
+                        if(b === false){
+                            setProcessIsPopupOpen(b);
+                            setRefresh(!refresh);
+                        }
                     }}
                     text={proccessState.text}
                     type={proccessState.type}

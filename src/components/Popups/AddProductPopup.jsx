@@ -15,7 +15,7 @@ const AddProductPopup = ({popupCloser, reload}) => {
         Variants: [],
     });
 
-    const [selectedCategory, setSelectedCategory] = useState(""); // Dropdown seçimi
+    const [selectedCategory, setSelectedCategory] = useState("");
     const [categories, setCategories] = useState([]);
     const [images, setImages] = useState([]);
     const [sizeInput, setSizeInput] = useState("");
@@ -83,7 +83,7 @@ const AddProductPopup = ({popupCloser, reload}) => {
             }
         }
 
-        if (!found) updatedVariants.push({size: sizeInput, stock: qty});
+        if (!found) updatedVariants.push({size: sizeInput.toUpperCase() , stock: qty});
 
         setProductData(prev => ({
             ...prev,
@@ -180,7 +180,7 @@ const AddProductPopup = ({popupCloser, reload}) => {
                         </div>
 
                         <h4>Stok Yönetim Paneli</h4>
-                        <div className="d-flex align-items-center mb-2">
+                        <div className="d-flex align-items-center gap-2 mb-2">
                             <input type="text" placeholder="Beden" value={sizeInput} onChange={e => setSizeInput(e.target.value)} />
                             <input type="number" placeholder="Adet" value={quantityInput} onChange={e => setQuantityInput(e.target.value)} />
                             <button className="tumunu-gor-btn-admin fs-6 py-2 px-3" onClick={addStock}>Stok Ekle</button>
