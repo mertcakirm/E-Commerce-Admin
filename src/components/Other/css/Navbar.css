@@ -146,3 +146,38 @@
     border-radius: 20px;
     transition: .4s;
 }
+
+.mobile-nav{
+    display: none;
+}
+
+@media (max-width: 1000px){
+    .mobile-nav{
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 70px;
+        width: 100%;
+        background: #022A5E;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: #fff;
+        padding: 0 30px;
+        z-index: 9001!important;
+    }
+
+    .admin-sidebar-parent{
+        width: 0!important;
+        overflow: hidden;
+        position: fixed;
+        z-index: 9000!important;
+    }
+
+
+    .logo{
+        width: 30%;
+    }
+
+
+}

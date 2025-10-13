@@ -656,3 +656,10 @@ select{
     padding: 10px;
     color: #9e9e9e;
 }
+
+@media only screen and (max-width: 1000px) {
+    .admin-sag-container{
+        width:100% !important;
+        left: 0;
+    }
+}

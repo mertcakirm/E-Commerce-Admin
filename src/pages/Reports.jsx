@@ -45,9 +45,9 @@ const Reports = () => {
 
     return (
         <div className="admin-sag-container">
-            <div className="row px-5 admin-genel-row" data-aos="fade-in">
+            <div className="row" data-aos="fade-in">
                 <div className="col-12 mb-3 d-flex justify-content-between align-items-center">
-                    <div className="alt-basliklar-admin">FİNANSAL RAPORLAR</div>
+                    <div className="alt-basliklar-admin">Finansal Raporlar</div>
                     <button onClick={() => setPopupOpen(true)} className="tumunu-gor-btn-admin">Rapor Oluştur</button>
                 </div>
                 <div className="table-responsive">

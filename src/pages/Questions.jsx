@@ -70,7 +70,8 @@ const Questions = () => {
     return (
         <div className="admin-sag-container" data-aos="fade-in">
             <div className="row">
-                <h3 className="col-12 mb-4">Soru Listesi</h3>
+                <div className="alt-basliklar-admin col-12 mb-4">Soru Listesi</div>
+
                 {questions.length === 0 ? (
                     <p className="text-center">Henüz soru bulunamadı.</p>
                 ) : (

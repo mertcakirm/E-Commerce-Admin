@@ -105,7 +105,7 @@ const Products = () => {
             <div className="admin-sag-container">
                 <div className="row admin-genel-row" data-aos="fade-in">
                     <div className="col-12 justify-content-between row alt-basliklar-admin">
-                        <p className="col-12">Ürün Listesi</p>
+                        <p className="col-12 alt-basliklar-admin">Ürün Listesi</p>
                         <input
                             type="text"
                             placeholder="Ara..."

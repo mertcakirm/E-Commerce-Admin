@@ -45,7 +45,7 @@ const Movements = () => {
             <div className="row gap-4" data-aos="fade-up">
                 <div className="col-12">
                     <div className="d-flex justify-content-between">
-                        <h3 className="col-6">Hareketlerin</h3>
+                        <div className="col-6 alt-basliklar-admin">Hareketlerin</div>
                         <button className="tumunu-gor-btn-admin bg-danger" onClick={() =>
                             toggleProcess({
                                 text: `Hareket geçmişini sıfırlamak istiyor musunuz?`,
