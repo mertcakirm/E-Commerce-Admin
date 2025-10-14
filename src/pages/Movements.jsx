@@ -59,16 +59,16 @@ const Movements = () => {
 
                 <div className="col-12">
                     <div className="table-responsive">
-                        <table className="table table-striped overflow-hidden table-bordered">
+                        <table className="table overflow-hidden">
                             <thead>
-                            <tr>
-                                <th>İşlem ID</th>
-                                <th>İşlem Yapılan Veri ID</th>
-                                <th>İşlem Açıklaması</th>
-                                <th>İşlem Tarihi</th>
-                            </tr>
+                                <tr className="border-0">
+                                    <th style={{borderRadius: '30px 0 0 30px', border: '0', paddingLeft: '15px'}}>İşlem ID</th>
+                                    <th className="border-0">İşlem Yapılan Veri ID</th>
+                                    <th className="border-0">İşlem Açıklaması</th>
+                                    <th style={{borderRadius: ' 0 30px 30px 0 ', border: '0'}}>İşlem Tarihi</th>
+                                </tr>
                             </thead>
-                            <tbody className='table-group-divider'>
+                            <tbody>
                             {movements && movements.length > 0 ? (
                                 movements.map((item) => (
                                     <tr key={item.id}>
@@ -87,10 +87,10 @@ const Movements = () => {
                             )}
                             </tbody>
                         </table>
+                        {movements.length > 0 ? (
+                            <Pagination pageNum={page} setPageNum={setPage} lastPage={lastPage} pageSize={pageSize} setPageSize={setPageSize} />
+                        ) : null}
                     </div>
-                    {movements.length > 0 ? (
-                        <Pagination pageNum={page} setPageNum={setPage} lastPage={lastPage} pageSize={pageSize} setPageSize={setPageSize} />
-                    ) : null}
                 </div>
             </div>
             {processConfig.isOpen && (

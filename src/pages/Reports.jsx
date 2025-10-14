@@ -52,20 +52,20 @@ const Reports = () => {
                     <button onClick={() => setPopupOpen(true)} className="tumunu-gor-btn-admin">Rapor Oluştur</button>
                 </div>
                 <div className="table-responsive">
-                <table className="table table-striped table-bordered">
+                <table className="table text-center">
                     <thead>
-                    <tr>
-                        <th className="text-center">Rapor Tarihi</th>
-                        <th className="text-center">Havale</th>
-                        <th className="text-center">Kredi Kartı</th>
-                        <th className="text-center">Toplam</th>
-                        <th className="text-center">Rapor Tarih Aralığı</th>
-                        <th className="text-center">Yapılan Satış</th>
-                        <th className="text-center">Yazdır</th>
-                        <th className="text-center">İşlem</th>
-                    </tr>
+                        <tr className="border-0">
+                            <th style={{borderRadius: '30px 0 0 30px', border: '0', paddingLeft: '15px'}}>Rapor Tarihi</th>
+                            <th className="border-0">Havale</th>
+                            <th className="border-0">Kredi Kartı</th>
+                            <th className="border-0">Toplam</th>
+                            <th className="border-0">Rapor Tarih Aralığı</th>
+                            <th className="border-0">Yapılan Satış</th>
+                            <th className="border-0">Yazdır</th>
+                            <th style={{borderRadius: ' 0 30px 30px 0 ', border: '0'}}>İşlem</th>
+                        </tr>
                     </thead>
-                    <tbody className='table-group-divider'>
+                    <tbody>
                     {reports.length === 0 ? (
                         <tr>
                             <td colSpan="8" className="text-center py-4 fw-bold text-secondary">
@@ -129,10 +129,10 @@ const Reports = () => {
                     )}
                     </tbody>
                 </table>
+                    {reports.length > 0 && (
+                        <Pagination pageNum={pageNum} setPageNum={setPageNum} lastPage={lastPage} pageSize={pageSize} setPageSize={setPageSize} />
+                    )}
                 </div>
-                {reports.length > 0 && (
-                    <Pagination pageNum={pageNum} setPageNum={setPageNum} lastPage={lastPage} pageSize={pageSize} setPageSize={setPageSize} />
-                )}
             </div>
 
             {popupOpen && (

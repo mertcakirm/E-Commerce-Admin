@@ -89,8 +89,7 @@ const Products = () => {
             <div className="admin-sag-container">
                 <div className="row admin-genel-row" data-aos="fade-in">
                     <div className="col-12 justify-content-between d-flex alt-basliklar-admin">
-                        <p className="alt-basliklar-admin">Ürün Listesi</p>
-
+                        <div>Ürün Listesi</div>
                         <button className="tumunu-gor-btn-admin d-flex align-items-center gap-2 justify-content-center"
                                 onClick={togglePopup}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"  viewBox="0 0 24 24">

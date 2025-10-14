@@ -50,24 +50,25 @@ const Offers = () => {
                             </div>
 
                             <div className="col-12 table-responsive">
-                                <table className="table table-striped table-bordered text-center">
+                                <table className="table text-center">
                                     <thead>
-                                    <tr>
-                                        <th scope="col">Kampanya Görseli</th>
-                                        <th scope="col">Kampanya Başlığı</th>
-                                        <th scope="col">Başlangıç Tarihi</th>
-                                        <th scope="col">Bitiş Tarihi</th>
-                                        <th scope="col">İndirim Oranı (%)</th>
-                                        <th scope="col">Aktiflik Durumu</th>
-                                        <th scope="col">İşlem</th>
+                                    <tr className="border-0">
+                                        <th style={{borderRadius: '30px 0 0 30px', border: '0', paddingLeft: '15px'}}>Kampanya ID</th>
+                                        <th className="border-0">Kampanya Görseli</th>
+                                        <th className="border-0">Kampanya Başlığı</th>
+                                        <th className="border-0">Başlangıç Tarihi</th>
+                                        <th className="border-0">Bitiş Tarihi</th>
+                                        <th className="border-0">İndirim Oranı (%)</th>
+                                        <th className="border-0">Aktiflik Durumu</th>
+                                        <th style={{borderRadius: ' 0 30px 30px 0 ', border: '0'}}>İşlem</th>
                                     </tr>
                                     </thead>
-                                    <tbody className='table-group-divider'>
+                                    <tbody>
                                     {offers && offers.length > 0 ? (
                                         offers.map((offer) => (
                                             <tr key={offer.id}>
+                                                <td>#{offer.id}</td>
                                                 <td>
-                                                    <div className="d-flex justify-content-center align-items-center">
                                                         {offer.imageUrl && offer.imageUrl !== "string" ? (
                                                             <img
                                                                 className="img-fluid"
@@ -86,7 +87,6 @@ const Offers = () => {
                                                                 alt="Görsel Yüklenemedi"
                                                             />
                                                         )}
-                                                    </div>
                                                 </td>
                                                 <td>{offer.name}</td>
                                                 <td>{new Date(offer.startDate).toLocaleDateString()}</td>

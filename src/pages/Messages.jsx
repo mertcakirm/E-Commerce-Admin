@@ -43,49 +43,49 @@ const Messages = () => {
                 <div className="row admin-genel-row" data-aos="fade-in">
                     <div className="col-12 alt-basliklar-admin">Mesaj Listesi</div>
                     <div className="table-responsive">
-                        <table className="table table-striped table-bordered">
+                        <table className="table ">
                             <thead>
-                            <tr>
-                                <th scope="col">Müşteri E-Posta Adresi</th>
-                                <th scope="col">Konu</th>
-                                <th scope="col">Mesaj</th>
-                                <th scope="col">Cevaplandı mı?</th>
-                                <th scope="col">Cevap</th>
-                            </tr>
+                                <tr className="border-0">
+                                    <th style={{borderRadius: '30px 0 0 30px', border: '0', paddingLeft: '15px'}}>Müşteri E-Posta Adresi</th>
+                                    <th className="border-0">Konu</th>
+                                    <th className="border-0">Mesaj</th>
+                                    <th className="border-0">Cevaplandı mı?</th>
+                                    <th style={{borderRadius: ' 0 30px 30px 0 ', border: '0'}}>Cevap</th>
+                                </tr>
                             </thead>
-                            <tbody className='table-group-divider'>
-                            {messages && messages.length > 0 ? (
-                                messages.map((message) => (
-                                    <tr key={message.id}>
-                                        <td>{message.userEmail}</td>
-                                        <td>{message.messageTitle}</td>
-                                        <td><p className='admin-mesajlar-mesaj'>{message.messageText}</p></td>
-                                        <td><span className='green'>{message.isReply ? 'Evet' : 'Hayır'}</span></td>
-                                        <td style={{position: 'relative', width: '200px'}}>
-                                            <div style={{
-                                                display: 'flex',
-                                                position: 'absolute',
-                                                width: '100%',
-                                                height: '100%',
-                                                alignItems: 'center',
-                                                top: '0',
-                                                left: '0'
-                                            }}>
-                                                {message.isReply ? <div className="text-center admin-mesajlar-mesaj">{message.answer}</div> :
-                                                    <button className='answer-message-btn ' onClick={()=>togglePopup(message.id)}>Mesajı
-                                                        Cevapla</button>}
+                            <tbody>
+                                {messages && messages.length > 0 ? (
+                                    messages.map((message) => (
+                                        <tr key={message.id}>
+                                            <td>{message.userEmail}</td>
+                                            <td>{message.messageTitle}</td>
+                                            <td><p className='admin-mesajlar-mesaj'>{message.messageText}</p></td>
+                                            <td><span className='green'>{message.isReply ? 'Evet' : 'Hayır'}</span></td>
+                                            <td style={{position: 'relative', width: '200px'}}>
+                                                <div style={{
+                                                    display: 'flex',
+                                                    position: 'absolute',
+                                                    width: '100%',
+                                                    height: '100%',
+                                                    alignItems: 'center',
+                                                    top: '0',
+                                                    left: '0'
+                                                }}>
+                                                    {message.isReply ? <div className="text-center admin-mesajlar-mesaj">{message.answer}</div> :
+                                                        <button className='answer-message-btn ' onClick={()=>togglePopup(message.id)}>Mesajı
+                                                            Cevapla</button>}
 
-                                            </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="5" className="text-center text-muted py-3">
+                                            Henüz mesajınız bulunmuyor.
                                         </td>
                                     </tr>
-                                ))
-                            ) : (
-                                <tr>
-                                    <td colSpan="5" className="text-center text-muted py-3">
-                                        Henüz mesajınız bulunmuyor.
-                                    </td>
-                                </tr>
-                            )}
+                                )}
                             </tbody>
                         </table>
                         {messages.length > 0 ? (

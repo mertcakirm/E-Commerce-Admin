@@ -69,34 +69,36 @@ const Users = () => {
         <div>
             <div className="admin-sag-container" data-aos="fade-in">
                 <div className="row admin-genel-row">
-                    <div className="col-12 alt-basliklar-admin">
-                        <p>Kullanıcı Listesi</p>
-                        <input
-                            type="text"
-                            className="admin-search-inp col-3"
-                            placeholder="Ara..."
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                        />
-                    </div>
-                    <div className="col-12 mt-5 ">
+                    <div className="col-12 alt-basliklar-admin">Kullanıcı Listesi</div>
+                    <div className="col-12">
                         <div className="table-responsive overflow-hidden">
-                            <table className="table table-striped table-bordered overflow-hidden">
+                            <input
+                                type="text"
+                                className="admin-search-inp mb-3"
+                                placeholder="Ara..."
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                            />
+                            <table className="table overflow-hidden  ">
                                 <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Ad Soyad</th>
-                                    <th>Mail</th>
-                                    <th>Aktiflik Durumu</th>
+                                <tr className="border-0">
+                                    <th style={{borderRadius: '30px 0 0 30px', border: '0', paddingLeft: '15px'}}>ID</th>
+                                    <th className="border-0">Ad Soyad</th>
+                                    <th className="border-0">Mail</th>
+                                    <th className="border-0">Telefon</th>
+                                    <th className="border-0">E-Posta Onayı</th>
+                                    <th style={{borderRadius: ' 0 30px 30px 0 ', border: '0'}}>Aktiflik Durumu</th>
                                 </tr>
                                 </thead>
-                                <tbody className='table-group-divider'>
+                                <tbody>
                                 {filteredUsers.length > 0 ? (
                                     filteredUsers.map((user) => (
                                         <tr key={user.id}>
-                                            <td>{user.id}</td>
+                                            <td>#{user.id}</td>
                                             <td>{user.name}</td>
                                             <td>{user.email}</td>
+                                            <td>{user.phoneNumber}</td>
+                                            <td>{user.acceptEmails ? "Kabul Edildi" : "Red Edildi"}</td>
                                             <td className="d-flex gap-2 align-items-center">
                                                 <span>{user.isDeleted ? "Pasif " : "Aktif "}</span>
                                                 <button

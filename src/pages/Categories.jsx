@@ -63,16 +63,16 @@ const Categories = () => {
 
                 <div className="col-12">
                     <div className="table-responsive">
-                        <table className="table table-bordered table-striped">
+                        <table className="table ">
                             <thead>
-                            <tr>
-                                <th>Kategori ID</th>
-                                <th>Kategori Kapağı</th>
-                                <th>Kategori Adı</th>
-                                <th>İşlem</th>
+                            <tr className="border-0">
+                                <th style={{borderRadius: '30px 0 0 30px', border: '0', paddingLeft: '15px'}}>Kategori ID</th>
+                                <th className="border-0">Kategori Kapağı</th>
+                                <th className="border-0">Kategori Adı</th>
+                                <th style={{borderRadius: ' 0 30px 30px 0 ', border: '0'}}>İşlem</th>
                             </tr>
                             </thead>
-                            <tbody className='table-group-divider'>
+                            <tbody>
                             {categoriesData && categoriesData.length > 0 ? (
                                 categoriesData.map(category => (
                                     <tr key={category.id}>

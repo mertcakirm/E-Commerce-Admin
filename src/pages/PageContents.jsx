@@ -82,31 +82,29 @@ const PageContents = () => {
                                 </div>
 
                                 <div className="col-lg-12 row table-responsive">
-                                    <table className="table table-striped table-bordered">
+                                    <table className="table text-center">
                                         <thead>
-                                        <tr>
-                                            <th className="text-center">Görsel</th>
-                                            <th className="text-center">Üst Başlık</th>
-                                            <th className="text-center">Orta Başlık</th>
-                                            <th className="text-center">Alt Başlık</th>
-                                            <th className="text-center">Adres</th>
-                                            <th className="text-center">İşlem</th>
-                                        </tr>
+                                            <tr className="border-0">
+                                                <th style={{borderRadius: '30px 0 0 30px', border: '0', paddingLeft: '15px'}}>Görsel</th>
+                                                <th className="border-0">Üst Başlık</th>
+                                                <th className="border-0">Orta Başlık</th>
+                                                <th className="border-0">Alt Başlık</th>
+                                                <th className="border-0">Adres</th>
+                                                <th style={{borderRadius: ' 0 30px 30px 0 ', border: '0'}}>İşlem</th>
+                                            </tr>
                                         </thead>
-                                        <tbody className='table-group-divider'>
+                                        <tbody>
                                         {sliderData?.length > 0 ? (
                                             sliderData.map((slider) => (
                                                 <tr key={slider.id}>
-                                                    <td className="text-center">
-                                                        <img
-                                                            src={
-                                                                slider.imageUrl && slider.imageUrl !== "string"
+                                                    <td>
+                                                        <img  src={slider.imageUrl && slider.imageUrl !== "string"
                                                                     ? (slider.imageUrl.startsWith("http")
                                                                         ? slider.imageUrl
                                                                         : `https://localhost:7050${slider.imageUrl.startsWith("/contents/") ? slider.imageUrl : `/contents/${slider.imageUrl}`}`)
                                                                     : "https://thumb.ac-illust.com/b1/b170870007dfa419295d949814474ab2_t.jpeg"
                                                             }
-                                                            style={{maxHeight: '300px', objectFit: 'contain'}}
+                                                            style={{maxWidth: '200px', objectFit: 'contain'}}
                                                             className="img-fluid w-100"
                                                             alt={slider.topTitle || "slider"}
                                                         />
@@ -161,17 +159,17 @@ const PageContents = () => {
 
 
                                 <div className="col-lg-12 row table-responsive">
-                                    <table className="table table-striped table-bordered">
+                                    <table className="table text-center">
                                         <thead>
-                                        <tr>
-                                            <th className="text-center">Görsel</th>
-                                            <th className="text-center">Kart Adı</th>
-                                            <th className="text-center">Adres</th>
-                                            <th className="text-center">Boyut</th>
-                                            <th className="text-center">İşlem</th>
-                                        </tr>
+                                            <tr className="border-0">
+                                                <th style={{borderRadius: '30px 0 0 30px', border: '0', paddingLeft: '15px'}}>Görsel</th>
+                                                <th className="border-0">Kart Adı</th>
+                                                <th className="border-0">Adres</th>
+                                                <th className="border-0">Boyut</th>
+                                                <th style={{borderRadius: ' 0 30px 30px 0 ', border: '0'}}>İşlem</th>
+                                            </tr>
                                         </thead>
-                                        <tbody className='table-group-divider'>
+                                        <tbody>
                                         {cartData?.length > 0 ? (
                                             cartData.map((cart) => (
                                                 <tr key={cart.id}>
@@ -184,7 +182,7 @@ const PageContents = () => {
                                                                         : `https://localhost:7050${cart.imageUrl.startsWith("/contents/") ? cart.imageUrl : `/contents/${cart.imageUrl}`}`)
                                                                     : "https://thumb.ac-illust.com/b1/b170870007dfa419295d949814474ab2_t.jpeg"
                                                             }
-                                                            style={{maxHeight: '300px', objectFit: 'contain'}}
+                                                            style={{maxWidth: '100px', objectFit: 'contain'}}
                                                             className="img-fluid w-100"
                                                             alt={cart.topTitle || "slider"}
                                                         />
