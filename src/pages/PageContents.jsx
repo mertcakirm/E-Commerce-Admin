@@ -67,13 +67,14 @@ const PageContents = () => {
             <div className="admin-sag-container" data-aos="fade-in">
                 <div className="row" style={{height: "100vh"}}>
 
-                    <div className="row admin-genel-row col-6">
+                    <div className="row admin-genel-row col-12">
                         <div className="col-12">
                             <div className="row row-gap-3">
                                 <div className="row justify-content-between">
                                     <div className="col-6 alt-basliklar-admin">Slider İçerikleri</div>
                                     <button
                                         className="tumunu-gor-btn-admin col-3"
+                                        style={{height: 'fit-content',width:'fit-content'}}
                                         onClick={() => setSliderPopup(true)}
                                     >
                                         Slider Ekle
@@ -92,7 +93,7 @@ const PageContents = () => {
                                             <th className="text-center">İşlem</th>
                                         </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody className='table-group-divider'>
                                         {sliderData?.length > 0 ? (
                                             sliderData.map((slider) => (
                                                 <tr key={slider.id}>
@@ -144,14 +145,14 @@ const PageContents = () => {
                         </div>
                     </div>
 
-                    <div className="row admin-genel-row col-6" style={{borderLeft: '1px solid #000'}}>
+                    <div className="row admin-genel-row col-12 mt-3">
                         <div className="col-12" style={{height: 'fit-content'}}>
                             <div className="row row-gap-3 h-100">
                                 <div className="row justify-content-between">
                                     <div className="col-6 alt-basliklar-admin">Kategori Kartları</div>
                                     <button
                                         className="tumunu-gor-btn-admin col-4"
-                                        style={{height: 'fit-content'}}
+                                        style={{height: 'fit-content',width:'fit-content'}}
                                         onClick={() => setCartPopup(true)}
                                     >
                                         Kategori Kartı Ekle
@@ -170,7 +171,7 @@ const PageContents = () => {
                                             <th className="text-center">İşlem</th>
                                         </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody className='table-group-divider'>
                                         {cartData?.length > 0 ? (
                                             cartData.map((cart) => (
                                                 <tr key={cart.id}>

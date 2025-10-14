@@ -62,7 +62,7 @@ const Offers = () => {
                                         <th scope="col">İşlem</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody className='table-group-divider'>
                                     {offers && offers.length > 0 ? (
                                         offers.map((offer) => (
                                             <tr key={offer.id}>

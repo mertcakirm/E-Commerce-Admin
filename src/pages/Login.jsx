@@ -7,6 +7,7 @@ import {toast} from "react-toastify";
 import logo from '../assets/mob_logo.png';
 import './css/Login.css'
 import {setCookie} from "../components/cookie/Cookie.js";
+import LiquidEther from "../components/LibraryComp/LiquidEther.jsx";
 
 const Login = () => {
     const [user, setUser] = useState({ email: '', password: '' });
@@ -45,11 +46,32 @@ const Login = () => {
 
     return (
         <div className='admin-bg'>
-            <div className='container'>
-                <div className='row'>
-                    <div className='col-12'>
+
+
+            <div style={{ width: '100%', height: '100vh', position: 'absolute' }}>
+                <LiquidEther
+                    colors={[ '#5227FF', '#FF9FFC', '#B19EEF' ]}
+                    mouseForce={20}
+                    cursorSize={100}
+                    isViscous={false}
+                    viscous={30}
+                    iterationsViscous={32}
+                    iterationsPoisson={32}
+                    resolution={0.5}
+                    isBounce={false}
+                    autoDemo={true}
+                    autoSpeed={0.5}
+                    autoIntensity={2.2}
+                    takeoverDuration={0.25}
+                    autoResumeDelay={3000}
+                    autoRampDuration={0.6}
+                />
+            </div>
+
+                <div className='d-flex justify-content-center align-items-center'>
+                    <div className='col-12 d-flex align-items-center justify-content-center'>
                         <div className='form-admin' data-aos='fade-up'>
-                            <img src={logo} className='logo2' alt='logo' />
+                            <img src={logo} className='w-50' alt='logo' />
                             <div className='form-item'>
                                 <label htmlFor='admin-username'>Admin Adı</label>
                                 <input
@@ -78,7 +100,6 @@ const Login = () => {
                         </div>
                     </div>
                 </div>
-            </div>
         </div>
     );
 };

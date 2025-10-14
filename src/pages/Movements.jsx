@@ -8,6 +8,7 @@ const Movements = () => {
     const [page, setPage] = useState(1);
     const [refresh, setRefresh] = useState(false);
     const [lastPage, setLastPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
     const [processConfig, setProcessConfig] = useState({
         isOpen: false,
         text: "",
@@ -26,7 +27,7 @@ const Movements = () => {
 
     const GetMovements = async () => {
         try {
-            const response = await GetAuditLogsRequest(page);
+            const response = await GetAuditLogsRequest(page,pageSize);
             if (response && response.data && response.data.data && response.data.data.items) {
                 setMovements(response.data.data.items);
                 setLastPage(response.data.data.totalPages);
@@ -38,7 +39,7 @@ const Movements = () => {
 
     useEffect(() => {
         GetMovements();
-    }, [page,refresh]);
+    }, [page,refresh,pageSize]);
 
     return (
         <div className="admin-sag-container">
@@ -67,7 +68,7 @@ const Movements = () => {
                                 <th>İşlem Tarihi</th>
                             </tr>
                             </thead>
-                            <tbody>
+                            <tbody className='table-group-divider'>
                             {movements && movements.length > 0 ? (
                                 movements.map((item) => (
                                     <tr key={item.id}>
@@ -87,7 +88,9 @@ const Movements = () => {
                             </tbody>
                         </table>
                     </div>
-                    <Pagination pageNum={page} setPageNum={setPage} lastPage={lastPage}/>
+                    {movements.length > 0 ? (
+                        <Pagination pageNum={page} setPageNum={setPage} lastPage={lastPage} pageSize={pageSize} setPageSize={setPageSize} />
+                    ) : null}
                 </div>
             </div>
             {processConfig.isOpen && (

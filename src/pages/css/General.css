@@ -9,7 +9,40 @@
     z-index: 1000!important;
     overflow: hidden;
     overflow-y: visible;
+    background: #F5F6FA;
 
+}
+
+.table-responsive{
+    background: #FFFFFF!important;
+    border-radius: 30px!important;
+    padding: 30px;
+    margin-top: 30px!important;
+}
+
+th{
+    background: #F6F6F6!important;
+    font-weight: 600!important;
+}
+
+tr{
+    border-bottom: 1px solid #cccccc!important;
+}
+
+td{
+    font-size: 16px;
+    padding: 10px 0;
+    height: fit-content;
+    border: 0!important;
+}
+
+.dropdown-toggle::after{
+    display: none!important;
+}
+
+.dropdown-item.active, .dropdown-item:active{
+    background: #FFFFFF!important;
+    color: #000000!important;
 }
 
 
@@ -90,11 +123,11 @@
 }
 
 .tumunu-gor-btn-admin{
-    border: 2px solid #03346E;
+    border: 2px solid #742BDE;
     padding: 10px 30px;
     text-decoration: none;
     color: #fff;
-    background: #03346E;
+    background: #742BDE;
     border-radius: 10px;
     font-size: 20px;
     text-align: center;
@@ -102,14 +135,7 @@
 }
 
 .tumunu-gor-btn-admin:hover{
-    border: 2px solid #03346E;
-    padding: 10px 30px;
-    text-decoration: none;
-    color: #000;
-    background: #fff;
-    border-radius: 10px;
-    font-size: 20px;
-    text-align: center;
+    background: #551da4;
     transition: .6s;
 
 }

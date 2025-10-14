@@ -8,9 +8,10 @@ const LastOrdersPopup = ({popupCloser}) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [orders, setOrders] = useState([]);
     const [lastPage, setLastPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
 
     const GetOrders = async () => {
-        const response = await GetPassiveOrders(currentPage);
+        const response = await GetPassiveOrders(currentPage,pageSize);
         setLastPage(response.data.totalPages)
         setOrders(response.data.items);
     }
@@ -18,7 +19,7 @@ const LastOrdersPopup = ({popupCloser}) => {
     useEffect(() => {
         AOS.init({duration: 500});
         GetOrders();
-    }, []);
+    }, [pageSize]);
 
     return (
         <div className="popup-overlay">
@@ -31,7 +32,7 @@ const LastOrdersPopup = ({popupCloser}) => {
                 </div>
 
                 <div style={{maxHeight: '600px', overflow: 'hidden', overflowY: 'auto'}} className="table-responsive">
-                    <table className="table m-0 table-bordered">
+                    <table className="table m-0 table-bordered table-striped">
                         <thead>
                         <tr>
                             <th scope="col">Sipariş Kodu</th>
@@ -43,7 +44,7 @@ const LastOrdersPopup = ({popupCloser}) => {
                             <th scope="col">Belge Oluştur</th>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody className='table-group-divider'>
                         {orders.length > 0 ? (
                             orders.map(order => (
                                 <tr key={order.id}>
@@ -91,7 +92,7 @@ const LastOrdersPopup = ({popupCloser}) => {
                         </tbody>
                     </table>
                 </div>
-                <Pagination pageNum={currentPage} setPageNum={setCurrentPage} lastPage={lastPage}/>
+                <Pagination pageNum={currentPage} setPageNum={setCurrentPage} lastPage={lastPage}  pageSize={pageSize} setPageSize={setPageSize} />
             </div>
         </div>
     );

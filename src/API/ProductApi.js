@@ -20,7 +20,7 @@ export const AddProductRequest = async (formData) => {
     return await api.post(`Products/add`, formData);
 };
 export const GetProductDetailRequest = async (urlpop) => {
-    return  await api.get(`Products/${urlpop}`)
+    return  await api.get(`Admin/Product/${urlpop}`)
 };
 
 export const AddProductImageRequest = async (productId,formData) => {

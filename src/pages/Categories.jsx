@@ -61,7 +61,7 @@ const Categories = () => {
                 </div>
 
 
-                <div className="col-12 ">
+                <div className="col-12">
                     <div className="table-responsive">
                         <table className="table table-bordered table-striped">
                             <thead>
@@ -72,7 +72,7 @@ const Categories = () => {
                                 <th>İşlem</th>
                             </tr>
                             </thead>
-                            <tbody>
+                            <tbody className='table-group-divider'>
                             {categoriesData && categoriesData.length > 0 ? (
                                 categoriesData.map(category => (
                                     <tr key={category.id}>

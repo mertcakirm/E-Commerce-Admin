@@ -43,7 +43,7 @@ const Messages = () => {
                 <div className="row admin-genel-row" data-aos="fade-in">
                     <div className="col-12 alt-basliklar-admin">Mesaj Listesi</div>
                     <div className="table-responsive">
-                        <table className="table table-striped">
+                        <table className="table table-striped table-bordered">
                             <thead>
                             <tr>
                                 <th scope="col">Müşteri E-Posta Adresi</th>
@@ -54,33 +54,43 @@ const Messages = () => {
                             </tr>
                             </thead>
                             <tbody className='table-group-divider'>
-                            {messages.map((message) => (
-                                <tr key={message.id}>
-                                    <td>{message.userEmail}</td>
-                                    <td>{message.messageTitle}</td>
-                                    <td><p className='admin-mesajlar-mesaj'>{message.messageText}</p></td>
-                                    <td><span className='green'>{message.isReply ? 'Evet' : 'Hayır'}</span></td>
-                                    <td style={{position: 'relative', width: '200px'}}>
-                                        <div style={{
-                                            display: 'flex',
-                                            position: 'absolute',
-                                            width: '100%',
-                                            height: '100%',
-                                            alignItems: 'center',
-                                            top: '0',
-                                            left: '0'
-                                        }}>
-                                            {message.isReply ? <div className="text-center admin-mesajlar-mesaj">{message.answer}</div> :
-                                                <button className='answer-message-btn ' onClick={()=>togglePopup(message.id)}>Mesajı
-                                                    Cevapla</button>}
+                            {messages && messages.length > 0 ? (
+                                messages.map((message) => (
+                                    <tr key={message.id}>
+                                        <td>{message.userEmail}</td>
+                                        <td>{message.messageTitle}</td>
+                                        <td><p className='admin-mesajlar-mesaj'>{message.messageText}</p></td>
+                                        <td><span className='green'>{message.isReply ? 'Evet' : 'Hayır'}</span></td>
+                                        <td style={{position: 'relative', width: '200px'}}>
+                                            <div style={{
+                                                display: 'flex',
+                                                position: 'absolute',
+                                                width: '100%',
+                                                height: '100%',
+                                                alignItems: 'center',
+                                                top: '0',
+                                                left: '0'
+                                            }}>
+                                                {message.isReply ? <div className="text-center admin-mesajlar-mesaj">{message.answer}</div> :
+                                                    <button className='answer-message-btn ' onClick={()=>togglePopup(message.id)}>Mesajı
+                                                        Cevapla</button>}
 
-                                        </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan="5" className="text-center text-muted py-3">
+                                        Henüz mesajınız bulunmuyor.
                                     </td>
                                 </tr>
-                            ))}
+                            )}
                             </tbody>
                         </table>
-                        <Pagination pageNum={currentPage} setPageNum={setCurrentPage} lastPage={lastPage}/>
+                        {messages.length > 0 ? (
+                            <Pagination pageNum={currentPage} setPageNum={setCurrentPage} lastPage={lastPage}/>
+                        ):null}
 
                     </div>
                 </div>

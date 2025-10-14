@@ -6,21 +6,25 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import Pagination from "../components/Other/Pagination.jsx";
 import {GetActiveOrders} from "../API/Order.js";
+import UpdateOrderPopup from "../components/Popups/UpdateOrderPopup.jsx";
 
 const ActiveOrders = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [isProcessPopupOpen, setProcessIsPopupOpen] = useState(false);
     const [isLastOrdersPopupOpen, setLastOrdersIsPopupOpen] = useState(false);
     const [orders, setOrders] = useState([]);
-    const [selectedStatus, setSelectedStatus] = useState("");
+    const [selectedStatuses, setSelectedStatuses] = useState({});
+    const [isUpdateOrderPopupOpen, setIsUpdateOrderPopupOpen] = useState(false);
+    const [selectedOrderId, setSelectedOrderId] = useState(null);
     const [refresh, setRefresh] = useState(false);
     const [lastPage, setLastPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
     const [proccessState, setProcessState] = useState({
-        text:"",
-        acceptedText:"",
-        type:"",
-        id:null,
-        discount:null
+        text: "",
+        acceptedText: "",
+        type: "",
+        id: null,
+        discount: null
     })
 
     const toggleLastOrdersPopup = () => {
@@ -32,7 +36,7 @@ const ActiveOrders = () => {
     }, []);
 
     const GetOrders = async () => {
-        const response = await GetActiveOrders(currentPage);
+        const response = await GetActiveOrders(currentPage, pageSize);
         setLastPage(response.data.totalPages)
         setOrders(response.data.items);
     }
@@ -43,7 +47,7 @@ const ActiveOrders = () => {
 
     useEffect(() => {
         GetOrders();
-    }, [ refresh , currentPage ]);
+    }, [refresh, currentPage, pageSize]);
 
     return (
         <div>
@@ -56,24 +60,26 @@ const ActiveOrders = () => {
                         </button>
                     </div>
                     <div className="table-responsive">
-                        <table className="table mt-3 table-striped table-bordered text-center">
+                        <table className="table">
                             <thead>
-                            <tr>
-                                <th scope="col">Sipariş Kodu</th>
-                                <th scope="col">Sipariş Tarihi</th>
-                                <th scope="col">Müşteri Mail</th>
-                                <th scope="col">Müşteri Adres</th>
-                                <th scope="col">Sipariş İçeriği</th>
-                                <th scope="col">Sipariş Tutarı</th>
-                                <th scope="col">Sipariş Durumu</th>
-                                <th scope="col"></th>
+                            <tr className="border-0">
+                                <th style={{borderRadius: '30px 0 0 30px', border: '0', paddingLeft: '15px'}}>Sipariş
+                                    Kodu
+                                </th>
+                                <th className="border-0">Sipariş Tarihi</th>
+                                <th className="border-0">Müşteri Mail</th>
+                                <th className="border-0">Müşteri Adres</th>
+                                <th className="border-0">Sipariş İçeriği</th>
+                                <th className="border-0">Sipariş Tutarı</th>
+                                <th className="border-0">Sipariş Durumu</th>
+                                <th style={{borderRadius: ' 0 30px 30px 0 ', border: '0'}}>İşlem</th>
                             </tr>
                             </thead>
                             <tbody>
                             {orders.length > 0 ? (
                                 orders.map(order => (
                                     <tr key={order.id}>
-                                        <th scope="row">{order.id}</th>
+                                        <td scope="row">#{order.id}</td>
                                         <td>{new Date(order.orderDate).toLocaleString('tr-TR', {
                                             day: '2-digit',
                                             month: '2-digit',
@@ -84,69 +90,66 @@ const ActiveOrders = () => {
                                         <td>{order.userEmail}</td>
                                         <td>{order.shippingAddress ? order.shippingAddress : "Adres Yok"}</td>
                                         <td>
-                                            <div  style={{height:'100px',width:'300px',overflow:'hidden',overflowY:'visible'}}>
-                                            {order.orderItem.map(item => (
-                                                <div key={item.orderItemId} style={{ marginBottom: '5px' }}>
-                                                    {item.orderItemProduct.map(prod => (
-                                                        <div key={prod.name}>
-                                                            <strong>Ürün No:</strong> {prod.id} |{" "}
-                                                            <strong>Adet:</strong> {item.quantity} |{" "}
-                                                            <strong>Beden:</strong> {item.productVariantOrder.map(v => v.size).join(', ')}
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            ))}
+                                            <div style={{
+                                                maxHeight: '100px',
+                                                width: '300px',
+                                                overflow: 'hidden',
+                                                overflowY: 'visible'
+                                            }}>
+                                                {order.orderItem.map(item => (
+                                                    <div key={item.orderItemId} style={{marginBottom: '5px'}}>
+                                                        {item.orderItemProduct.map(prod => (
+                                                            <div key={prod.name}>
+                                                                <strong>Ürün No:</strong> {prod.id} |{" "}
+                                                                <strong>Adet:</strong> {item.quantity} |{" "}
+                                                                <strong>Beden:</strong> {item.productVariantOrder.map(v => v.size).join(', ')}
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                ))}
                                             </div>
                                         </td>
                                         <td>{order.totalAmount}₺</td>
-                                        <td className="d-flex w-100 h-100 gap-2 flex-wrap h-100 justify-content-center align-items-center">
-                                            <p className="w-100 text-center">
-                                                Şuanki sipariş durumu: <span className='green'>{order.status}</span>
-                                            </p>
-                                            <select
-                                                name="siparis-durumu-admin"
-                                                id="siparis-durumu-admin"
-                                                style={{ width: "fit-content" }}
-                                                value={selectedStatus}
-                                                onChange={(e) => setSelectedStatus(e.target.value)}
-                                            >
-                                                <option value="">Seçim Yapın</option>
-                                                <option value="Onaylandı">Onaylandı</option>
-                                                <option value="Hazırlanıyor">Hazırlanıyor</option>
-                                                <option value="Yolda">Yolda</option>
-                                            </select>
-                                            <button
-                                                className='user-edit-btn rounded-2 '
-                                                onClick={() => {
-                                                    setProcessState({
-                                                        text: "Sipariş durumu güncellensin mi?",
-                                                        acceptedText: "Sipariş durumu güncellendi",
-                                                        type: "update_order",
-                                                        id: order.id,
-                                                        discount: selectedStatus
-                                                    });
-                                                    setProcessIsPopupOpen(true);
-                                                }}
-                                            >
-                                                Güncelle
-                                            </button>
-                                        </td>
+                                        <td>{order.status}</td>
                                         <td>
-                                            <button
-                                                className='answer-message-btn mt-3'
-                                                onClick={() => {
-                                                    setProcessState({
-                                                        text: "Sipariş durumu güncellensin mi?",
-                                                        acceptedText: "Sipariş durumu güncellendi",
-                                                        type: "finish_order",
-                                                        id: order.id,
-                                                        discount: null
-                                                    });
-                                                    setProcessIsPopupOpen(true);
-                                                }}
-                                            >
-                                                Siparişi Tamamla
-                                            </button>
+                                            <div className="dropdown">
+                                                <button className="btn dropdown-toggle" type="button"
+                                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <svg clipRule="evenodd" fillRule="evenodd"
+                                                         strokeLinejoin="round" strokeMiterlimit="2" width="30"
+                                                         height="30" fill="black" viewBox="0 0 24 24"
+                                                         xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="m16.5 11.995c0-1.242 1.008-2.25 2.25-2.25s2.25 1.008 2.25 2.25-1.008 2.25-2.25 2.25-2.25-1.008-2.25-2.25zm-6.75 0c0-1.242 1.008-2.25 2.25-2.25s2.25 1.008 2.25 2.25-1.008 2.25-2.25 2.25-2.25-1.008-2.25-2.25zm-6.75 0c0-1.242 1.008-2.25 2.25-2.25s2.25 1.008 2.25 2.25-1.008 2.25-2.25 2.25-2.25-1.008-2.25-2.25z"/>
+                                                    </svg>
+                                                </button>
+                                                <ul className="dropdown-menu rounded-2 border shadow overflow-hidden p-0">
+                                                    <li>
+                                                        <button
+                                                            style={{ borderBottom: '1px solid #ccc' }}
+                                                            className="dropdown-item btn w-100 py-2"
+                                                            onClick={() => {
+                                                                setSelectedOrderId(order.id);
+                                                                setIsUpdateOrderPopupOpen(true);
+                                                            }}
+                                                        >
+                                                            Sipariş Durumunu Güncelle
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button onClick={() => {
+                                                            setProcessState({
+                                                                text: "Sipariş durumu güncellensin mi?",
+                                                                acceptedText: "Sipariş durumu güncellendi",
+                                                                type: "finish_order",
+                                                                id: order.id,
+                                                                discount: null
+                                                            });
+                                                            setProcessIsPopupOpen(true);
+                                                        }} className="dropdown-item py-2 ">Siparişi Tamamla</button>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </td>
                                     </tr>
                                 ))
@@ -159,8 +162,9 @@ const ActiveOrders = () => {
                             )}
                             </tbody>
                         </table>
+                        <Pagination pageNum={currentPage} setPageNum={setCurrentPage} lastPage={lastPage} pageSize={pageSize} setPageSize={setPageSize}/>
+
                     </div>
-                    <Pagination pageNum={currentPage} setPageNum={setCurrentPage} lastPage={lastPage}/>
                 </div>
             </div>
 
@@ -184,6 +188,17 @@ const ActiveOrders = () => {
                             setLastOrdersIsPopupOpen(b);
                             setRefresh(!refresh);
                         }
+                    }}
+                />
+            )}
+
+            {isUpdateOrderPopupOpen && (
+                <UpdateOrderPopup
+                    popupCloser={(b) => setIsUpdateOrderPopupOpen(b)}
+                    id={selectedOrderId}
+                    toggleProcess={(data) => {
+                        setProcessState(data);
+                        setProcessIsPopupOpen(true);
                     }}
                 />
             )}

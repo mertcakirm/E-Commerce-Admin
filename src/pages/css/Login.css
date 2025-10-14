@@ -1,24 +1,27 @@
 .admin-bg{
     background-color: black;
+    position: relative;
     width: 100%;
     height: 100vh;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
-    font-family: Jockey One;
 
 }
 
 .form-admin{
-    background-color: aliceblue;
-    height: 700px;
+    background-color: rgba(0, 0, 0, 0.48);
+    width: fit-content;
+    padding: 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     row-gap: 30px;
-    border-radius: 20px;
+    border: 1px solid #cccccc;
+    border-radius: 50px;
+    color: #FFFFFF;
 }
 
 .form-item{
@@ -31,7 +34,7 @@
 
 .form-item>input{
     width: 300px;
-    border-radius: 20px;
+    border-radius: 10px;
     padding: 2%;
 }
 

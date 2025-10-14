@@ -12,6 +12,7 @@ const Reports = () => {
     const [lastPage, setLastPage] = useState(1);
     const [popupOpen, setPopupOpen] = useState(false);
     const [refresh, setRefresh] = useState(false);
+    const [pageSize, setPageSize] = useState(10);
     const [processConfig, setProcessConfig] = useState({
         isOpen: false,
         text: "",
@@ -29,7 +30,7 @@ const Reports = () => {
     };
 
     const getReports = async () => {
-        const response = await GetReportAllRequest(pageNum);
+        const response = await GetReportAllRequest(pageNum,pageSize);
         setReports(response.data.items);
         setLastPage(response.data.totalPages);
     };
@@ -41,7 +42,7 @@ const Reports = () => {
 
     useEffect(() => {
         getReports();
-    }, [pageNum, refresh]);
+    }, [pageNum, refresh,pageSize]);
 
     return (
         <div className="admin-sag-container">
@@ -64,7 +65,7 @@ const Reports = () => {
                         <th className="text-center">İşlem</th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody className='table-group-divider'>
                     {reports.length === 0 ? (
                         <tr>
                             <td colSpan="8" className="text-center py-4 fw-bold text-secondary">
@@ -74,7 +75,7 @@ const Reports = () => {
                     ) : (
                         reports.map((report) => (
                             <tr key={report.id}>
-                                <th className="text-center" scope="row">
+                                <td className="text-center" scope="row">
                                     {new Date(report.createdAt).toLocaleString("tr-TR", {
                                         day: "2-digit",
                                         month: "2-digit",
@@ -82,7 +83,7 @@ const Reports = () => {
                                         hour: "2-digit",
                                         minute: "2-digit",
                                     })}
-                                </th>
+                                </td>
                                 <td className="text-center">{report.transferTotal}₺</td>
                                 <td className="text-center">{report.creditCartTotal}₺</td>
                                 <td className="text-center">{report.totalAmount}₺</td>
@@ -130,7 +131,7 @@ const Reports = () => {
                 </table>
                 </div>
                 {reports.length > 0 && (
-                    <Pagination pageNum={pageNum} setPageNum={setPageNum} lastPage={lastPage} />
+                    <Pagination pageNum={pageNum} setPageNum={setPageNum} lastPage={lastPage} pageSize={pageSize} setPageSize={setPageSize} />
                 )}
             </div>
 

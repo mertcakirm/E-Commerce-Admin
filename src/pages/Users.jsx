@@ -17,6 +17,7 @@ const Users = () => {
     const [loading, setLoading] = useState(false);
     const [refresh, setRefresh] = useState(false);
     const [lastPage, setLastPage] = useState(0);
+    const [pageSize, setPageSize] = useState(10);
     const [processConfig, setProcessConfig] = useState({
         isOpen: false,
         text: "",
@@ -24,7 +25,6 @@ const Users = () => {
         id: null,
     });
 
-    const usersPerPage = 10;
 
     useEffect(() => {
         AOS.init({duration: 500});
@@ -33,7 +33,7 @@ const Users = () => {
     const getUser = async () => {
         setLoading(false);
         try {
-            const response = await GetAllUsersRequest(currentPage, usersPerPage,searchQuery);
+            const response = await GetAllUsersRequest(currentPage, pageSize,searchQuery);
             setLastPage(response.data.data.totalPages)
             setUsersData(response.data.data.items || []);
         } catch (error) {
@@ -46,7 +46,7 @@ const Users = () => {
 
     useEffect(() => {
         getUser();
-    }, [currentPage, refresh]);
+    }, [currentPage, refresh,pageSize]);
 
     const filteredUsers = usersData.filter(
         (user) =>
@@ -79,8 +79,8 @@ const Users = () => {
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />
                     </div>
-                    <div className="col-12 mt-5">
-                        <div className="table-responsive">
+                    <div className="col-12 mt-5 ">
+                        <div className="table-responsive overflow-hidden">
                             <table className="table table-striped table-bordered overflow-hidden">
                                 <thead>
                                 <tr>
@@ -90,7 +90,7 @@ const Users = () => {
                                     <th>Aktiflik Durumu</th>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody className='table-group-divider'>
                                 {filteredUsers.length > 0 ? (
                                     filteredUsers.map((user) => (
                                         <tr key={user.id}>
@@ -124,7 +124,7 @@ const Users = () => {
                                 )}
                                 </tbody>
                             </table>
-                            <Pagination pageNum={currentPage} setPageNum={setCurrentPage} lastPage={lastPage}/>
+                            <Pagination pageNum={currentPage} setPageNum={setCurrentPage} lastPage={lastPage} pageSize={pageSize} setPageSize={setPageSize} />
                         </div>
                     </div>
                 </div>

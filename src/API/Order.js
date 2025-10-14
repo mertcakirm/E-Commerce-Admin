@@ -3,8 +3,8 @@ import {getCookie} from "../components/cookie/Cookie.js";
 
 const token = getCookie("token");
 
-export const GetActiveOrders = async (pageNum)=>{
-    return await api.get(`Orders/notCompleted?pageNumber=${pageNum}&pageSize=10`,
+export const GetActiveOrders = async (pageNum,pageSize)=>{
+    return await api.get(`Orders/notCompleted?pageNumber=${pageNum}&pageSize=${pageSize}`,
         {
             headers: {
                 Authorization: `Bearer ${token.token}`
@@ -12,8 +12,8 @@ export const GetActiveOrders = async (pageNum)=>{
         });
 }
 
-export const GetPassiveOrders = async (pageNum)=>{
-    return await api.get(`Orders/completed?pageNumber=${pageNum}&pageSize=10`,
+export const GetPassiveOrders = async (pageNum,pageSize)=>{
+    return await api.get(`Orders/completed?pageNumber=${pageNum}&pageSize=${pageSize}`,
         {
             headers: {
                 Authorization: `Bearer ${token.token}`
@@ -41,8 +41,8 @@ export const GetGeneralCategorySalesRequest = async () => {
     return await api.get(`Admin/category/general`)
 }
 
-export const GetReportAllRequest = async (pageNum) => {
-    return await api.get(`Admin/report-get-all?pageNumber=${pageNum}&pageSize=10`,)
+export const GetReportAllRequest = async (pageNum,pageSize) => {
+    return await api.get(`Admin/report-get-all?pageNumber=${pageNum}&pageSize=${pageSize}`,)
 }
 
 export const GetReportByDates = async (startDate,endDate) => {
