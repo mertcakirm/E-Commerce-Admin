@@ -9,7 +9,7 @@ export const GetLowStockProductsRequest = (limit) => {
 };
 
 export const DeleteProductRequest = async (id) => {
-    return await api.delete(`Products/${id}`);
+    return await api.put(`Products/toggle/${id}`);
 };
 
 export const UpdateDiscountRequest = async (discountRate, productCode) => {

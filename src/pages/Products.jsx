@@ -179,7 +179,7 @@ const Products = () => {
                                                         id: product.id,
                                                     })
                                                 }
-                                                        className={`btn ${product.isDeleted ? "bg-danger text-light" : "bg-success text-light"}`}>{product.isDeleted ? "pasif" : "aktif"}</button>
+                                                        className={`btn ${product.isActive ? "bg-danger text-light" : "bg-success text-light"}`}>{product.isActive ? "pasif" : "aktif"}</button>
                                             </td>
                                             <td>
                                                 <div className="dropdown">
