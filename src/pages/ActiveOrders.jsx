@@ -13,7 +13,6 @@ const ActiveOrders = () => {
     const [isProcessPopupOpen, setProcessIsPopupOpen] = useState(false);
     const [isLastOrdersPopupOpen, setLastOrdersIsPopupOpen] = useState(false);
     const [orders, setOrders] = useState([]);
-    const [selectedStatuses, setSelectedStatuses] = useState({});
     const [isUpdateOrderPopupOpen, setIsUpdateOrderPopupOpen] = useState(false);
     const [selectedOrderId, setSelectedOrderId] = useState(null);
     const [refresh, setRefresh] = useState(false);
@@ -21,7 +20,6 @@ const ActiveOrders = () => {
     const [pageSize, setPageSize] = useState(10);
     const [proccessState, setProcessState] = useState({
         text: "",
-        acceptedText: "",
         type: "",
         id: null,
         discount: null
@@ -137,16 +135,29 @@ const ActiveOrders = () => {
                                                         </button>
                                                     </li>
                                                     <li>
-                                                        <button onClick={() => {
+                                                        <button
+                                                            style={{ borderBottom: '1px solid #ccc' }}
+                                                            onClick={() => {
                                                             setProcessState({
                                                                 text: "Sipariş durumu güncellensin mi?",
-                                                                acceptedText: "Sipariş durumu güncellendi",
                                                                 type: "finish_order",
                                                                 id: order.id,
                                                                 discount: null
                                                             });
                                                             setProcessIsPopupOpen(true);
                                                         }} className="dropdown-item py-2 ">Siparişi Tamamla</button>
+                                                    </li>
+                                                    <li>
+                                                        <button
+                                                            onClick={() => {
+                                                            setProcessState({
+                                                                text: "Sipariş iptal edilsin mi?",
+                                                                type: "delete_order",
+                                                                id: order.id,
+                                                                discount: null
+                                                            });
+                                                            setProcessIsPopupOpen(true);
+                                                        }} className="dropdown-item py-2 ">Siparişi İptal Et</button>
                                                     </li>
                                                 </ul>
                                             </div>

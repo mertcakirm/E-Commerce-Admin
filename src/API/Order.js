@@ -1,24 +1,11 @@
 import api from "./Api.js";
-import {getCookie} from "../components/cookie/Cookie.js";
-
-const token = getCookie("token");
 
 export const GetActiveOrders = async (pageNum,pageSize)=>{
-    return await api.get(`Orders/notCompleted?pageNumber=${pageNum}&pageSize=${pageSize}`,
-        {
-            headers: {
-                Authorization: `Bearer ${token.token}`
-            }
-        });
+    return await api.get(`Orders/notCompleted?pageNumber=${pageNum}&pageSize=${pageSize}`);
 }
 
 export const GetPassiveOrders = async (pageNum,pageSize)=>{
-    return await api.get(`Orders/completed?pageNumber=${pageNum}&pageSize=${pageSize}`,
-        {
-            headers: {
-                Authorization: `Bearer ${token.token}`
-            }
-        });
+    return await api.get(`Orders/completed?pageNumber=${pageNum}&pageSize=${pageSize}`);
 }
 
 export const UpdateOrderStatus = async (orderId, status) => {

@@ -5,20 +5,15 @@ export function setCookie(name, value, days) {
     document.cookie = `${name}=${value}; ${expires}; path=/`;
 }
 
-export function getCookie(...names) {
-    const result = {};
+export function getCookie(name) {
     const cookies = document.cookie.split(';');
-
-    names.forEach(name => {
-        const nameEQ = name + "=";
-        for (let i = 0; i < cookies.length; i++) {
-            let c = cookies[i].trim();
-            if (c.indexOf(nameEQ) === 0) {
-                result[name] = c.substring(nameEQ.length, c.length);
-            }
+    for (let i = 0; i < cookies.length; i++) {
+        const c = cookies[i].trim();
+        if (c.startsWith(name + "=")) {
+            return c.substring(name.length + 1);
         }
-    });
-    return result;
+    }
+    return null;
 }
 
 export function deleteCookie(name) {

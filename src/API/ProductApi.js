@@ -27,21 +27,17 @@ export const AddProductImageRequest = async (productId,formData) => {
     return await api.post(`Products/${productId}/upload-image`, formData);
 };
 
-
 export const AddStockRequest = (productId,size,quantity) => {
     return api.post(`Products/${productId}/stock/${size}/${quantity}`);
 };
-
 
 export const DeleteStockRequest = (variantId) => {
     return api.delete(`Products/stock/${variantId}`);
 };
 
-
 export const DeleteProductImageRequest = (id) => {
     return api.delete(`Products/image/${id}`);
 };
-
 
 export const UpdateProductRequest = (urlpop, updatedProduct) => {
     return api.put(`Products/${urlpop}`, updatedProduct, {
@@ -50,7 +46,6 @@ export const UpdateProductRequest = (urlpop, updatedProduct) => {
         }
     });
 };
-
 
 export const GetProductQuestionsRequest = async () => {
     return await api.get("QuestionAndAnswer/get-all")
