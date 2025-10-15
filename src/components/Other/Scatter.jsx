@@ -63,7 +63,7 @@ const BarChart = ({ title }) => {
     };
 
     return (
-        <div style={{ width: "100%", height: "400px", margin: "0 auto" }}>
+        <div style={{ width: "100%", height: "fit-content", margin: "0 auto" }}>
             <h3 className="text-center mb-3">{title}</h3>
             <Bar data={data} options={options} />
         </div>
