@@ -34,7 +34,7 @@ const NotificationButton = () => {
             <button
                 ref={buttonRef}
                 type="button"
-                className="btn mx-3"
+                className="btn nav-top-btn "
                 onClick={toggle}
             >
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white"
