@@ -35,7 +35,7 @@ const Dashboard = () => {
     return (
         <div>
             <div className="admin-sag-container">
-                <div className="row admin-genel-row" data-aos="fade-up">
+                <div className="row" data-aos="fade-up">
 
                     {/* PieChart Row */}
                     <div className="col-lg-6 justify-content-center col-12 mt-4 row">

@@ -1,17 +1,38 @@
+.admin-sidebar-parent:hover{
+    width: 300px;
+    transition: .6s;
+}
+
+.admin-sidebar-parent:hover .admin-sidebar-link-text{
+    opacity: 1;
+    width: fit-content!important;
+    transition: .4s;
+}
+
+.admin-sidebar-link-text{
+    opacity: 0;
+    width: 0!important;
+    transition: .4s;
+    text-wrap: nowrap!important;
+}
+
+
 .admin-sidebar-parent {
     height: 100%;
     position: fixed;
-    width: 250px;
+    width: 100px;
     background: #171745;
     display: flex;
     flex-direction: column;
     align-items: baseline;
     justify-content: space-between;
-    padding-top: 10px;
     overflow-y: visible;
     overflow-x: hidden;
     scrollbar-width: thin;
     scrollbar-color: #1889ff #022B5C;
+    z-index: 9999!important;
+    transition: .4s!important;
+
 }
 
 .admin-sidebar-parent::-webkit-scrollbar {
@@ -41,9 +62,9 @@
 .admin-navbar {
     position: fixed;
     top: 0;
-    left: 250px;
+    left: 100px;
     height: 70px;
-    width: calc(100% - 250px);
+    width: calc(100% - 100px);
     background: #171745;
     display: flex;
     align-items: center;
@@ -111,7 +132,7 @@
     line-height: 50px;
     display: flex;
     flex-direction: row;
-    column-gap: 5px;
+    column-gap: 10px;
     border-radius: 20px;
     align-items: center;
     margin-left: 5%;
