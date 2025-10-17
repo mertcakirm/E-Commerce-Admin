@@ -45,7 +45,7 @@ const Login = () => {
     }, []);
 
     return (
-        <div className='admin-bg'>
+        <div className='login-bg'>
 
 
             <div style={{ width: '100%', height: '100vh', position: 'absolute' }}>

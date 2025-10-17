@@ -5,6 +5,7 @@ import Pagination from "../components/Other/Pagination.jsx";
 import { GetReportAllRequest } from "../API/Order.js";
 import CreateReportPopup from "../components/Popups/CreateReportPopup.jsx";
 import ProcessPopup from "../components/Popups/ProcessPopup.jsx";
+import {IoMdPrint} from "react-icons/io";
 
 const Reports = () => {
     const [reports, setReports] = useState([]);
@@ -103,11 +104,7 @@ const Reports = () => {
                                 <td className="text-center">{report.ordersCount}</td>
                                 <td className="text-center">
                                     <button className="bg-transparent border-0">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
-                                             viewBox="0 0 24 24">
-                                            <path
-                                                d="M16 18h-8v-1h8v1zm-2 1h-6v1h6v-1zm10-14v13h-4v6h-16v-6h-4v-13h4v-5h16v5h4zm-18 0h12v-3h-12v3zm12 10h-12v7h12v-7zm4-8h-20v9h2v-3h16v3h2v-9zm-1.5 1c-.276 0-.5.224-.5.5s.224.5.5.5.5-.224.5-.5-.224-.5-.5-.5z" />
-                                        </svg>
+                                        <IoMdPrint size={30} />
                                     </button>
                                 </td>
                                 <td className="text-center">

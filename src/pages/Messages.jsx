@@ -59,7 +59,7 @@ const Messages = () => {
                                         <tr key={message.id}>
                                             <td>{message.userEmail}</td>
                                             <td>{message.messageTitle}</td>
-                                            <td><p className='admin-mesajlar-mesaj'>{message.messageText}</p></td>
+                                            <td><p className='messages'>{message.messageText}</p></td>
                                             <td><span className='green'>{message.isReply ? 'Evet' : 'Hayır'}</span></td>
                                             <td style={{position: 'relative', width: '200px'}}>
                                                 <div style={{
@@ -71,7 +71,7 @@ const Messages = () => {
                                                     top: '0',
                                                     left: '0'
                                                 }}>
-                                                    {message.isReply ? <div className="text-center admin-mesajlar-mesaj">{message.answer}</div> :
+                                                    {message.isReply ? <div className="text-center messages">{message.answer}</div> :
                                                         <button className='answer-message-btn ' onClick={()=>togglePopup(message.id)}>Mesajı
                                                             Cevapla</button>}
 

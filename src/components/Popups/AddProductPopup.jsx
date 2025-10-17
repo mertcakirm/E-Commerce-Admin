@@ -238,7 +238,7 @@ const ProductPopup = ({popupCloser, productId = null}) => {
                                      className="preview-flex-child border shadow-sm rounded-3 overflow-hidden">
                                     <img className="object-fit-cover h-100
                                     " src={`https://localhost:7050${img.imageUrl}`} alt="existing" width="100"/>
-                                    <button className="user-sil-btn px-2 w-100 fs-6"
+                                    <button className="delete-btn px-2 w-100 fs-6"
                                             onClick={() => handleRemoveExistingImage(img.id)}>Sil
                                     </button>
                                 </div>
@@ -248,7 +248,7 @@ const ProductPopup = ({popupCloser, productId = null}) => {
                                 <div key={index} className="preview-flex-child">
                                     <img src={URL.createObjectURL(image)} alt={`img-${index}`} width="100"/>
                                     <p>{image.name}</p>
-                                    <button className="user-sil-btn px-2 fs-6"
+                                    <button className="delete-btn px-2 fs-6"
                                             onClick={() => handleRemoveImage(index)}>Sil
                                     </button>
                                 </div>
@@ -286,7 +286,7 @@ const ProductPopup = ({popupCloser, productId = null}) => {
                                         >
                                             <span className="category-chip mx-2">{cat.name}</span>
                                             <button
-                                                className="user-sil-btn px-2 fs-6"
+                                                className="delete-btn px-2 fs-6"
                                                 onClick={() => handleRemoveCategory(id)}
                                             >
                                                 Sil
@@ -312,14 +312,14 @@ const ProductPopup = ({popupCloser, productId = null}) => {
                             </div>
                         </div>
 
-                        <div className="stoklar-card-flex mb-3">
+                        <div className="stocks-card-flex mb-3">
                             {productData.Variants.map((item, idx) => (
                                 <div key={idx}
                                      className="d-flex gap-2 justify-content-between align-items-center border rounded-2 overflow-hidden">
                                     <span className="mx-2">
                                     {item.size}: {item.stock}
                                     </span>
-                                    <button className="user-sil-btn  px-2 fs-6"
+                                    <button className="delete-btn  px-2 fs-6"
                                             onClick={() => handleRemoveVariant(item)}>Sil
                                     </button>
                                 </div>

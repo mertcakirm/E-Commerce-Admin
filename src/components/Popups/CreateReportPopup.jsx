@@ -49,8 +49,8 @@ const CreateReportPopup = ({ onClose }) => {
     };
 
     return (
-        <div className="modal-overlay">
-            <div className="modal-content rounded-2" style={{ width: "500px" }} data-aos="zoom-in">
+        <div className="popup-overlay">
+            <div className="popup-content rounded-2" style={{ width: "500px" }} data-aos="zoom-in">
                 <div className="model-header">
                     <h3>Rapor Oluştur</h3>
                     <button className="popup-close-btn" onClick={() => onClose(false)}>

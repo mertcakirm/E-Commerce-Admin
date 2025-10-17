@@ -1,4 +1,4 @@
-.admin-bg{
+.login-bg {
     background-color: black;
     position: relative;
     width: 100%;
@@ -10,7 +10,7 @@
 
 }
 
-.form-admin{
+.form-admin {
     background-color: rgba(0, 0, 0, 0.48);
     width: fit-content;
     padding: 30px;
@@ -24,21 +24,21 @@
     color: #FFFFFF;
 }
 
-.form-item{
+.form-item {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    
+
 }
 
-.form-item>input{
+.form-item > input {
     width: 300px;
     border-radius: 10px;
     padding: 2%;
 }
 
-.giris-yap-btn{
+.giris-yap-btn {
     background-color: #00A611;
     width: 300px;
     border: 1px solid #00A611;
@@ -46,6 +46,4 @@
     height: 40px;
     color: #fff;
     border-radius: 20px;
-
-
 }

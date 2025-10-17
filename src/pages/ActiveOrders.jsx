@@ -7,6 +7,9 @@ import "aos/dist/aos.css";
 import Pagination from "../components/Other/Pagination.jsx";
 import {GetActiveOrders} from "../API/Order.js";
 import UpdateOrderPopup from "../components/Popups/UpdateOrderPopup.jsx";
+import {GrUpdate} from "react-icons/gr";
+import {IoCloseSharp} from "react-icons/io5";
+import {FaCalendarCheck} from "react-icons/fa";
 
 const ActiveOrders = () => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -125,12 +128,14 @@ const ActiveOrders = () => {
                                                     <li>
                                                         <button
                                                             style={{ borderBottom: '1px solid #ccc' }}
-                                                            className="dropdown-item btn w-100 py-2"
+                                                            className="dropdown-item btn d-flex align-items-center justify-content-center gap-2 w-100 py-2"
                                                             onClick={() => {
                                                                 setSelectedOrderId(order.id);
                                                                 setIsUpdateOrderPopupOpen(true);
                                                             }}
                                                         >
+                                                            <GrUpdate size={15} />
+
                                                             Sipariş Durumunu Güncelle
                                                         </button>
                                                     </li>
@@ -145,7 +150,10 @@ const ActiveOrders = () => {
                                                                 discount: null
                                                             });
                                                             setProcessIsPopupOpen(true);
-                                                        }} className="dropdown-item py-2 ">Siparişi Tamamla</button>
+                                                        }} className="dropdown-item d-flex justify-content-center align-items-center gap-2 py-2 ">
+                                                            <FaCalendarCheck />
+                                                            Siparişi Tamamla
+                                                        </button>
                                                     </li>
                                                     <li>
                                                         <button
@@ -157,7 +165,10 @@ const ActiveOrders = () => {
                                                                 discount: null
                                                             });
                                                             setProcessIsPopupOpen(true);
-                                                        }} className="dropdown-item py-2 ">Siparişi İptal Et</button>
+                                                        }} className="d-flex justify-content-center align-items-center gap-2 dropdown-item py-2 ">
+                                                            <IoCloseSharp />
+                                                            Siparişi İptal Et
+                                                        </button>
                                                     </li>
                                                 </ul>
                                             </div>
