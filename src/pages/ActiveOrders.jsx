@@ -10,6 +10,7 @@ import UpdateOrderPopup from "../components/Popups/UpdateOrderPopup.jsx";
 import {GrUpdate} from "react-icons/gr";
 import {IoCloseSharp} from "react-icons/io5";
 import {FaCalendarCheck} from "react-icons/fa";
+import {BsThreeDots} from "react-icons/bs";
 
 const ActiveOrders = () => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -114,59 +115,54 @@ const ActiveOrders = () => {
                                         <td>{order.status}</td>
                                         <td>
                                             <div className="dropdown">
-                                                <button className="btn dropdown-toggle" type="button"
-                                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <svg clipRule="evenodd" fillRule="evenodd"
-                                                         strokeLinejoin="round" strokeMiterlimit="2" width="30"
-                                                         height="30" fill="black" viewBox="0 0 24 24"
-                                                         xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                            d="m16.5 11.995c0-1.242 1.008-2.25 2.25-2.25s2.25 1.008 2.25 2.25-1.008 2.25-2.25 2.25-2.25-1.008-2.25-2.25zm-6.75 0c0-1.242 1.008-2.25 2.25-2.25s2.25 1.008 2.25 2.25-1.008 2.25-2.25 2.25-2.25-1.008-2.25-2.25zm-6.75 0c0-1.242 1.008-2.25 2.25-2.25s2.25 1.008 2.25 2.25-1.008 2.25-2.25 2.25-2.25-1.008-2.25-2.25z"/>
-                                                    </svg>
+                                                <button className="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <BsThreeDots size={30} />
                                                 </button>
                                                 <ul className="dropdown-menu rounded-2 border shadow overflow-hidden p-0">
                                                     <li>
                                                         <button
-                                                            style={{ borderBottom: '1px solid #ccc' }}
+                                                            style={{borderBottom: '1px solid #ccc'}}
                                                             className="dropdown-item btn d-flex align-items-center justify-content-center gap-2 w-100 py-2"
                                                             onClick={() => {
                                                                 setSelectedOrderId(order.id);
                                                                 setIsUpdateOrderPopupOpen(true);
                                                             }}
                                                         >
-                                                            <GrUpdate size={15} />
+                                                            <GrUpdate size={15}/>
 
                                                             Sipariş Durumunu Güncelle
                                                         </button>
                                                     </li>
                                                     <li>
                                                         <button
-                                                            style={{ borderBottom: '1px solid #ccc' }}
+                                                            style={{borderBottom: '1px solid #ccc'}}
                                                             onClick={() => {
-                                                            setProcessState({
-                                                                text: "Sipariş durumu güncellensin mi?",
-                                                                type: "finish_order",
-                                                                id: order.id,
-                                                                discount: null
-                                                            });
-                                                            setProcessIsPopupOpen(true);
-                                                        }} className="dropdown-item d-flex justify-content-center align-items-center gap-2 py-2 ">
-                                                            <FaCalendarCheck />
+                                                                setProcessState({
+                                                                    text: "Sipariş durumu güncellensin mi?",
+                                                                    type: "finish_order",
+                                                                    id: order.id,
+                                                                    discount: null
+                                                                });
+                                                                setProcessIsPopupOpen(true);
+                                                            }}
+                                                            className="dropdown-item d-flex justify-content-center align-items-center gap-2 py-2 ">
+                                                            <FaCalendarCheck/>
                                                             Siparişi Tamamla
                                                         </button>
                                                     </li>
                                                     <li>
                                                         <button
                                                             onClick={() => {
-                                                            setProcessState({
-                                                                text: "Sipariş iptal edilsin mi?",
-                                                                type: "delete_order",
-                                                                id: order.id,
-                                                                discount: null
-                                                            });
-                                                            setProcessIsPopupOpen(true);
-                                                        }} className="d-flex justify-content-center align-items-center gap-2 dropdown-item py-2 ">
-                                                            <IoCloseSharp />
+                                                                setProcessState({
+                                                                    text: "Sipariş iptal edilsin mi?",
+                                                                    type: "delete_order",
+                                                                    id: order.id,
+                                                                    discount: null
+                                                                });
+                                                                setProcessIsPopupOpen(true);
+                                                            }}
+                                                            className="d-flex justify-content-center align-items-center gap-2 dropdown-item py-2 ">
+                                                            <IoCloseSharp/>
                                                             Siparişi İptal Et
                                                         </button>
                                                     </li>
@@ -184,7 +180,8 @@ const ActiveOrders = () => {
                             )}
                             </tbody>
                         </table>
-                        <Pagination pageNum={currentPage} setPageNum={setCurrentPage} lastPage={lastPage} pageSize={pageSize} setPageSize={setPageSize}/>
+                        <Pagination pageNum={currentPage} setPageNum={setCurrentPage} lastPage={lastPage}
+                                    pageSize={pageSize} setPageSize={setPageSize}/>
 
                     </div>
                 </div>

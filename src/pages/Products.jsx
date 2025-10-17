@@ -12,6 +12,8 @@ import ProcessPopup from "../components/Popups/ProcessPopup.jsx";
 import DiscountPopup from "../components/Popups/DiscountPopup.jsx";
 import {GrUpdate} from "react-icons/gr";
 import {RiDiscountPercentFill} from "react-icons/ri";
+import {IoMdAdd} from "react-icons/io";
+import {BsThreeDots} from "react-icons/bs";
 
 const Products = () => {
     const [products, setProducts] = useState([]);
@@ -94,10 +96,7 @@ const Products = () => {
                         <div>Ürün Listesi</div>
                         <button className="tumunu-gor-btn-admin d-flex align-items-center gap-2 justify-content-center"
                                 onClick={togglePopup}>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"
-                                 viewBox="0 0 24 24">
-                                <path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z"/>
-                            </svg>
+                            <IoMdAdd size={25}/>
                             <div>Ürün Ekle</div>
                         </button>
                     </div>
@@ -194,15 +193,8 @@ const Products = () => {
                                             </td>
                                             <td>
                                                 <div className="dropdown">
-                                                    <button className="btn dropdown-toggle" type="button"
-                                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <svg clipRule="evenodd" fillRule="evenodd"
-                                                             strokeLinejoin="round" strokeMiterlimit="2" width="30"
-                                                             height="30" fill="black" viewBox="0 0 24 24"
-                                                             xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="m16.5 11.995c0-1.242 1.008-2.25 2.25-2.25s2.25 1.008 2.25 2.25-1.008 2.25-2.25 2.25-2.25-1.008-2.25-2.25zm-6.75 0c0-1.242 1.008-2.25 2.25-2.25s2.25 1.008 2.25 2.25-1.008 2.25-2.25 2.25-2.25-1.008-2.25-2.25zm-6.75 0c0-1.242 1.008-2.25 2.25-2.25s2.25 1.008 2.25 2.25-1.008 2.25-2.25 2.25-2.25-1.008-2.25-2.25z"/>
-                                                        </svg>
+                                                    <button className="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <BsThreeDots size={30}  />
                                                     </button>
                                                     <ul className="dropdown-menu rounded-2 border overflow-hidden p-0">
                                                         <li>

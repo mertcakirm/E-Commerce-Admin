@@ -3,6 +3,7 @@ import "aos/dist/aos.css";
 import {useEffect, useState} from "react";
 import {GetPassiveOrders} from "../../API/Order.js";
 import Pagination from "../Other/Pagination.jsx";
+import {IoMdPrint} from "react-icons/io";
 
 const LastOrdersPopup = ({popupCloser}) => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -74,10 +75,7 @@ const LastOrdersPopup = ({popupCloser}) => {
                                     <td>{order.totalAmount}₺</td>
                                     <td className="d-flex justify-content-center align-items-center">
                                         <button className="btn">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
-                                                 viewBox="0 0 24 24">
-                                                <path d="M12 21l-8-9h6v-12h4v12h6l-8 9zm9-1v2h-18v-2h-2v4h22v-4h-2z"/>
-                                            </svg>
+                                            <IoMdPrint size={30} />
                                         </button>
                                     </td>
                                 </tr>

@@ -21,6 +21,7 @@ import {
 } from "react-icons/fa";
 import NotificationButton from "./NotificationButton.jsx";
 import {MdArrowForwardIos, MdDashboard} from "react-icons/md";
+import {IoReorderThreeOutline} from "react-icons/io5";
 
 const Navbar = () => {
     const navigate = useNavigate();
@@ -182,7 +183,7 @@ const Navbar = () => {
             <div className="mobile-nav">
                 <div className="d-flex  w-100 justify-content-between">
                     <button onClick={toggleSidebar} className="btn">
-                        <svg clipRule="evenodd" fillRule="evenodd" strokeLinejoin="round" strokeMiterlimit="2" width="30" height="30" fill="white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m21 17.75c0-.414-.336-.75-.75-.75h-16.5c-.414 0-.75.336-.75.75s.336.75.75.75h16.5c.414 0 .75-.336.75-.75zm0-4c0-.414-.336-.75-.75-.75h-16.5c-.414 0-.75.336-.75.75s.336.75.75.75h16.5c.414 0 .75-.336.75-.75zm0-4c0-.414-.336-.75-.75-.75h-16.5c-.414 0-.75.336-.75.75s.336.75.75.75h16.5c.414 0 .75-.336.75-.75zm0-4c0-.414-.336-.75-.75-.75h-16.5c-.414 0-.75.336-.75.75s.336.75.75.75h16.5c.414 0 .75-.336.75-.75z" fillRule="nonzero"/></svg>
+                        <IoReorderThreeOutline size={40}  color="white" />
                     </button>
                     <div className="d-flex-justify-content-end">
                         <NotificationButton/>

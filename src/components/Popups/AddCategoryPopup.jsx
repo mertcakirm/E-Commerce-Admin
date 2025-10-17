@@ -3,6 +3,7 @@ import { AddCategoryRequest, GetCategoriesRequest } from "../../API/CategoriesAp
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { toast } from "react-toastify";
+import {FaImage} from "react-icons/fa";
 
 const AddCategoryPopup = ({ popupCloser, reloadPageCat }) => {
     const [newCategoryName, setNewCategoryName] = useState("");
@@ -109,15 +110,7 @@ const AddCategoryPopup = ({ popupCloser, reloadPageCat }) => {
                             <p>{newCategoryImage.name}</p>
                         ) : (
                             <div>
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="30"
-                                    height="30"
-                                    fill="purple"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path d="M14 9l-2.519 4-2.481-1.96-5 6.96h16l-6-9zm8-5v16h-20v-16h20zm2-2h-24v20h24v-20zm-20 6c0-1.104.896-2 2-2s2 .896 2 2c0 1.105-.896 2-2 2s-2-.895-2-2z" />
-                                </svg>
+                                <FaImage size={30} color="purple" />
                                 <p>Kategori görselini sürükleyin veya seçmek için tıklayın</p>
                             </div>
                         )}

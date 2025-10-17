@@ -47,7 +47,7 @@ const Movements = () => {
                 <div className="col-12">
                     <div className="d-flex justify-content-between">
                         <div className="col-6 alt-basliklar-admin">Hareketlerin</div>
-                        <button className="tumunu-gor-btn-admin bg-danger" onClick={() =>
+                        <button className="tumunu-gor-btn-admin border-0 bg-danger" onClick={() =>
                             toggleProcess({
                                 text: `Hareket geçmişini sıfırlamak istiyor musunuz?`,
                                 type: "clear_logs",
