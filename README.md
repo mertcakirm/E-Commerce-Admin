@@ -1,5 +1,60 @@
-#e-Commerce-Admin   
+# 🧩 eCommerce Admin Panel
 
+An **admin dashboard** for managing the eCommerce website — built with **React** and connected to a backend API.  
+It provides a modern, responsive, and secure interface for administrators to manage products, users, and orders.
 
-/var/folders/qg/2dqrj3l97pd8xl1h98j786cw0000gn/T/TemporaryItems/NSIRD_screencaptureui_u8vElm/Screenshot 2025-06-18 at 19.25.55.png
-/var/folders/qg/2dqrj3l97pd8xl1h98j786cw0000gn/T/TemporaryItems/NSIRD_screencaptureui_Jv3GNY/Screenshot 2025-06-18 at 19.26.57.png
+---
+
+## 🚀 Features
+
+- 🗂️ **Product Management**  
+  - Add, edit, or delete products  
+  - Upload multiple product images (supports base64 conversion)  
+  - Manage stock quantities by size or variant  
+
+- 🏷️ **Category Management**  
+  - Create and update product categories  
+  - Assign products to specific categories  
+
+- 🧑‍💼 **User Management**  
+  - View registered users  
+  - Activate/deactivate accounts  
+  - Manage roles (admin, customer)
+
+- 🛍️ **Order Management**  
+  - View and update order statuses (Pending, Shipped, Delivered, Cancelled)  
+  - See order details including customer and payment info  
+
+- 🖼️ **Slider / Banner Control**  
+  - Upload promotional banners for the homepage  
+  - Manage visibility and display order
+    
+- 🧠 **Analytics (Optional)**  
+  - Basic sales and traffic overview (coming soon)
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend:** React  
+- **Styling:** Bootstrap  
+- **State Management:** Context API / Redux Toolkit  
+- **API Communication:** Axios (RESTful API)  
+- **Authentication:** JWT-based access control  
+
+---
+
+## ⚙️ Installation & Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/mertcakirm/eCommerce-Admin.git
+
+# Navigate to the project directory
+cd eCommerce-Admin
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
