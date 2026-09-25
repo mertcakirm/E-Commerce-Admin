@@ -1,19 +1,25 @@
-import {useState, useEffect} from "react";
-import {
-    GetProductsRequest,
-} from "../API/ProductApi.js";
-import AddProductPopup from "../components/Popups/AddProductPopup.jsx";
+import { useState, useEffect } from "react";
+import { GetProductsRequest } from "../API/ProductApi.js";
 import LoadingComp from "../components/Other/Loading.jsx";
-import AOS from "aos";
-import "aos/dist/aos.css";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 import Pagination from "../components/Other/Pagination.jsx";
+import ProductPopup from "../components/Popups/AddProductPopup.jsx";
 import ProcessPopup from "../components/Popups/ProcessPopup.jsx";
 import DiscountPopup from "../components/Popups/DiscountPopup.jsx";
-import {GrUpdate} from "react-icons/gr";
-import {RiDiscountPercentFill} from "react-icons/ri";
-import {IoMdAdd} from "react-icons/io";
-import {BsThreeDots} from "react-icons/bs";
+import { 
+    FiBox, 
+    FiPlus, 
+    FiSearch, 
+    FiEdit3, 
+    FiPercent, 
+    FiMoreVertical, 
+    FiTag, 
+    FiCheckCircle, 
+    FiXCircle, 
+    FiImage,
+    FiTrendingUp,
+    FiLayers
+} from "react-icons/fi";
 
 const Products = () => {
     const [products, setProducts] = useState([]);
@@ -23,11 +29,11 @@ const Products = () => {
     const [selectedProductId, setSelectedProductId] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
     const [pageNum, setPageNum] = useState(1);
-    const [loading, setloading] = useState(true);
+    const [loading, setLoading] = useState(true);
     const [reloadPage, setReloadPage] = useState(false);
     const [updateId, setUpdateId] = useState(null);
     const [pageSize, setPageSize] = useState(10);
-    const [lastPage, setLastPage] = useState(0);
+    const [lastPage, setLastPage] = useState(1);
 
     const [processConfig, setProcessConfig] = useState({
         isOpen: false,
@@ -37,7 +43,7 @@ const Products = () => {
         extraData: null
     });
 
-    const toggleProcess = ({text, type, id, extraData}) => {
+    const toggleProcess = ({ text, type, id, extraData }) => {
         setProcessConfig({
             isOpen: true,
             text,
@@ -48,204 +54,421 @@ const Products = () => {
     };
 
     const fetchData = async () => {
-        setloading(false);
+        setLoading(true);
         try {
-            const data = await GetProductsRequest(pageNum, pageSize, debouncedSearch);
-            setLastPage(data.data.data.totalPages)
-            setProducts(data.data.data.items);
+            const res = await GetProductsRequest(pageNum, pageSize, debouncedSearch);
+            const data = res?.data?.data;
+            setLastPage(data?.totalPages || 1);
+            setProducts(data?.items || []);
         } catch (err) {
-            console.log(err)
-            toast.error("Ürünler alınamadı.");
+            console.error("Ürün listesi hatası:", err);
+            toast.error("Ürünler alınırken bir sorun oluştu.");
         } finally {
-            setloading(false);
+            setLoading(false);
         }
     };
 
     const handleSearch = (event) => {
         setSearchTerm(event.target.value);
         setPageNum(1);
-        setProducts([]);
-    };
-
-    const togglePopup = () => {
-        setShowPopup(!showPopup);
     };
 
     useEffect(() => {
         const delayDebounce = setTimeout(() => {
             setDebouncedSearch(searchTerm);
-        }, 2000);
+        }, 500);
         return () => clearTimeout(delayDebounce);
     }, [searchTerm]);
-
-    useEffect(() => {
-        AOS.init({duration: 500});
-    }, []);
 
     useEffect(() => {
         fetchData();
     }, [pageNum, debouncedSearch, reloadPage, pageSize]);
 
-    if (loading) return <LoadingComp/>;
+    if (loading && products.length === 0) return <LoadingComp />;
 
     return (
-        <div>
-            <div className="admin-sag-container">
-                <div className="row admin-genel-row" data-aos="fade-in">
-                    <div className="col-12 justify-content-between d-flex alt-basliklar-admin">
-                        <div>Ürün Listesi</div>
-                        <button className="tumunu-gor-btn-admin d-flex align-items-center gap-2 justify-content-center"
-                                onClick={togglePopup}>
-                            <IoMdAdd size={25}/>
-                            <div>Ürün Ekle</div>
-                        </button>
+        <div className="admin-sag-container">
+            {/* ÜST BAŞLIK VE AKSİYON BAR */}
+            <div className="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3 mb-4">
+                <div className="d-flex align-items-center gap-3">
+                    <div
+                        style={{
+                            width: "48px",
+                            height: "48px",
+                            borderRadius: "14px",
+                            backgroundColor: "#eff6ff",
+                            color: "#2563eb",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center"
+                        }}
+                    >
+                        <FiBox size={24} />
                     </div>
+                    <div>
+                        <h4 className="m-0 fw-bold text-dark" style={{ letterSpacing: "-0.4px" }}>
+                            Ürün Yönetimi
+                        </h4>
+                        <small className="text-secondary" style={{ fontSize: "0.82rem" }}>
+                            Katalog ürünlerinizi, stok varyantlarını ve fiyatlandırmaları yönetin
+                        </small>
+                    </div>
+                </div>
 
-                    <div className="col-12">
-                        <div className="table-responsive">
-                            <input
-                                type="text"
-                                placeholder="Ara..."
-                                className="admin-search-inp mb-3"
-                                value={searchTerm}
-                                onChange={handleSearch}
-                            />
-                            <table className="table">
-                                <thead>
-                                <tr className="border-0">
-                                    <th style={{borderRadius: '30px 0 0 30px', border: '0', paddingLeft: '15px'}}>Ürün
-                                        Adı
-                                    </th>
-                                    <th className="border-0">Kategori</th>
-                                    <th className="border-0">Satış</th>
-                                    <th className="border-0">Stok</th>
-                                    <th className="border-0">Fiyat</th>
-                                    <th className="border-0">İndirim</th>
-                                    <th className="border-0">Durum</th>
-                                    <th style={{borderRadius: ' 0 30px 30px 0 ', border: '0'}}>İşlem</th>
+                <button
+                    type="button"
+                    onClick={() => {
+                        setUpdateId(null);
+                        setShowPopup(true);
+                    }}
+                    style={{
+                        backgroundColor: "#2563eb",
+                        border: "none",
+                        padding: "10px 20px",
+                        borderRadius: "10px",
+                        fontSize: "0.88rem",
+                        fontWeight: 600,
+                        color: "#ffffff",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "8px",
+                        cursor: "pointer",
+                        boxShadow: "0 4px 14px rgba(37, 99, 235, 0.3)",
+                        transition: "all 0.15s ease"
+                    }}
+                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#1d4ed8")}
+                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#2563eb")}
+                >
+                    <FiPlus size={18} />
+                    Yeni Ürün Ekle
+                </button>
+            </div>
+
+            {/* TABLO KARTI */}
+            <div
+                style={{
+                    backgroundColor: "#ffffff",
+                    borderRadius: "16px",
+                    border: "1px solid rgba(0, 0, 0, 0.05)",
+                    boxShadow: "0 4px 20px -2px rgba(0, 0, 0, 0.04)",
+                    padding: "1.25rem",
+                    overflow: "hidden"
+                }}
+            >
+                {/* HIZLI ARAMA ALANI */}
+                <div className="d-flex justify-content-between align-items-center mb-3">
+                    <div className="position-relative" style={{ maxWidth: "320px", width: "100%" }}>
+                        <FiSearch 
+                            size={16} 
+                            style={{ 
+                                position: "absolute", 
+                                left: "14px", 
+                                top: "50%", 
+                                transform: "translateY(-50%)", 
+                                color: "#94a3b8" 
+                            }} 
+                        />
+                        <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Ürün adı veya kod ara..."
+                            value={searchTerm}
+                            onChange={handleSearch}
+                            style={{
+                                borderRadius: "10px",
+                                paddingLeft: "38px",
+                                fontSize: "0.88rem",
+                                border: "1px solid #cbd5e1",
+                                boxShadow: "none"
+                            }}
+                        />
+                    </div>
+                </div>
+
+                <div className="table-responsive p-0 m-0 border-0">
+                    <table className="table align-middle m-0 table-hover">
+                        <thead style={{ backgroundColor: "#f8fafc" }}>
+                            <tr style={{ fontSize: "0.78rem", borderBottom: "1px solid #e2e8f0" }}>
+                                <th className="py-3 px-3 text-secondary text-uppercase fw-semibold" style={{ minWidth: "240px" }}>Ürün</th>
+                                <th className="py-3 px-3 text-secondary text-uppercase fw-semibold" style={{ minWidth: "160px" }}>Kategoriler</th>
+                                <th className="py-3 px-3 text-secondary text-uppercase fw-semibold text-center" style={{ width: "90px" }}>Satış</th>
+                                <th className="py-3 px-3 text-secondary text-uppercase fw-semibold text-center" style={{ width: "110px" }}>Toplam Stok</th>
+                                <th className="py-3 px-3 text-secondary text-uppercase fw-semibold" style={{ minWidth: "140px" }}>Fiyat Detayı</th>
+                                <th className="py-3 px-3 text-secondary text-uppercase fw-semibold text-center" style={{ width: "130px" }}>Durum</th>
+                                <th className="py-3 px-3 text-secondary text-uppercase fw-semibold text-end" style={{ width: "80px" }}>İşlem</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {products.length === 0 ? (
+                                <tr>
+                                    <td colSpan="7" className="text-center py-5 text-muted">
+                                        {searchTerm ? "Arama kriterine uygun ürün bulunamadı." : "Henüz ürün eklenmemiş."}
+                                    </td>
                                 </tr>
-                                </thead>
+                            ) : (
+                                products.map((product) => {
+                                    const totalStock = product.variants?.reduce((tot, v) => tot + Number(v.stock || 0), 0) || 0;
+                                    const hasDiscount = product.discountRate > 0;
+                                    const primaryImage = product.images?.[0]?.imageUrl;
 
-                                <tbody>
-                                {products.length === 0 ? (
-                                    <tr>
-                                        <td colSpan="8" className="text-center py-4">
-                                            Ürün bulunamadı.
-                                        </td>
-                                    </tr>
-                                ) : (
-                                    products.map((product) => (
-                                        <tr key={product.id}>
-                                            <td className="d-flex gap-3 align-items-center">
-                                                <div>#{product.id}</div>
-                                                <img
-                                                    className="rounded-5 product-img object-fit-cover"
-                                                    style={{width: '50px', height: '50px'}}
-                                                    src={
-                                                        product.images.length > 0 && product.images[0].imageUrl
-                                                            ? `https://localhost:7050${product.images[0].imageUrl}`
-                                                            : "https://thumb.ac-illust.com/b1/b170870007dfa419295d949814474ab2_t.jpeg"
+                                    return (
+                                        <tr key={product.id} style={{ borderBottom: "1px solid #f1f5f9", fontSize: "0.88rem" }}>
+                                            {/* Ürün & ID & Görsel */}
+                                            <td className="px-3 py-2">
+                                                <div className="d-flex align-items-center gap-3">
+                                                    <div
+                                                        style={{
+                                                            width: "52px",
+                                                            height: "52px",
+                                                            borderRadius: "10px",
+                                                            overflow: "hidden",
+                                                            border: "1px solid #e2e8f0",
+                                                            backgroundColor: "#f8fafc",
+                                                            flexShrink: 0,
+                                                            display: "flex",
+                                                            alignItems: "center",
+                                                            justifyContent: "center"
+                                                        }}
+                                                    >
+                                                        {primaryImage ? (
+                                                            <img
+                                                                src={`https://localhost:7050${primaryImage}`}
+                                                                alt={product.name}
+                                                                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                                                                onError={(e) => {
+                                                                    e.target.onerror = null;
+                                                                    e.target.src = "https://placehold.co/60x60?text=Görsel";
+                                                                }}
+                                                            />
+                                                        ) : (
+                                                            <FiImage size={20} className="text-muted" />
+                                                        )}
+                                                    </div>
+                                                    <div className="overflow-hidden">
+                                                        <div className="d-flex align-items-center gap-1.5 mb-0.5">
+                                                            <span className="badge bg-light text-secondary border font-monospace" style={{ fontSize: "0.72rem" }}>
+                                                                #{product.id}
+                                                            </span>
+                                                        </div>
+                                                        <span className="fw-bold text-dark text-truncate d-block" style={{ maxWidth: "210px" }} title={product.name}>
+                                                            {product.name}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </td>
+
+                                            {/* Kategoriler */}
+                                            <td className="px-3">
+                                                <div className="d-flex flex-wrap gap-1" style={{ maxWidth: "200px" }}>
+                                                    {product.categoryNames && product.categoryNames.length > 0 ? (
+                                                        product.categoryNames.map((cName, idx) => (
+                                                            <span
+                                                                key={idx}
+                                                                style={{
+                                                                    backgroundColor: "#eff6ff",
+                                                                    color: "#1d4ed8",
+                                                                    borderRadius: "6px",
+                                                                    padding: "2px 8px",
+                                                                    fontSize: "0.75rem",
+                                                                    fontWeight: 500,
+                                                                    border: "1px solid #dbeafe"
+                                                                }}
+                                                            >
+                                                                <FiTag size={10} className="me-1" />
+                                                                {cName}
+                                                            </span>
+                                                        ))
+                                                    ) : (
+                                                        <span className="text-muted" style={{ fontSize: "0.8rem" }}>-</span>
+                                                    )}
+                                                </div>
+                                            </td>
+
+                                            {/* Satış Adedi */}
+                                            <td className="px-3 text-center">
+                                                <span 
+                                                    style={{
+                                                        display: "inline-flex",
+                                                        alignItems: "center",
+                                                        gap: "4px",
+                                                        fontSize: "0.85rem",
+                                                        fontWeight: 600,
+                                                        color: "#334155"
+                                                    }}
+                                                >
+                                                    <FiTrendingUp size={13} className="text-muted" />
+                                                    {product.saleCount || 0}
+                                                </span>
+                                            </td>
+
+                                            {/* Toplam Stok */}
+                                            <td className="px-3 text-center">
+                                                <span
+                                                    style={{
+                                                        display: "inline-flex",
+                                                        alignItems: "center",
+                                                        gap: "5px",
+                                                        backgroundColor: totalStock > 10 ? "#f8fafc" : totalStock > 0 ? "#fffbeb" : "#fef2f2",
+                                                        color: totalStock > 10 ? "#334155" : totalStock > 0 ? "#b45309" : "#dc2626",
+                                                        border: `1px solid ${totalStock > 10 ? "#e2e8f0" : totalStock > 0 ? "#fde68a" : "#fecaca"}`,
+                                                        borderRadius: "8px",
+                                                        padding: "3px 10px",
+                                                        fontSize: "0.78rem",
+                                                        fontWeight: 700
+                                                    }}
+                                                >
+                                                    <FiLayers size={12} />
+                                                    {totalStock} Adet
+                                                </span>
+                                            </td>
+
+                                            {/* Fiyat & İndirim */}
+                                            <td className="px-3">
+                                                {hasDiscount ? (
+                                                    <div>
+                                                        <div className="d-flex align-items-center gap-1.5">
+                                                            <span className="fw-bold text-dark" style={{ fontSize: "0.95rem" }}>
+                                                                ₺{Number(product.priceWithDiscount || 0).toLocaleString()}
+                                                            </span>
+                                                            <span
+                                                                style={{
+                                                                    backgroundColor: "#ecfdf5",
+                                                                    color: "#059669",
+                                                                    border: "1px solid #a7f3d0",
+                                                                    borderRadius: "6px",
+                                                                    padding: "1px 5px",
+                                                                    fontSize: "0.72rem",
+                                                                    fontWeight: 700
+                                                                }}
+                                                            >
+                                                                -%{product.discountRate}
+                                                            </span>
+                                                        </div>
+                                                        <small className="text-muted text-decoration-line-through" style={{ fontSize: "0.78rem" }}>
+                                                            ₺{Number(product.price || 0).toLocaleString()}
+                                                        </small>
+                                                    </div>
+                                                ) : (
+                                                    <span className="fw-bold text-dark" style={{ fontSize: "0.92rem" }}>
+                                                        ₺{Number(product.price || 0).toLocaleString()}
+                                                    </span>
+                                                )}
+                                            </td>
+
+                                            {/* Aktif / Pasif Durum Değiştirme */}
+                                            <td className="px-3 text-center">
+                                                <button
+                                                    type="button"
+                                                    onClick={() =>
+                                                        toggleProcess({
+                                                            text: `"${product.name}" ürününü ${product.isActive ? "pasif" : "aktif"} duruma getirmek istiyor musunuz?`,
+                                                            type: "product_delete",
+                                                            id: product.id,
+                                                        })
                                                     }
-                                                    alt={product.productName || "Ürün Görseli"}
-                                                />
-                                                <div>{product.name}</div>
+                                                    style={{
+                                                        display: "inline-flex",
+                                                        alignItems: "center",
+                                                        gap: "5px",
+                                                        backgroundColor: product.isActive ? "#ecfdf5" : "#fef2f2",
+                                                        color: product.isActive ? "#059669" : "#dc2626",
+                                                        border: `1px solid ${product.isActive ? "#a7f3d0" : "#fecaca"}`,
+                                                        borderRadius: "999px",
+                                                        padding: "4px 12px",
+                                                        fontSize: "0.76rem",
+                                                        fontWeight: 600,
+                                                        cursor: "pointer",
+                                                        transition: "all 0.15s ease"
+                                                    }}
+                                                >
+                                                    {product.isActive ? <FiCheckCircle size={12} /> : <FiXCircle size={12} />}
+                                                    {product.isActive ? "Aktif" : "Pasif"}
+                                                </button>
                                             </td>
-                                            <td style={{
-                                                width: '250px',
-                                                wordBreak: 'break-all',
-                                                textWrap: 'wrap',
-                                                overflow: 'hidden',
-                                                overflowY: 'visible'
-                                            }}>
-                                                {product.categoryNames && product.categoryNames.length > 0
-                                                    ? product.categoryNames.join(", ")
-                                                    : "-"}
-                                            </td>
-                                            <td>{product.saleCount}</td>
-                                            <td>
-                                                <div className="stock-flex">
-                                                    <p>
-                                                        {product.variants.reduce((total, size) => total + size.stock, 0)}
-                                                    </p>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div>
-                                                    <p>Ana Fiyat : {product.price}₺</p>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                {product.discountRate > 0 ? (<div>
-                                                    <div>İndirim Oranı : {product.discountRate}%</div>
-                                                    <div>İndirimli Fiyat : {product.priceWithDiscount}₺</div>
-                                                </div>) : (<div>-</div>)}
 
-                                            </td>
-                                            <td>
-                                                <button onClick={() =>
-                                                    toggleProcess({
-                                                        text: `Bu ürünü ${product.isDeleted ? "aktif" : "pasif"} yapmak istediğinize emin misiniz?`,
-                                                        type: "product_delete",
-                                                        id: product.id,
-                                                    })
-                                                }
-                                                        className={`btn ${product.isActive ? "bg-danger text-light" : "bg-success text-light"}`}>{product.isActive ? "pasif" : "aktif"}</button>
-                                            </td>
-                                            <td>
+                                            {/* Dropdown Aksiyonlar */}
+                                            <td className="px-3 text-end">
                                                 <div className="dropdown">
-                                                    <button className="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <BsThreeDots size={30}  />
+                                                    <button
+                                                        className="btn p-1"
+                                                        type="button"
+                                                        data-bs-toggle="dropdown"
+                                                        aria-expanded="false"
+                                                        style={{
+                                                            border: "1px solid #e2e8f0",
+                                                            borderRadius: "8px",
+                                                            color: "#64748b",
+                                                            width: "32px",
+                                                            height: "32px",
+                                                            display: "inline-flex",
+                                                            alignItems: "center",
+                                                            justifyContent: "center"
+                                                        }}
+                                                    >
+                                                        <FiMoreVertical size={16} />
                                                     </button>
-                                                    <ul className="dropdown-menu rounded-2 border overflow-hidden p-0">
+                                                    <ul
+                                                        className="dropdown-menu dropdown-menu-end shadow-sm border p-1"
+                                                        style={{ borderRadius: "12px", minWidth: "190px" }}
+                                                    >
                                                         <li>
-                                                            <button onClick={() => {
-                                                                setShowPopup(true);
-                                                                setUpdateId(product.id)
-                                                            }}
-                                                                    className="dropdown-item d-flex align-items-center gap-2 justify-content-center py-2" style={{ borderBottom: '1px solid #ccc' }}>
-                                                                <GrUpdate size={20} />
-                                                                <div className="fs-6">Ürünü Güncelle</div>
+                                                            <button
+                                                                className="dropdown-item d-flex align-items-center gap-2 py-2 px-3 rounded-2 text-dark"
+                                                                style={{ fontSize: "0.85rem", fontWeight: 500 }}
+                                                                onClick={() => {
+                                                                    setUpdateId(product.id);
+                                                                    setShowPopup(true);
+                                                                }}
+                                                            >
+                                                                <FiEdit3 size={15} className="text-primary" />
+                                                                Ürünü Düzenle
                                                             </button>
                                                         </li>
                                                         <li>
                                                             <button
-                                                                className="dropdown-item d-flex align-items-center gap-2 justify-content-center py-2"
+                                                                className="dropdown-item d-flex align-items-center gap-2 py-2 px-3 rounded-2 text-dark"
+                                                                style={{ fontSize: "0.85rem", fontWeight: 500 }}
                                                                 onClick={() => {
+                                                                    setSelectedProductId(product.id);
                                                                     setShowDiscountPopup(true);
-                                                                    setSelectedProductId(product.id)
-                                                                }}>
-                                                                <RiDiscountPercentFill size={24} />
-
-                                                                <div>İndirim Yap</div>
+                                                                }}
+                                                            >
+                                                                <FiPercent size={15} className="text-success" />
+                                                                İndirim Tanımla
                                                             </button>
                                                         </li>
                                                     </ul>
                                                 </div>
                                             </td>
                                         </tr>
-                                    ))
-                                )}
-                                </tbody>
-                            </table>
+                                    );
+                                })
+                            )}
+                        </tbody>
+                    </table>
+                </div>
 
-                            <Pagination
-                                pageNum={pageNum}
-                                setPageNum={setPageNum}
-                                lastPage={lastPage}
-                                pageSize={pageSize}
-                                setPageSize={setPageSize}
-                            />
-                        </div>
-                    </div>
+                {/* SAYFALAMA */}
+                <div className="pt-3 border-top mt-3">
+                    <Pagination
+                        pageNum={pageNum}
+                        setPageNum={setPageNum}
+                        lastPage={lastPage}
+                        pageSize={pageSize}
+                        setPageSize={setPageSize}
+                    />
                 </div>
             </div>
 
+            {/* POPUP BİLEŞENLERİ */}
             {showPopup && (
-                <AddProductPopup
+                <ProductPopup
                     popupCloser={(b) => {
-                        setShowPopup(b)
-                        setReloadPage(!reloadPage);
-                        setUpdateId(null)
+                        setShowPopup(b);
+                        if (!b) {
+                            setUpdateId(null);
+                            setReloadPage(prev => !prev);
+                        }
                     }}
                     productId={updateId}
                 />
@@ -266,8 +489,8 @@ const Products = () => {
                     id={processConfig.id}
                     discount={processConfig.extraData}
                     onClose={() => {
-                        setReloadPage(!reloadPage);
-                        setProcessConfig(prev => ({...prev, isOpen: false}));
+                        setProcessConfig(prev => ({ ...prev, isOpen: false }));
+                        setReloadPage(prev => !prev);
                     }}
                 />
             )}

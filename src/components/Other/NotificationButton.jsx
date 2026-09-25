@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import NotificationPopover from "../Popups/NotificationPopover.jsx";
-import {FaBell} from "react-icons/fa";
+import { FiBell } from "react-icons/fi";
 
-const POPOVER_WIDTH = 240;
+const POPOVER_WIDTH = 340;
 
 const NotificationButton = () => {
     const [open, setOpen] = useState(false);
@@ -13,8 +13,9 @@ const NotificationButton = () => {
     const toggle = () => {
         if (!open && buttonRef.current) {
             const rect = buttonRef.current.getBoundingClientRect();
-            const left = rect.left + rect.width / 2 - POPOVER_WIDTH / 2 + window.scrollX - 100;
-            const top = rect.bottom + 8 + window.scrollY;
+            // Butonun sağ kenarından 12px boşluk ve dikey hiza
+            const left = rect.right + 12 + window.scrollX;
+            const top = rect.top + window.scrollY;
             setPos({ top, left });
         }
         setOpen(!open);
@@ -31,18 +32,39 @@ const NotificationButton = () => {
     }, []);
 
     return (
-        <>
+        <div style={{ position: "relative", display: "inline-block" }}>
             <button
                 ref={buttonRef}
                 type="button"
-                className="btn nav-top-btn "
                 onClick={toggle}
+                style={{
+                    backgroundColor: open ? "#1e293b" : "#334155",
+                    border: "1px solid rgba(255, 255, 255, 0.12)",
+                    borderRadius: "10px",
+                    width: "40px",
+                    height: "40px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "#ffffff",
+                    cursor: "pointer",
+                    transition: "all 0.15s ease"
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#1e293b")}
+                onMouseLeave={(e) => !open && (e.currentTarget.style.backgroundColor = "#334155")}
             >
-                <FaBell size={20} color="white" />
+                <FiBell size={18} />
             </button>
 
-            {open && <NotificationPopover ref={popoverRef} top={pos.top} left={pos.left} width={POPOVER_WIDTH} />}
-        </>
+            {open && (
+                <NotificationPopover
+                    ref={popoverRef}
+                    top={pos.top}
+                    left={pos.left}
+                    width={POPOVER_WIDTH}
+                />
+            )}
+        </div>
     );
 };
 

@@ -40,7 +40,12 @@ const Layout = ({ children }) => {
 
 function App() {
     return (
-        <BrowserRouter>
+        <BrowserRouter
+            future={{
+                v7_startTransition: true,
+                v7_relativeSplatPath: true,
+            }}
+        >
             <ToastContainer theme="colored" closeOnClick position="bottom-center" autoClose={3000} />
             <Layout>
                 <Routes>

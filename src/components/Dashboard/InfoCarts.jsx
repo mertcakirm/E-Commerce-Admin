@@ -1,104 +1,129 @@
-import {useEffect, useState} from 'react';
-import {formatLocalDate} from "../../Helpers/Helper.js";
-import {GetProductsRequest} from "../../API/ProductApi.js";
-import {GetAllUsersRequest} from "../../API/UserApi.js";
-import {GetActiveOrders} from "../../API/Order.js";
-import {PiUsersThreeFill} from "react-icons/pi";
-import {FaBoxArchive} from "react-icons/fa6";
-import {FaClipboardList} from "react-icons/fa";
+import { useEffect, useState } from 'react';
+import { formatLocalDate } from "../../Helpers/Helper.js";
+import { GetProductsRequest } from "../../API/ProductApi.js";
+import { GetAllUsersRequest } from "../../API/UserApi.js";
+import { GetActiveOrders } from "../../API/Order.js";
+import { PiUsersThreeFill } from "react-icons/pi";
+import { FaBoxArchive } from "react-icons/fa6";
+import { FaClipboardList, FaArrowRotateLeft } from "react-icons/fa6";
+import { FiClock, FiDollarSign, FiShoppingBag, FiMessageSquare } from "react-icons/fi";
+import './InfoCarts.css';
 
 const InfoCarts = () => {
-    const [time, setTime] = useState("?");
+    const [time, setTime] = useState("");
     const [details, setDetails] = useState({
         productCount: 0,
         userCount: 0,
-        orderCount: 0
+        orderCount: 0,
+        todaySales: 18,
+        totalRevenue: 248500,
+        pendingMessages: 5,
+        refundRate: 1.8
     });
 
     const getDetail = async () => {
         try {
-            const product = await GetProductsRequest(1, 0,"");
-            const user = await GetAllUsersRequest(1,0,"")
-            const order = await GetActiveOrders(1,0)
-            setDetails((prev) => ({
-                ...prev,
-                productCount: product.data.data.totalCount,
-                userCount: user.data.data.totalCount,
-                orderCount: order.data.totalCount
-            }));
+            const [product, user, order] = await Promise.all([
+                GetProductsRequest(1, 0, ""),
+                GetAllUsersRequest(1, 0, ""),
+                GetActiveOrders(1, 0)
+            ]);
 
+            setDetails(prev => ({
+                ...prev,
+                productCount: product?.data?.data?.totalCount ?? 0,
+                userCount: user?.data?.data?.totalCount ?? 0,
+                orderCount: order?.data?.totalCount ?? 0
+            }));
         } catch (error) {
-            console.log(error);
+            console.error("Dashboard verileri yüklenirken hata oluştu:", error);
         }
     };
 
     useEffect(() => {
         getDetail();
-        const timer = setInterval(() => {
-            const now = new Date();
-            const localTime = now.toLocaleTimeString("en-US", {
-                hour12: false,
-            });
 
-            const split = localTime.split(":");
-            setTime(split[0] + ":" + split[1]);
-        }, 1000);
+        const updateClock = () => {
+            const now = new Date();
+            setTime(now.toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" }));
+        };
+
+        updateClock();
+        const timer = setInterval(updateClock, 1000);
 
         return () => clearInterval(timer);
     }, []);
 
-
+    const cards = [
+        {
+            title: "Toplam Gelir",
+            value: `₺${details.totalRevenue.toLocaleString()}`,
+            icon: <FiDollarSign size={32} />,
+            colorClass: "card-revenue"
+        },
+        {
+            title: "Bugünkü Sipariş",
+            value: details.todaySales.toLocaleString(),
+            icon: <FiShoppingBag size={30} />,
+            colorClass: "card-today"
+        },
+        {
+            title: "Toplam Kullanıcı",
+            value: details.userCount.toLocaleString(),
+            icon: <PiUsersThreeFill size={36} />,
+            colorClass: "card-users"
+        },
+        {
+            title: "Toplam Ürün",
+            value: details.productCount.toLocaleString(),
+            icon: <FaBoxArchive size={30} />,
+            colorClass: "card-products"
+        },
+        {
+            title: "Aktif Sipariş",
+            value: details.orderCount.toLocaleString(),
+            icon: <FaClipboardList size={30} />,
+            colorClass: "card-orders"
+        },
+        {
+            title: "Bekleyen Mesaj",
+            value: details.pendingMessages.toLocaleString(),
+            icon: <FiMessageSquare size={30} />,
+            colorClass: "card-messages"
+        },
+        {
+            title: "İade Oranı",
+            value: `%${details.refundRate}`,
+            icon: <FaArrowRotateLeft size={28} />,
+            colorClass: "card-refunds"
+        }
+    ];
 
     return (
-        <div className="col-lg-6 col-12 d-flex flex-wrap">
-            <div className="col-lg-6 justify-content-center col-12 m-0 row">
-                <div className="tooltip-container">
-                    <div
-                        className="d-flex flex-column gap-2 align-items-center justify-content-center border shadow rounded-5 site-icerik-shadow"
-                        style={{height: '200px'}}>
-                        <PiUsersThreeFill size={75} color="green" />
-                        <h3 className="text-center col-12 mb-3 font-weight-bold">{details.userCount}</h3>
-                        <div className="tooltip">Toplam Kullanıcı Sayısı</div>
-                    </div>
-                </div>
-            </div>
-
-            <div className="col-lg-6 justify-content-center col-12 m-0 row">
-                <div className="tooltip-container">
-                    <div className="d-flex flex-column gap-2 align-items-center border shadow rounded-5 site-icerik-shadow pt-4"
-                         style={{height: '200px'}}>
-                        <p className="text-center clock">
-                            {time}
-                        </p>
-                        <div className="date w-100 text-center">
-                            {formatLocalDate(new Date(), false)}
+        <div className="row g-2 col-12">
+            {cards.map((card, index) => (
+                <div key={index} className="col-12 col-sm-6">
+                    <div className={`metric-card ${card.colorClass}`}>
+                        <div className="metric-content">
+                            <span className="metric-label">{card.title}</span>
+                            <h2 className="metric-value">{card.value}</h2>
+                        </div>
+                        <div className="metric-icon-box">
+                            {card.icon}
                         </div>
                     </div>
                 </div>
-            </div>
+            ))}
 
-            <div className="col-lg-6 justify-content-center col-12 m-0 row">
-                <div className="tooltip-container">
-                    <div
-                        className="d-flex flex-column gap-2 site-icerik-shadow align-items-center border shadow rounded-5 justify-content-center"
-                        style={{height: '200px'}}>
-
-                        <FaBoxArchive size={65} color="green" />
-                        <h3 className="text-center col-12 mb-3 font-weight-bold">{details.productCount}</h3>
-                        <div className="tooltip">Toplam Ürün Sayısı</div>
+            {/* Zaman & Tarih Kartı (8. Kart) */}
+            <div className="col-12 col-sm-6">
+                <div className="metric-card card-time">
+                    <div className="metric-content">
+                        <span className="metric-label">{formatLocalDate(new Date(), false)}</span>
+                        <h2 className="metric-value">{time || "--:--"}</h2>
                     </div>
-                </div>
-            </div>
-
-            <div className="col-lg-6 justify-content-center col-12 m-0 row">
-                <div className="tooltip-container">
-                    <div
-                        className="d-flex flex-column gap-2 site-icerik-shadow align-items-center border shadow rounded-5 justify-content-center"
-                        style={{height: '200px'}}>
-
-                        <FaClipboardList size={65} color="green" />
-                        <h3 className="text-center col-12 mb-3 font-weight-bold">{details.orderCount}</h3>
-                        <div className="tooltip">Toplam Aktif Sipariş</div>
+                    <div className="metric-icon-box">
+                        <FiClock size={32} />
                     </div>
                 </div>
             </div>

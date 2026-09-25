@@ -1,7 +1,5 @@
-import {useEffect, useState} from "react";
-import {toast} from "react-toastify";
-import AOS from "aos";
-import "aos/dist/aos.css";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import {
     AddProductRequest,
     AddProductImageRequest,
@@ -11,9 +9,20 @@ import {
     GetProductDetailRequest,
     UpdateProductRequest
 } from "../../API/ProductApi.js";
-import {GetCategoriesRequest} from "../../API/CategoriesApi.js";
+import { GetCategoriesRequest } from "../../API/CategoriesApi.js";
+import { 
+    FiUploadCloud, 
+    FiX, 
+    FiPlus, 
+    FiTrash2, 
+    FiTag, 
+    FiLayers, 
+    FiDollarSign, 
+    FiFileText, 
+    FiCheckCircle 
+} from "react-icons/fi";
 
-const ProductPopup = ({popupCloser, productId = null}) => {
+const ProductPopup = ({ popupCloser, productId = null }) => {
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState("");
     const [images, setImages] = useState([]);
@@ -21,6 +30,7 @@ const ProductPopup = ({popupCloser, productId = null}) => {
     const [sizeInput, setSizeInput] = useState("");
     const [quantityInput, setQuantityInput] = useState("");
     const [refresh, setRefresh] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const [productData, setProductData] = useState({
         Name: "",
@@ -31,29 +41,33 @@ const ProductPopup = ({popupCloser, productId = null}) => {
         Variants: [],
     });
 
-    // --- Kategorileri çek ---
+    // --- Kategorileri Çek ---
     const getDropdown = async () => {
-        const res = await GetCategoriesRequest();
-        setCategories(res.data);
+        try {
+            const res = await GetCategoriesRequest();
+            setCategories(res?.data || []);
+        } catch (err) {
+            console.error(err);
+        }
     };
 
-    // --- Eğer productId varsa ürünü getir ---
+    // --- Ürün Detayını Çek ---
     const fetchProduct = async () => {
         if (!productId) return;
         try {
             const res = await GetProductDetailRequest(productId);
-            const p = res.data.data;
+            const p = res?.data?.data;
 
             setProductData({
-                Name: p.name,
-                Description: p.description,
-                Price: p.price,
-                BasePrice: p.basePrice ?? 0,
-                CategoryIds: p.categoryIds || [],
-                Variants: p.variants || [],
+                Name: p?.name || "",
+                Description: p?.description || "",
+                Price: p?.price ?? 0,
+                BasePrice: p?.basePrice ?? 0,
+                CategoryIds: p?.categoryIds || [],
+                Variants: p?.variants || [],
             });
 
-            setExistingImages(p.images || []);
+            setExistingImages(p?.images || []);
         } catch (err) {
             console.error("Ürün detay hatası:", err);
             toast.error("Ürün detayları alınamadı!");
@@ -61,12 +75,11 @@ const ProductPopup = ({popupCloser, productId = null}) => {
     };
 
     useEffect(() => {
-        AOS.init({duration: 500});
         getDropdown();
         if (productId) fetchProduct();
     }, [productId, refresh]);
 
-    // --- Kategori ekle / sil ---
+    // --- Kategori Ekle / Sil ---
     const handleAddCategory = () => {
         const id = parseInt(selectedCategory);
         if (!id || productData.CategoryIds.includes(id)) return;
@@ -85,9 +98,11 @@ const ProductPopup = ({popupCloser, productId = null}) => {
         }));
     };
 
-    // --- Görsel yükleme ---
+    // --- Görsel Yükleme ---
     const handleImageUpload = async (e) => {
         const files = Array.from(e.target.files);
+        if (files.length === 0) return;
+
         if (!productId) {
             setImages(prev => [...prev, ...files]);
             return;
@@ -119,16 +134,16 @@ const ProductPopup = ({popupCloser, productId = null}) => {
         }
     };
 
-    // --- Stok işlemleri ---
+    // --- Stok İşlemleri ---
     const addStock = async (event) => {
         event.preventDefault();
-        if (!sizeInput || !quantityInput) return;
+        if (!sizeInput.trim() || !quantityInput) return;
         const qty = parseInt(quantityInput, 10);
+        if (qty <= 0) return;
 
         if (productId) {
-            // Güncelleme modunda API çağrısı
             try {
-                await AddStockRequest(productId, sizeInput.toUpperCase(), qty);
+                await AddStockRequest(productId, sizeInput.toUpperCase().trim(), qty);
                 toast.success("Stok eklendi!");
                 setRefresh(!refresh);
             } catch (err) {
@@ -136,11 +151,13 @@ const ProductPopup = ({popupCloser, productId = null}) => {
                 toast.error("Stok eklenemedi!");
             }
         } else {
-            // Yeni ürün modunda local state
             const updatedVariants = [...productData.Variants];
-            const found = updatedVariants.find(v => v.size === sizeInput.toUpperCase());
-            if (found) found.stock += qty;
-            else updatedVariants.push({size: sizeInput.toUpperCase(), stock: qty});
+            const found = updatedVariants.find(v => v.size === sizeInput.toUpperCase().trim());
+            if (found) {
+                found.stock += qty;
+            } else {
+                updatedVariants.push({ size: sizeInput.toUpperCase().trim(), stock: qty });
+            }
 
             setProductData(prev => ({
                 ...prev,
@@ -170,11 +187,16 @@ const ProductPopup = ({popupCloser, productId = null}) => {
         }
     };
 
-    // --- Ürün kaydet / güncelle ---
+    // --- Ürün Kaydet / Güncelle ---
     const handleSubmit = async () => {
+        if (!productData.Name.trim()) {
+            toast.warn("Lütfen ürün adını giriniz.");
+            return;
+        }
+
+        setIsSubmitting(true);
         try {
             if (productId) {
-                // Güncelleme
                 const payload = {
                     name: productData.Name,
                     description: productData.Description,
@@ -183,9 +205,8 @@ const ProductPopup = ({popupCloser, productId = null}) => {
                     categoryIds: productData.CategoryIds
                 };
                 await UpdateProductRequest(productId, payload);
-                toast.success("Ürün güncellendi!");
+                toast.success("Ürün başarıyla güncellendi!");
             } else {
-                // Yeni ürün ekleme
                 const formData = new FormData();
                 formData.append("Name", productData.Name);
                 formData.append("Description", productData.Description);
@@ -202,179 +223,515 @@ const ProductPopup = ({popupCloser, productId = null}) => {
                 images.forEach((image) => formData.append("Images", image));
 
                 await AddProductRequest(formData);
-                toast.success("Ürün başarıyla eklendi!");
+                toast.success("Ürün başarıyla oluşturuldu!");
             }
-
             popupCloser(false);
         } catch (err) {
             console.error(err);
-            toast.error("İşlem başarısız!");
+            toast.error("İşlem başarısız oldu!");
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
     return (
-        <div className="popup-overlay">
-            <div className="popup-content" data-aos="zoom-in" style={{width: "1200px"}}>
-                <div className="popup-header">
-                    <button className="popup-close-btn" onClick={() => popupCloser(false)}>&times;</button>
+        <div
+            style={{
+                position: "fixed",
+                inset: 0,
+                backgroundColor: "rgba(15, 23, 42, 0.65)",
+                backdropFilter: "blur(6px)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                zIndex: 10000,
+                padding: "1rem"
+            }}
+        >
+            <div
+                style={{
+                    backgroundColor: "#ffffff",
+                    borderRadius: "20px",
+                    width: "100%",
+                    maxWidth: "1080px",
+                    maxHeight: "90vh",
+                    display: "flex",
+                    flexDirection: "column",
+                    boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+                    border: "1px solid rgba(226, 232, 240, 0.8)",
+                    overflow: "hidden"
+                }}
+            >
+                {/* MODAL HEADER */}
+                <div
+                    style={{
+                        padding: "1.25rem 2rem",
+                        borderBottom: "1px solid #f1f5f9",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        backgroundColor: "#ffffff"
+                    }}
+                >
+                    <div className="d-flex align-items-center gap-3">
+                        <div
+                            style={{
+                                width: "42px",
+                                height: "42px",
+                                borderRadius: "12px",
+                                backgroundColor: "#eff6ff",
+                                color: "#2563eb",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center"
+                            }}
+                        >
+                            <FiLayers size={22} />
+                        </div>
+                        <div>
+                            <h5 className="m-0 fw-bold text-dark" style={{ letterSpacing: "-0.3px" }}>
+                                {productId ? "Ürünü Düzenle" : "Yeni Ürün Ekle"}
+                            </h5>
+                            <small className="text-secondary" style={{ fontSize: "0.8rem" }}>
+                                {productId ? `ID: #${productId} ürün detaylarını güncelliyorsunuz.` : "Katalogunuza yeni bir ürün tanımlayın."}
+                            </small>
+                        </div>
+                    </div>
+                    <button
+                        type="button"
+                        onClick={() => popupCloser(false)}
+                        style={{
+                            background: "transparent",
+                            border: "none",
+                            color: "#94a3b8",
+                            cursor: "pointer",
+                            padding: "6px",
+                            borderRadius: "10px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            transition: "all 0.2s"
+                        }}
+                        onMouseEnter={e => {
+                            e.currentTarget.style.backgroundColor = "#f1f5f9";
+                            e.currentTarget.style.color = "#0f172a";
+                        }}
+                        onMouseLeave={e => {
+                            e.currentTarget.style.backgroundColor = "transparent";
+                            e.currentTarget.style.color = "#94a3b8";
+                        }}
+                    >
+                        <FiX size={22} />
+                    </button>
                 </div>
 
-                <div className="popup-form row">
-                    <div className="col-12 fs-2 fw-bold text-center mb-3">
-                        {productId ? "Ürün Düzenleme Paneli" : "Ürün Ekleme Paneli"}
-                    </div>
-
-                    {/* SOL TARAF */}
-                    <div className="col-6">
-                        {/* Görseller */}
-                        <div className="drop-zone" onDragOver={e => e.preventDefault()}>
-                            <p>Ürün görsellerini sürükleyin veya seçmek için tıklayın</p>
-                            <input type="file" multiple onChange={handleImageUpload} className="file-input"/>
-                        </div>
-
-                        <div className="preview-flex mb-3">
-                            {existingImages.map((img) => (
-                                <div key={img.id}
-                                     className="preview-flex-child border shadow-sm rounded-3 overflow-hidden">
-                                    <img className="object-fit-cover h-100
-                                    " src={`https://localhost:7050${img.imageUrl}`} alt="existing" width="100"/>
-                                    <button className="delete-btn px-2 w-100 fs-6"
-                                            onClick={() => handleRemoveExistingImage(img.id)}>Sil
-                                    </button>
-                                </div>
-                            ))}
-
-                            {images.map((image, index) => (
-                                <div key={index} className="preview-flex-child">
-                                    <img src={URL.createObjectURL(image)} alt={`img-${index}`} width="100"/>
-                                    <p>{image.name}</p>
-                                    <button className="delete-btn px-2 fs-6"
-                                            onClick={() => handleRemoveImage(index)}>Sil
-                                    </button>
-                                </div>
-                            ))}
-                        </div>
-
-
-                        {/* Kategori Seçimi */}
-
-                        <div className="d-flex flex-column gap-2">
-                            <label className="fw-bold">Kategori Seçimi</label>
-                            <div className="d-flex align-items-center gap-2 mb-2">
-                                <select value={selectedCategory} onChange={e => setSelectedCategory(e.target.value)}>
-                                    <option value="">Kategori Seçin</option>
-                                    {categories.map(cat => (
-                                        <option key={cat.id} value={cat.id}>{cat.name}</option>
-                                    ))}
-                                </select>
-                                <button className="tumunu-gor-btn-admin fs-6 py-2 px-3" onClick={handleAddCategory}>Ekle
-                                </button>
-                            </div>
-                        </div>
-
-                        <div
-                            className="selected-categories mb-3 d-flex flex-wrap gap-2"
-                        >
-                            {productData.CategoryIds.length > 0 ? (
-                                productData.CategoryIds.map(id => {
-                                    const cat = categories.find(c => c.id === id);
-                                    return cat ? (
-                                        <div
-                                            key={id}
-                                            className="d-flex gap-2 align-items-center justify-content-between border rounded-3 shadow-sm overflow-hidden "
-                                            style={{width: "fit-content"}}
-                                        >
-                                            <span className="category-chip mx-2">{cat.name}</span>
-                                            <button
-                                                className="delete-btn px-2 fs-6"
-                                                onClick={() => handleRemoveCategory(id)}
-                                            >
-                                                Sil
-                                            </button>
-                                        </div>
-                                    ) : null;
-                                })
-                            ) : (
-                                <p className="text-muted">Henüz kategori seçilmedi.</p>
-                            )}
-                        </div>
-
-                        {/* Stok Yönetimi */}
-                        <div className="d-flex flex-column gap-2">
-
-                            <label className="fw-bold">Stok Yönetimi</label>
-                            <div className="d-flex align-items-center gap-2 mb-2">
-                                <input type="text" placeholder="Beden" value={sizeInput}
-                                       onChange={e => setSizeInput(e.target.value)}/>
-                                <input type="number" placeholder="Adet" value={quantityInput}
-                                       onChange={e => setQuantityInput(e.target.value)}/>
-                                <button className="tumunu-gor-btn-admin fs-6 py-2 px-3" onClick={addStock}>Ekle</button>
-                            </div>
-                        </div>
-
-                        <div className="stocks-card-flex mb-3">
-                            {productData.Variants.map((item, idx) => (
-                                <div key={idx}
-                                     className="d-flex gap-2 justify-content-between align-items-center border rounded-2 overflow-hidden">
-                                    <span className="mx-2">
-                                    {item.size}: {item.stock}
+                {/* MODAL BODY (SCROLLABLE) */}
+                <div style={{ padding: "1.75rem 2rem", overflowY: "auto", flexGrow: 1 }}>
+                    <div className="row g-4">
+                        
+                        {/* SOL SÜTUN: Görseller, Kategori & Stok */}
+                        <div className="col-12 col-lg-6 d-flex flex-column gap-4">
+                            
+                            {/* Görseller Alanı */}
+                            <div>
+                                <label className="form-label fw-bold text-dark d-flex align-items-center gap-2 mb-2" style={{ fontSize: "0.88rem" }}>
+                                    <FiUploadCloud size={16} className="text-primary" /> Ürün Görselleri
+                                </label>
+                                <label
+                                    style={{
+                                        border: "2px dashed #cbd5e1",
+                                        borderRadius: "14px",
+                                        padding: "1.5rem",
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        cursor: "pointer",
+                                        backgroundColor: "#f8fafc",
+                                        transition: "all 0.2s",
+                                        width: "100%",
+                                        margin: 0
+                                    }}
+                                    onMouseEnter={e => e.currentTarget.style.borderColor = "#3b82f6"}
+                                    onMouseLeave={e => e.currentTarget.style.borderColor = "#cbd5e1"}
+                                >
+                                    <div
+                                        style={{
+                                            width: "48px",
+                                            height: "48px",
+                                            borderRadius: "50%",
+                                            backgroundColor: "#ffffff",
+                                            boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "center",
+                                            color: "#2563eb",
+                                            marginBottom: "0.5rem"
+                                        }}
+                                    >
+                                        <FiUploadCloud size={24} />
+                                    </div>
+                                    <span style={{ fontSize: "0.85rem", fontWeight: 600, color: "#334155" }}>
+                                        Görselleri buraya sürükleyin veya seçin
                                     </span>
-                                    <button className="delete-btn  px-2 fs-6"
-                                            onClick={() => handleRemoveVariant(item)}>Sil
+                                    <span style={{ fontSize: "0.75rem", color: "#94a3b8", marginTop: "2px" }}>
+                                        PNG, JPG veya WEBP (Çoklu seçim desteklenir)
+                                    </span>
+                                    <input type="file" multiple onChange={handleImageUpload} style={{ display: "none" }} />
+                                </label>
+
+                                {/* Görsel Önizleme Galerisi */}
+                                {(existingImages.length > 0 || images.length > 0) && (
+                                    <div className="d-flex flex-wrap gap-2 mt-3 p-2 bg-light rounded-3 border">
+                                        {existingImages.map((img) => (
+                                            <div
+                                                key={img.id}
+                                                style={{
+                                                    position: "relative",
+                                                    width: "74px",
+                                                    height: "74px",
+                                                    borderRadius: "10px",
+                                                    overflow: "hidden",
+                                                    border: "1px solid #e2e8f0"
+                                                }}
+                                            >
+                                                <img
+                                                    src={`https://localhost:7050${img.imageUrl}`}
+                                                    alt="Mevcut Görsel"
+                                                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                                                />
+                                                <button
+                                                    type="button"
+                                                    onClick={() => handleRemoveExistingImage(img.id)}
+                                                    style={{
+                                                        position: "absolute",
+                                                        top: "4px",
+                                                        right: "4px",
+                                                        backgroundColor: "rgba(239, 68, 68, 0.9)",
+                                                        color: "#fff",
+                                                        border: "none",
+                                                        borderRadius: "50%",
+                                                        width: "20px",
+                                                        height: "20px",
+                                                        display: "flex",
+                                                        alignItems: "center",
+                                                        justifyContent: "center",
+                                                        cursor: "pointer",
+                                                        padding: 0
+                                                    }}
+                                                >
+                                                    <FiTrash2 size={11} />
+                                                </button>
+                                            </div>
+                                        ))}
+
+                                        {images.map((image, index) => (
+                                            <div
+                                                key={index}
+                                                style={{
+                                                    position: "relative",
+                                                    width: "74px",
+                                                    height: "74px",
+                                                    borderRadius: "10px",
+                                                    overflow: "hidden",
+                                                    border: "2px solid #3b82f6"
+                                                }}
+                                            >
+                                                <img
+                                                    src={URL.createObjectURL(image)}
+                                                    alt="Yeni Görsel"
+                                                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                                                />
+                                                <button
+                                                    type="button"
+                                                    onClick={() => handleRemoveImage(index)}
+                                                    style={{
+                                                        position: "absolute",
+                                                        top: "4px",
+                                                        right: "4px",
+                                                        backgroundColor: "rgba(239, 68, 68, 0.9)",
+                                                        color: "#fff",
+                                                        border: "none",
+                                                        borderRadius: "50%",
+                                                        width: "20px",
+                                                        height: "20px",
+                                                        display: "flex",
+                                                        alignItems: "center",
+                                                        justifyContent: "center",
+                                                        cursor: "pointer",
+                                                        padding: 0
+                                                    }}
+                                                >
+                                                    <FiTrash2 size={11} />
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Kategori Seçimi */}
+                            <div>
+                                <label className="form-label fw-bold text-dark d-flex align-items-center gap-2 mb-2" style={{ fontSize: "0.88rem" }}>
+                                    <FiTag size={16} className="text-primary" /> Kategoriler
+                                </label>
+                                <div className="input-group">
+                                    <select
+                                        className="form-select border-slate-300"
+                                        style={{ borderRadius: "10px 0 0 10px", fontSize: "0.9rem", boxShadow: "none" }}
+                                        value={selectedCategory}
+                                        onChange={e => setSelectedCategory(e.target.value)}
+                                    >
+                                        <option value="">Kategori Seçin...</option>
+                                        {categories.map(cat => (
+                                            <option key={cat.id} value={cat.id}>{cat.name}</option>
+                                        ))}
+                                    </select>
+                                    <button
+                                        type="button"
+                                        className="btn btn-primary d-flex align-items-center gap-1"
+                                        style={{ borderRadius: "0 10px 10px 0", padding: "0 18px", fontWeight: 600, fontSize: "0.88rem" }}
+                                        onClick={handleAddCategory}
+                                    >
+                                        <FiPlus size={16} /> Ekle
                                     </button>
                                 </div>
-                            ))}
+
+                                <div className="d-flex flex-wrap gap-2 mt-2">
+                                    {productData.CategoryIds.length > 0 ? (
+                                        productData.CategoryIds.map(id => {
+                                            const cat = categories.find(c => c.id === id);
+                                            return cat ? (
+                                                <span
+                                                    key={id}
+                                                    style={{
+                                                        backgroundColor: "#eff6ff",
+                                                        color: "#1d4ed8",
+                                                        borderRadius: "8px",
+                                                        padding: "4px 10px",
+                                                        fontSize: "0.82rem",
+                                                        fontWeight: 500,
+                                                        display: "inline-flex",
+                                                        alignItems: "center",
+                                                        gap: "6px",
+                                                        border: "1px solid #dbeafe"
+                                                    }}
+                                                >
+                                                    {cat.name}
+                                                    <FiX
+                                                        size={14}
+                                                        style={{ cursor: "pointer" }}
+                                                        onClick={() => handleRemoveCategory(id)}
+                                                    />
+                                                </span>
+                                            ) : null;
+                                        })
+                                    ) : (
+                                        <small className="text-muted" style={{ fontSize: "0.78rem" }}>Seçilen kategori yok.</small>
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Stok ve Varyant Yönetimi */}
+                            <div>
+                                <label className="form-label fw-bold text-dark d-flex align-items-center gap-2 mb-2" style={{ fontSize: "0.88rem" }}>
+                                    <FiLayers size={16} className="text-primary" /> Stok & Varyant
+                                </label>
+                                <div className="d-flex gap-2">
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="Beden (örn: M, 42)"
+                                        style={{ borderRadius: "10px", fontSize: "0.9rem", boxShadow: "none" }}
+                                        value={sizeInput}
+                                        onChange={e => setSizeInput(e.target.value)}
+                                    />
+                                    <input
+                                        type="number"
+                                        className="form-control"
+                                        placeholder="Adet"
+                                        style={{ borderRadius: "10px", fontSize: "0.9rem", width: "120px", boxShadow: "none" }}
+                                        value={quantityInput}
+                                        onChange={e => setQuantityInput(e.target.value)}
+                                    />
+                                    <button
+                                        type="button"
+                                        className="btn btn-outline-primary d-flex align-items-center gap-1"
+                                        style={{ borderRadius: "10px", fontWeight: 600, fontSize: "0.88rem", whiteSpace: "nowrap" }}
+                                        onClick={addStock}
+                                    >
+                                        <FiPlus size={16} /> Ekle
+                                    </button>
+                                </div>
+
+                                <div className="d-flex flex-wrap gap-2 mt-2">
+                                    {productData.Variants.length > 0 ? (
+                                        productData.Variants.map((item, idx) => (
+                                            <span
+                                                key={idx}
+                                                style={{
+                                                    backgroundColor: "#f8fafc",
+                                                    color: "#334155",
+                                                    borderRadius: "8px",
+                                                    padding: "5px 12px",
+                                                    fontSize: "0.82rem",
+                                                    fontWeight: 600,
+                                                    display: "inline-flex",
+                                                    alignItems: "center",
+                                                    gap: "8px",
+                                                    border: "1px solid #e2e8f0"
+                                                }}
+                                            >
+                                                <span>{item.size}</span>
+                                                <span className="badge bg-secondary-subtle text-secondary rounded-pill">{item.stock} ad.</span>
+                                                <FiTrash2
+                                                    size={13}
+                                                    className="text-danger"
+                                                    style={{ cursor: "pointer" }}
+                                                    onClick={() => handleRemoveVariant(item)}
+                                                />
+                                            </span>
+                                        ))
+                                    ) : (
+                                        <small className="text-muted" style={{ fontSize: "0.78rem" }}>Henüz varyant eklenmedi.</small>
+                                    )}
+                                </div>
+                            </div>
+
                         </div>
-                    </div>
 
-                    {/* SAĞ TARAF */}
-                    <div className="col-6 d-flex flex-column gap-3">
-
-                        <label>Ürün Adı</label>
-                        <input
-                            type="text"
-                            placeholder="Ürün Adı"
-                            value={productData.Name}
-                            onChange={e => setProductData(prev => ({...prev, Name: e.target.value}))}
-                        />
-
-                        {productId ? null : (
-                            <div className="d-flex flex-column gap-3">
-                                <label>Alış Fiyatı</label>
+                        {/* SAĞ SÜTUN: Temel Bilgiler, Fiyatlar ve Açıklama */}
+                        <div className="col-12 col-lg-6 d-flex flex-column gap-3">
+                            
+                            <div>
+                                <label className="form-label fw-bold text-dark mb-1" style={{ fontSize: "0.88rem" }}>
+                                    Ürün Adı <span className="text-danger">*</span>
+                                </label>
                                 <input
-                                    type="number"
-                                    placeholder="Alış Fiyatı"
-                                    value={productData.BasePrice}
-                                    onChange={e => setProductData(prev => ({
-                                        ...prev,
-                                        BasePrice: parseFloat(e.target.value)
-                                    }))}
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Ürünün tam adını girin"
+                                    style={{ borderRadius: "10px", padding: "10px 14px", fontSize: "0.92rem", boxShadow: "none" }}
+                                    value={productData.Name}
+                                    onChange={e => setProductData(prev => ({ ...prev, Name: e.target.value }))}
                                 />
                             </div>
-                        )}
 
+                            <div className="row g-2">
+                                {!productId && (
+                                    <div className="col-6">
+                                        <label className="form-label fw-bold text-dark d-flex align-items-center gap-1 mb-1" style={{ fontSize: "0.88rem" }}>
+                                            <FiDollarSign size={14} className="text-muted" /> Alış Fiyatı (₺)
+                                        </label>
+                                        <input
+                                            type="number"
+                                            className="form-control"
+                                            placeholder="0.00"
+                                            style={{ borderRadius: "10px", padding: "10px 14px", fontSize: "0.92rem", boxShadow: "none" }}
+                                            value={productData.BasePrice}
+                                            onChange={e => setProductData(prev => ({
+                                                ...prev,
+                                                BasePrice: parseFloat(e.target.value) || 0
+                                            }))}
+                                        />
+                                    </div>
+                                )}
+                                <div className={!productId ? "col-6" : "col-12"}>
+                                    <label className="form-label fw-bold text-dark d-flex align-items-center gap-1 mb-1" style={{ fontSize: "0.88rem" }}>
+                                        <FiDollarSign size={14} className="text-success" /> Satış Fiyatı (₺) <span className="text-danger">*</span>
+                                    </label>
+                                    <input
+                                        type="number"
+                                        className="form-control"
+                                        placeholder="0.00"
+                                        style={{ borderRadius: "10px", padding: "10px 14px", fontSize: "0.92rem", boxShadow: "none" }}
+                                        value={productData.Price}
+                                        onChange={e => setProductData(prev => ({
+                                            ...prev,
+                                            Price: parseFloat(e.target.value) || 0
+                                        }))}
+                                    />
+                                </div>
+                            </div>
 
-                        <label>Satış Fiyatı</label>
-                        <input
-                            type="number"
-                            placeholder="Satış Fiyatı"
-                            value={productData.Price}
-                            onChange={e => setProductData(prev => ({...prev, Price: parseFloat(e.target.value)}))}
-                        />
+                            <div className="flex-grow-1 d-flex flex-column">
+                                <label className="form-label fw-bold text-dark d-flex align-items-center gap-1 mb-1" style={{ fontSize: "0.88rem" }}>
+                                    <FiFileText size={14} className="text-muted" /> Ürün Açıklaması
+                                </label>
+                                <textarea
+                                    className="form-control flex-grow-1"
+                                    placeholder="Ürüne dair teknik detaylar, kumaş veya garanti bilgileri..."
+                                    style={{
+                                        borderRadius: "12px",
+                                        padding: "12px",
+                                        fontSize: "0.9rem",
+                                        resize: "none",
+                                        minHeight: "170px",
+                                        boxShadow: "none"
+                                    }}
+                                    value={productData.Description}
+                                    onChange={e => setProductData(prev => ({ ...prev, Description: e.target.value }))}
+                                />
+                            </div>
 
-                        <label>Açıklama</label>
-                        <textarea
-                            placeholder="Ürün Açıklaması"
-                            value={productData.Description}
-                            style={{height: "200px", resize: "none"}}
-                            onChange={e => setProductData(prev => ({...prev, Description: e.target.value}))}
-                        />
+                        </div>
 
-                        <button className="tumunu-gor-btn-admin mt-3" onClick={handleSubmit}>
-                            {productId ? "Güncelle" : "Kaydet"}
-                        </button>
                     </div>
                 </div>
+
+                {/* MODAL FOOTER */}
+                <div
+                    style={{
+                        padding: "1.25rem 2rem",
+                        borderTop: "1px solid #f1f5f9",
+                        backgroundColor: "#f8fafc",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "flex-end",
+                        gap: "12px"
+                    }}
+                >
+                    <button
+                        type="button"
+                        onClick={() => popupCloser(false)}
+                        disabled={isSubmitting}
+                        style={{
+                            background: "#ffffff",
+                            border: "1px solid #cbd5e1",
+                            padding: "9px 20px",
+                            borderRadius: "10px",
+                            fontSize: "0.9rem",
+                            fontWeight: 600,
+                            color: "#475569",
+                            cursor: "pointer"
+                        }}
+                    >
+                        Vazgeç
+                    </button>
+                    <button
+                        type="button"
+                        onClick={handleSubmit}
+                        disabled={isSubmitting}
+                        style={{
+                            backgroundColor: "#2563eb",
+                            border: "none",
+                            padding: "9px 26px",
+                            borderRadius: "10px",
+                            fontSize: "0.9rem",
+                            fontWeight: 600,
+                            color: "#ffffff",
+                            boxShadow: "0 4px 14px rgba(37, 99, 235, 0.35)",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "8px",
+                            cursor: "pointer"
+                        }}
+                    >
+                        <FiCheckCircle size={16} />
+                        {isSubmitting ? "Kaydediliyor..." : productId ? "Değişiklikleri Güncelle" : "Ürünü Yayınla"}
+                    </button>
+                </div>
+
             </div>
         </div>
     );

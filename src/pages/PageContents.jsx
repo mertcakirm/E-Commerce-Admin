@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import './css/General.css';
 import {
     GetSliderDataRequest,
@@ -6,18 +6,26 @@ import {
 } from '../API/PageContentsApi.js';
 import AddCartPopup from "../components/Popups/AddCartPopup.jsx";
 import AddSliderContentPopup from "../components/Popups/AddSliderContentPopup.jsx";
-import AOS from "aos";
-import "aos/dist/aos.css";
 import LoadingComp from "../components/Other/Loading.jsx";
-import {toast} from "react-toastify";
-import ProcessPopup from "../components/Popups/processPopup.jsx"; // ✨ EKLENDİ
+import { toast } from "react-toastify";
+import ProcessPopup from "../components/Popups/ProcessPopup.jsx";
+import { 
+    FiSliders, 
+    FiGrid, 
+    FiPlus, 
+    FiTrash2, 
+    FiImage, 
+    FiLink, 
+    FiMaximize2, 
+    FiTag 
+} from "react-icons/fi";
 
 const PageContents = () => {
     const [cartPopup, setCartPopup] = useState(false);
     const [sliderPopup, setSliderPopup] = useState(false);
     const [sliderData, setSliderData] = useState([]);
     const [cartData, setCartData] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [refresh, setRefresh] = useState(false);
     const [processConfig, setProcessConfig] = useState({
         isOpen: false,
@@ -26,7 +34,7 @@ const PageContents = () => {
         id: null,
     });
 
-    const toggleProcess = ({text, type, id}) => {
+    const toggleProcess = ({ text, type, id }) => {
         setProcessConfig({
             isOpen: true,
             text,
@@ -35,14 +43,22 @@ const PageContents = () => {
         });
     };
 
+    const getImageUrl = (url) => {
+        if (!url || url === "string") return null;
+        if (url.startsWith("http")) return url;
+        const cleanPath = url.startsWith("/contents/") ? url : `/contents/${url}`;
+        return `https://localhost:7050${cleanPath}`;
+    };
+
     const fetchData = async () => {
         try {
-            setLoading(false);
-            const sliders = await GetSliderDataRequest();
-            console.log(sliders)
-            setSliderData(sliders.data.data || []);
-            const carts = await GetCartDataRequest();
-            setCartData(carts.data.data || []);
+            setLoading(true);
+            const [slidersRes, cartsRes] = await Promise.all([
+                GetSliderDataRequest(),
+                GetCartDataRequest()
+            ]);
+            setSliderData(slidersRes?.data?.data || []);
+            setCartData(cartsRes?.data?.data || []);
         } catch (error) {
             console.error("Veriler alınamadı:", error);
             toast.error("İçerikler yüklenirken hata oluştu.");
@@ -52,177 +68,437 @@ const PageContents = () => {
     };
 
     useEffect(() => {
-        AOS.init({duration: 500});
-        fetchData();
-    }, []);
-
-    useEffect(() => {
         fetchData();
     }, [refresh]);
 
-    if (loading) return <LoadingComp/>;
+    if (loading) return <LoadingComp />;
 
     return (
-        <div>
-            <div className="admin-sag-container" data-aos="fade-in">
-                <div className="row" style={{height: "100vh"}}>
-
-                    <div className="row admin-genel-row col-12">
-                        <div className="col-12">
-                            <div className="row row-gap-3">
-                                <div className="row justify-content-between">
-                                    <div className="col-6 alt-basliklar-admin">Slider İçerikleri</div>
-                                    <button
-                                        className="tumunu-gor-btn-admin col-3"
-                                        style={{height: 'fit-content',width:'fit-content'}}
-                                        onClick={() => setSliderPopup(true)}
-                                    >
-                                        Slider Ekle
-                                    </button>
-                                </div>
-
-                                <div className="col-lg-12 row table-responsive">
-                                    <table className="table text-center">
-                                        <thead>
-                                            <tr className="border-0">
-                                                <th style={{borderRadius: '30px 0 0 30px', border: '0', paddingLeft: '15px'}}>Görsel</th>
-                                                <th className="border-0">Üst Başlık</th>
-                                                <th className="border-0">Orta Başlık</th>
-                                                <th className="border-0">Alt Başlık</th>
-                                                <th className="border-0">Adres</th>
-                                                <th style={{borderRadius: ' 0 30px 30px 0 ', border: '0'}}>İşlem</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        {sliderData?.length > 0 ? (
-                                            sliderData.map((slider) => (
-                                                <tr key={slider.id}>
-                                                    <td>
-                                                        <img  src={slider.imageUrl && slider.imageUrl !== "string"
-                                                                    ? (slider.imageUrl.startsWith("http")
-                                                                        ? slider.imageUrl
-                                                                        : `https://localhost:7050${slider.imageUrl.startsWith("/contents/") ? slider.imageUrl : `/contents/${slider.imageUrl}`}`)
-                                                                    : "https://thumb.ac-illust.com/b1/b170870007dfa419295d949814474ab2_t.jpeg"
-                                                            }
-                                                            style={{maxWidth: '200px', objectFit: 'contain'}}
-                                                            className="img-fluid w-100"
-                                                            alt={slider.topTitle || "slider"}
-                                                        />
-                                                    </td>
-                                                    <td className="text-center">{slider.parentName}</td>
-                                                    <td className="text-center">{slider.name}</td>
-                                                    <td className="text-center">{slider.subName}</td>
-                                                    <td className="text-center">{slider.href}</td>
-                                                    <td className="text-center">
-                                                        <button
-                                                            className="add-btn bg-danger text-light fw-bold"
-                                                            onClick={() =>
-                                                                toggleProcess({
-                                                                    text: "Bu slider silinsin mi?",
-                                                                    type: "delete_slider",
-                                                                    id: slider.id
-                                                                })
-                                                            }
-                                                        >
-                                                            Sil
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            ))
-                                        ) : (
-                                            <tr>
-                                                <td colSpan="6" className="text-center">
-                                                    Slider bulunamadı.
-                                                </td>
-                                            </tr>
-                                        )}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+        <div className="admin-sag-container">
+            
+            {/* 1. BÖLÜM: SLİDER İÇERİKLERİ */}
+            <div className="mb-5">
+                <div className="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3 mb-4">
+                    <div className="d-flex align-items-center gap-3">
+                        <div
+                            style={{
+                                width: "48px",
+                                height: "48px",
+                                borderRadius: "14px",
+                                backgroundColor: "#eff6ff",
+                                color: "#2563eb",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center"
+                            }}
+                        >
+                            <FiSliders size={24} />
+                        </div>
+                        <div>
+                            <h4 className="m-0 fw-bold text-dark" style={{ letterSpacing: "-0.4px" }}>
+                                Slider Yönetimi
+                            </h4>
+                            <small className="text-secondary" style={{ fontSize: "0.82rem" }}>
+                                Ana sayfa üst bölümünde dönen kampanya bannerları
+                            </small>
                         </div>
                     </div>
 
-                    <div className="row admin-genel-row col-12 mt-3">
-                        <div className="col-12" style={{height: 'fit-content'}}>
-                            <div className="row row-gap-3 h-100">
-                                <div className="row justify-content-between">
-                                    <div className="col-6 alt-basliklar-admin">Kategori Kartları</div>
-                                    <button
-                                        className="tumunu-gor-btn-admin col-4"
-                                        style={{height: 'fit-content',width:'fit-content'}}
-                                        onClick={() => setCartPopup(true)}
-                                    >
-                                        Kategori Kartı Ekle
-                                    </button>
-                                </div>
+                    <button
+                        type="button"
+                        onClick={() => setSliderPopup(true)}
+                        style={{
+                            backgroundColor: "#2563eb",
+                            border: "none",
+                            padding: "10px 20px",
+                            borderRadius: "10px",
+                            fontSize: "0.88rem",
+                            fontWeight: 600,
+                            color: "#ffffff",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "8px",
+                            cursor: "pointer",
+                            boxShadow: "0 4px 14px rgba(37, 99, 235, 0.3)",
+                            transition: "all 0.15s ease"
+                        }}
+                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#1d4ed8")}
+                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#2563eb")}
+                    >
+                        <FiPlus size={18} />
+                        Slider Ekle
+                    </button>
+                </div>
 
+                <div
+                    style={{
+                        backgroundColor: "#ffffff",
+                        borderRadius: "16px",
+                        border: "1px solid rgba(0, 0, 0, 0.05)",
+                        boxShadow: "0 4px 20px -2px rgba(0, 0, 0, 0.04)",
+                        padding: "1.25rem",
+                        overflow: "hidden"
+                    }}
+                >
+                    <div className="table-responsive p-0 m-0 border-0">
+                        <table className="table align-middle m-0 table-hover">
+                            <thead style={{ backgroundColor: "#f8fafc" }}>
+                                <tr style={{ fontSize: "0.78rem", borderBottom: "1px solid #e2e8f0" }}>
+                                    <th className="py-3 px-3 text-secondary text-uppercase fw-semibold" style={{ width: "160px" }}>Afiş Görseli</th>
+                                    <th className="py-3 px-3 text-secondary text-uppercase fw-semibold" style={{ minWidth: "160px" }}>Üst Başlık</th>
+                                    <th className="py-3 px-3 text-secondary text-uppercase fw-semibold" style={{ minWidth: "180px" }}>Ana Başlık</th>
+                                    <th className="py-3 px-3 text-secondary text-uppercase fw-semibold" style={{ minWidth: "200px" }}>Alt Başlık</th>
+                                    <th className="py-3 px-3 text-secondary text-uppercase fw-semibold" style={{ minWidth: "120px" }}>Hedef Kategori</th>
+                                    <th className="py-3 px-3 text-secondary text-uppercase fw-semibold text-end" style={{ width: "90px" }}>İşlem</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {sliderData?.length > 0 ? (
+                                    sliderData.map((slider) => {
+                                        const img = getImageUrl(slider.imageUrl);
+                                        return (
+                                            <tr key={slider.id} style={{ borderBottom: "1px solid #f1f5f9", fontSize: "0.88rem" }}>
+                                                {/* Afiş Görseli */}
+                                                <td className="px-3 py-2">
+                                                    <div
+                                                        style={{
+                                                            width: "140px",
+                                                            height: "64px",
+                                                            borderRadius: "10px",
+                                                            overflow: "hidden",
+                                                            border: "1px solid #e2e8f0",
+                                                            backgroundColor: "#f8fafc",
+                                                            display: "flex",
+                                                            alignItems: "center",
+                                                            justifyContent: "center"
+                                                        }}
+                                                    >
+                                                        {img ? (
+                                                            <img
+                                                                src={img}
+                                                                alt={slider.name || "Slider"}
+                                                                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                                                                onError={(e) => {
+                                                                    e.target.onerror = null;
+                                                                    e.target.src = "https://placehold.co/140x64?text=Görsel+Yok";
+                                                                }}
+                                                            />
+                                                        ) : (
+                                                            <FiImage size={24} className="text-muted" />
+                                                        )}
+                                                    </div>
+                                                </td>
 
-                                <div className="col-lg-12 row table-responsive">
-                                    <table className="table text-center">
-                                        <thead>
-                                            <tr className="border-0">
-                                                <th style={{borderRadius: '30px 0 0 30px', border: '0', paddingLeft: '15px'}}>Görsel</th>
-                                                <th className="border-0">Kart Adı</th>
-                                                <th className="border-0">Adres</th>
-                                                <th className="border-0">Boyut</th>
-                                                <th style={{borderRadius: ' 0 30px 30px 0 ', border: '0'}}>İşlem</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        {cartData?.length > 0 ? (
-                                            cartData.map((cart) => (
-                                                <tr key={cart.id}>
-                                                    <td className="text-center">
-                                                        <img
-                                                            src={
-                                                                cart.imageUrl && cart.imageUrl !== "string"
-                                                                    ? (cart.imageUrl.startsWith("http")
-                                                                        ? cart.imageUrl
-                                                                        : `https://localhost:7050${cart.imageUrl.startsWith("/contents/") ? cart.imageUrl : `/contents/${cart.imageUrl}`}`)
-                                                                    : "https://thumb.ac-illust.com/b1/b170870007dfa419295d949814474ab2_t.jpeg"
-                                                            }
-                                                            style={{maxWidth: '100px', objectFit: 'contain'}}
-                                                            className="img-fluid w-100"
-                                                            alt={cart.topTitle || "slider"}
-                                                        />
-                                                    </td>
-                                                    <td className="text-center">{cart.name}</td>
-                                                    <td className="text-center">{cart.href}</td>
-                                                    <td className="text-center">{cart.cartSize}</td>
-                                                    <td className="text-center">
-                                                        <button
-                                                            className="add-btn bg-danger text-light fw-bold"
-                                                            onClick={() =>
-                                                                toggleProcess({
-                                                                    text: "Bu kart silinsin mi?",
-                                                                    type: "delete_cart",
-                                                                    id: cart.id
-                                                                })
-                                                            }
-                                                        >
-                                                            Sil
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            ))
-                                        ) : (
-                                            <tr>
-                                                <td colSpan="6" className="text-center">
-                                                    Kart bulunamadı.
+                                                {/* Üst Başlık */}
+                                                <td className="px-3 text-secondary" style={{ fontSize: "0.82rem" }}>
+                                                    {slider.parentName || "-"}
+                                                </td>
+
+                                                {/* Ana Başlık */}
+                                                <td className="px-3 fw-bold text-dark">
+                                                    {slider.name || "-"}
+                                                </td>
+
+                                                {/* Alt Başlık */}
+                                                <td className="px-3 text-secondary" style={{ fontSize: "0.84rem" }}>
+                                                    {slider.subName || "-"}
+                                                </td>
+
+                                                {/* Hedef Kategori / Link */}
+                                                <td className="px-3">
+                                                    <span
+                                                        style={{
+                                                            display: "inline-flex",
+                                                            alignItems: "center",
+                                                            gap: "5px",
+                                                            backgroundColor: "#eff6ff",
+                                                            color: "#1d4ed8",
+                                                            borderRadius: "8px",
+                                                            padding: "4px 10px",
+                                                            fontSize: "0.78rem",
+                                                            fontWeight: 600,
+                                                            border: "1px solid #dbeafe"
+                                                        }}
+                                                    >
+                                                        <FiLink size={12} />
+                                                        {slider.href ? `#${slider.href}` : "Belirtilmemiş"}
+                                                    </span>
+                                                </td>
+
+                                                {/* Silme Butonu */}
+                                                <td className="px-3 text-end">
+                                                    <button
+                                                        type="button"
+                                                        title="Sliderı Sil"
+                                                        onClick={() =>
+                                                            toggleProcess({
+                                                                text: `"${slider.name || 'Seçili'}" slider kaydını silmek istediğinize emin misiniz?`,
+                                                                type: "delete_slider",
+                                                                id: slider.id
+                                                            })
+                                                        }
+                                                        style={{
+                                                            backgroundColor: "#fef2f2",
+                                                            border: "1px solid #fee2e2",
+                                                            color: "#ef4444",
+                                                            borderRadius: "8px",
+                                                            width: "36px",
+                                                            height: "36px",
+                                                            display: "inline-flex",
+                                                            alignItems: "center",
+                                                            justifyContent: "center",
+                                                            cursor: "pointer",
+                                                            transition: "all 0.15s ease"
+                                                        }}
+                                                        onMouseEnter={(e) => {
+                                                            e.currentTarget.style.backgroundColor = "#ef4444";
+                                                            e.currentTarget.style.color = "#ffffff";
+                                                        }}
+                                                        onMouseLeave={(e) => {
+                                                            e.currentTarget.style.backgroundColor = "#fef2f2";
+                                                            e.currentTarget.style.color = "#ef4444";
+                                                        }}
+                                                    >
+                                                        <FiTrash2 size={16} />
+                                                    </button>
                                                 </td>
                                             </tr>
-                                        )}
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                            </div>
-                        </div>
+                                        );
+                                    })
+                                ) : (
+                                    <tr>
+                                        <td colSpan="6" className="text-center py-5 text-muted">
+                                            Kayıtlı slider içeriği bulunmuyor.
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
 
+            {/* 2. BÖLÜM: KATEGORİ KARTLARI */}
+            <div>
+                <div className="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3 mb-4">
+                    <div className="d-flex align-items-center gap-3">
+                        <div
+                            style={{
+                                width: "48px",
+                                height: "48px",
+                                borderRadius: "14px",
+                                backgroundColor: "#eff6ff",
+                                color: "#2563eb",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center"
+                            }}
+                        >
+                            <FiGrid size={24} />
+                        </div>
+                        <div>
+                            <h4 className="m-0 fw-bold text-dark" style={{ letterSpacing: "-0.4px" }}>
+                                Kategori Vitrin Kartları
+                            </h4>
+                            <small className="text-secondary" style={{ fontSize: "0.82rem" }}>
+                                Ana sayfa bloklarında yer alan özel ebatlı kategori geçiş kartları
+                            </small>
+                        </div>
+                    </div>
+
+                    <button
+                        type="button"
+                        onClick={() => setCartPopup(true)}
+                        style={{
+                            backgroundColor: "#2563eb",
+                            border: "none",
+                            padding: "10px 20px",
+                            borderRadius: "10px",
+                            fontSize: "0.88rem",
+                            fontWeight: 600,
+                            color: "#ffffff",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "8px",
+                            cursor: "pointer",
+                            boxShadow: "0 4px 14px rgba(37, 99, 235, 0.3)",
+                            transition: "all 0.15s ease"
+                        }}
+                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#1d4ed8")}
+                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#2563eb")}
+                    >
+                        <FiPlus size={18} />
+                        Kategori Kartı Ekle
+                    </button>
+                </div>
+
+                <div
+                    style={{
+                        backgroundColor: "#ffffff",
+                        borderRadius: "16px",
+                        border: "1px solid rgba(0, 0, 0, 0.05)",
+                        boxShadow: "0 4px 20px -2px rgba(0, 0, 0, 0.04)",
+                        padding: "1.25rem",
+                        overflow: "hidden"
+                    }}
+                >
+                    <div className="table-responsive p-0 m-0 border-0">
+                        <table className="table align-middle m-0 table-hover">
+                            <thead style={{ backgroundColor: "#f8fafc" }}>
+                                <tr style={{ fontSize: "0.78rem", borderBottom: "1px solid #e2e8f0" }}>
+                                    <th className="py-3 px-3 text-secondary text-uppercase fw-semibold" style={{ width: "100px" }}>Görsel</th>
+                                    <th className="py-3 px-3 text-secondary text-uppercase fw-semibold">Kart Adı</th>
+                                    <th className="py-3 px-3 text-secondary text-uppercase fw-semibold" style={{ minWidth: "160px" }}>Hedef Adres</th>
+                                    <th className="py-3 px-3 text-secondary text-uppercase fw-semibold text-center" style={{ width: "130px" }}>Boyut</th>
+                                    <th className="py-3 px-3 text-secondary text-uppercase fw-semibold text-end" style={{ width: "90px" }}>İşlem</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {cartData?.length > 0 ? (
+                                    cartData.map((cart) => {
+                                        const img = getImageUrl(cart.imageUrl);
+                                        return (
+                                            <tr key={cart.id} style={{ borderBottom: "1px solid #f1f5f9", fontSize: "0.88rem" }}>
+                                                {/* Görsel */}
+                                                <td className="px-3 py-2">
+                                                    <div
+                                                        style={{
+                                                            width: "60px",
+                                                            height: "60px",
+                                                            borderRadius: "10px",
+                                                            overflow: "hidden",
+                                                            border: "1px solid #e2e8f0",
+                                                            backgroundColor: "#f8fafc",
+                                                            display: "flex",
+                                                            alignItems: "center",
+                                                            justifyContent: "center"
+                                                        }}
+                                                    >
+                                                        {img ? (
+                                                            <img
+                                                                src={img}
+                                                                alt={cart.name || "Kart"}
+                                                                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                                                                onError={(e) => {
+                                                                    e.target.onerror = null;
+                                                                    e.target.src = "https://placehold.co/60x60?text=Görsel";
+                                                                }}
+                                                            />
+                                                        ) : (
+                                                            <FiImage size={20} className="text-muted" />
+                                                        )}
+                                                    </div>
+                                                </td>
+
+                                                {/* Kart Adı */}
+                                                <td className="px-3">
+                                                    <div className="d-flex align-items-center gap-2">
+                                                        <FiTag size={15} className="text-primary flex-shrink-0" />
+                                                        <span className="fw-semibold text-dark">
+                                                            {cart.name || "-"}
+                                                        </span>
+                                                    </div>
+                                                </td>
+
+                                                {/* Hedef Adres */}
+                                                <td className="px-3 text-secondary">
+                                                    <span style={{ fontSize: "0.85rem" }}>
+                                                        {cart.href || "-"}
+                                                    </span>
+                                                </td>
+
+                                                {/* Boyut Rozeti */}
+                                                <td className="px-3 text-center">
+                                                    <span
+                                                        style={{
+                                                            display: "inline-flex",
+                                                            alignItems: "center",
+                                                            gap: "5px",
+                                                            backgroundColor: "#f1f5f9",
+                                                            color: "#334155",
+                                                            border: "1px solid #e2e8f0",
+                                                            borderRadius: "8px",
+                                                            padding: "4px 10px",
+                                                            fontSize: "0.78rem",
+                                                            fontWeight: 600
+                                                        }}
+                                                    >
+                                                        <FiMaximize2 size={12} className="text-primary" />
+                                                        {cart.cartSize || "Standart"}
+                                                    </span>
+                                                </td>
+
+                                                {/* Silme Butonu */}
+                                                <td className="px-3 text-end">
+                                                    <button
+                                                        type="button"
+                                                        title="Kartı Sil"
+                                                        onClick={() =>
+                                                            toggleProcess({
+                                                                text: `"${cart.name || 'Seçili'}" kart içeriğini silmek istediğinize emin misiniz?`,
+                                                                type: "delete_cart",
+                                                                id: cart.id
+                                                            })
+                                                        }
+                                                        style={{
+                                                            backgroundColor: "#fef2f2",
+                                                            border: "1px solid #fee2e2",
+                                                            color: "#ef4444",
+                                                            borderRadius: "8px",
+                                                            width: "36px",
+                                                            height: "36px",
+                                                            display: "inline-flex",
+                                                            alignItems: "center",
+                                                            justifyContent: "center",
+                                                            cursor: "pointer",
+                                                            transition: "all 0.15s ease"
+                                                        }}
+                                                        onMouseEnter={(e) => {
+                                                            e.currentTarget.style.backgroundColor = "#ef4444";
+                                                            e.currentTarget.style.color = "#ffffff";
+                                                        }}
+                                                        onMouseLeave={(e) => {
+                                                            e.currentTarget.style.backgroundColor = "#fef2f2";
+                                                            e.currentTarget.style.color = "#ef4444";
+                                                        }}
+                                                    >
+                                                        <FiTrash2 size={16} />
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        );
+                                    })
+                                ) : (
+                                    <tr>
+                                        <td colSpan="5" className="text-center py-5 text-muted">
+                                            Kayıtlı kategori kartı bulunmuyor.
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            {/* POPUP MODALLERİ */}
+            {sliderPopup && (
+                <AddSliderContentPopup
+                    popupCloser={(b) => {
+                        setSliderPopup(b);
+                        if (!b) setRefresh(prev => !prev);
+                    }}
+                />
+            )}
+
+            {cartPopup && (
+                <AddCartPopup
+                    popupCloser={(b) => {
+                        setCartPopup(b);
+                        if (!b) setRefresh(prev => !prev);
+                    }}
+                />
+            )}
 
             {processConfig.isOpen && (
                 <ProcessPopup
@@ -230,21 +506,13 @@ const PageContents = () => {
                     type={processConfig.type}
                     id={processConfig.id}
                     onClose={() => {
-                        setRefresh(!refresh)
-                        setProcessConfig((prev) => ({...prev, isOpen: false}));
+                        setProcessConfig((prev) => ({ ...prev, isOpen: false }));
+                        setRefresh(prev => !prev);
                     }}
                 />
             )}
-            {cartPopup && <AddCartPopup popupCloser={(b) => {
-                setCartPopup(b)
-                setRefresh(!refresh)
-            }}/>}
-            {sliderPopup && <AddSliderContentPopup popupCloser={(b) => {
-                setSliderPopup(b)
-                setRefresh(!refresh)
-            }}/>}
         </div>
-    )
-}
+    );
+};
 
 export default PageContents;
